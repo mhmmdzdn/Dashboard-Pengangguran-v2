@@ -748,11 +748,11 @@
       const kabs = WIL.kabkota.filter(x => x.prov === pk);
 
       if (isKab) {
-        let s = `Pada ${th}, TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}%`;
+        let s = `TPT ${namaW(k)} tercatat ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += ` (${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin vs ${dSeb[0]})`;
+            s += `, ${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari tahun sebelumnya`;
           }
         }
         if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} kab/kota di ${namaW(pk)}.`;
@@ -760,32 +760,26 @@
 
         if (vProv != null || vNas != null) {
           const comp = [];
-          if (vProv != null) comp.push(`${vTpt > vProv ? 'di atas' : 'di bawah'} TPT provinsi (${fmtAngka(vProv, 2)}%)`);
-          if (vNas != null) comp.push(`${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%)`);
-          faktaParts.push(`Posisi ini ${comp.join(' serta ')}.`);
-        }
-        if (tPeng && tPeng[0] === th) {
-          faktaParts.push(`Tercatat sekitar ${fmtAngka(tPeng[1])} orang penganggur terbuka.`);
+          if (vProv != null) comp.push(`${vTpt > vProv ? 'di atas' : 'di bawah'} provinsi (${fmtAngka(vProv, 2)}%)`);
+          if (vNas != null) comp.push(`${vTpt > vNas ? 'di atas' : 'di bawah'} nasional (${fmtAngka(vNas, 2)}%)`);
+          faktaParts.push(`Angka ini ${comp.join(' serta ')}.`);
         }
       } else {
-        let s = `Pada ${th}, TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}%`;
+        let s = `TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += ` (${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari ${fmtAngka(dSeb[1], 2)}% pada ${dSeb[0]})`;
+            s += `, ${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari tahun sebelumnya`;
           }
         }
-        if (uTpt) s += ` — peringkat ke-${uTpt[0]} tertinggi dari ${uTpt[1]} provinsi di Indonesia.`;
+        if (uTpt) s += ` — peringkat ke-${uTpt[0]} tertinggi dari ${uTpt[1]} provinsi.`;
         faktaParts.push(s);
 
         if (vNas != null) {
-          faktaParts.push(`Angka ini berada ${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
-        }
-        if (tPeng && tPeng[0] === th) {
-          faktaParts.push(`Total penganggur terbuka mencapai ${fmtAngka(tPeng[1])} orang di ${kabs.length} kabupaten/kota.`);
+          faktaParts.push(`Berada ${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
         }
         if (sas && sas.target2025) {
-          faktaParts.push(`Sasaran RPJMN 2025 wilayah ${sas.wilayah} adalah ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
+          faktaParts.push(`Sasaran RPJMN wilayah ${sas.wilayah}: ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
         }
       }
     }
