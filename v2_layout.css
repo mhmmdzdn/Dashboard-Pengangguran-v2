@@ -574,6 +574,15 @@ body {
   white-space: normal !important;
   word-break: break-word;
   line-height: 1.3;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+}
+
+/* Kolom paling kiri pada tabel dibuat bold */
+table.tbl td:first-child,
+table.tbl th:first-child {
+  font-weight: 700 !important;
+  color: var(--ink) !important;
 }
 
 .bars .trk {
