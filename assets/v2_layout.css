@@ -889,15 +889,6 @@ table.tbl th:first-child {
   inset: 0;
   background: transparent;
 }
-.hero-profil .hero-profil-sticky-header {
-  position: sticky;
-  top: 56px;
-  z-index: 35;
-  background: var(--hero);
-  padding: 4px 0 6px;
-  margin-bottom: 4px;
-}
-
 .hero-profil h1 {
   font-size: clamp(17px, 1.6vw, 21px);
   line-height: 1.25;
@@ -939,6 +930,114 @@ table.tbl th:first-child {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* 7.1 Floating Sticky Wilayah Bar */
+.sticky-wilayah-bar {
+  position: fixed;
+  top: 52px;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: rgba(6, 35, 30, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sticky-wilayah-bar.tampil {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sticky-wilayah-bar .dalam {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sticky-wilayah-kiri {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sticky-wilayah-remah {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+}
+
+.sticky-wilayah-remah .btn-tautan {
+  color: rgba(255, 255, 255, 0.9);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: 11.5px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sticky-wilayah-remah .btn-tautan:hover {
+  color: #5eead4;
+}
+
+.sticky-wilayah-judul {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sticky-wilayah-kanan {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.sticky-wilayah-chip {
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.sticky-wilayah-tpt {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5eead4;
+  background: rgba(94, 234, 212, 0.12);
+  border: 1px solid rgba(94, 234, 212, 0.3);
+  padding: 2px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 /* Segmen Lingkup Wilayah Profil (Nasional vs Wilayah Daerah) */
