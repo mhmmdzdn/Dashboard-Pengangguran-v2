@@ -35,7 +35,7 @@
   const KAB = Object.fromEntries(WIL.kabkota.map(k => [k.kode, k]));
   const PROV_URUT = WIL.provinsi.slice().sort((a, b) => a.kode.localeCompare(b.kode));
   const URUT_WIL = ['Sumatera', 'Jawa', 'Kalimantan', 'Bali-Nusa Tenggara', 'Sulawesi', 'Maluku', 'Papua'];
-  const FREK = { tahunan: 'Tahunan', semesteran: 'Semesteran', triwulanan: 'Triwulanan' };
+  const FREK = { tahunan: 'Tahunan', semesteran: 'Semesteran' };
   const LEVEL = { prov: 'Provinsi', kab: 'Kab/kota' };
   const namaW = k => (k === '00' ? 'Indonesia' : PROV[k] ? PROV[k].nama : KAB[k] ? KAB[k].nama : k);
   const namaPendek = k => (KAB[k] ? KAB[k].nama.replace(/^Kab\.\s+(Adm\.\s+)?/, '') : namaW(k));
@@ -736,19 +736,18 @@
   // =====================================================================
   function renderSasaran() {
     const host = $('sasaran'), L_ = BY.tpt, sn = D.sasaran.find(x => x.level === 'nasional');
-    const perT = daftarPeriode('tpt', 'tahunan', 'prov'), pT = perT[perT.length - 1], perQ = daftarPeriode('tpt', 'triwulanan', 'prov'), pQ = perQ[perQ.length - 1];
+    const perT = daftarPeriode('tpt', 'tahunan', 'prov'), pT = perT[perT.length - 1];
     const fmt = v => fmtL(L_, v), rg = r => (r ? fmtAngka(r[0], 2) + '–' + fmtAngka(r[1], 2) + '%' : '—');
     const vT = nilai('tpt', 'tahunan', '00', pT);
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-kisi' },
       h('div', {}, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Bappenas · RPJMN 2025–2029'), h('h1', {}, 'Sasaran TPT nasional ', h('em', { text: rg(sn.target2025) }), ' pada 2025 dan ', h('em', { text: rg(sn.target2029) }), ' pada 2029.'),
         h('p', { text: `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran — tanpa menghitung jarak atau selisih.` })),
-      h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) }), h('div', { class: 'per', text: pQ ? `Triwulanan terbaru: ${fmt(nilai('tpt', 'triwulanan', '00', pQ))} (${lblPer(pQ, true)})` : '' })))));
+      h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) })))));
     host.append(h('div', { class: 'kpi-kisi auto' },
       kpi({ ik: 'info', label: 'Baseline 2024', val: fmtAngka(sn.baseline2024, 2) + '%', per: 'RPJMN (Bappenas)' }),
       kpi({ ik: 'target', label: 'Sasaran 2025', val: rg(sn.target2025), per: 'rentang' }),
       kpi({ ik: 'target', oranye: true, label: 'Sasaran 2029', val: rg(sn.target2029), per: 'rentang' }),
-      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'BPS', spark: (deret('tpt', 'tahunan', '00') || []).slice(-11) }),
-      pQ ? kpi({ ik: 'jam', label: 'TPT ' + lblPer(pQ, true), val: fmt(nilai('tpt', 'triwulanan', '00', pQ)), per: 'BPS, triwulanan', spark: deret('tpt', 'triwulanan', '00') }) : null));
+      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'BPS', spark: (deret('tpt', 'tahunan', '00') || []).slice(-11) })));
     const g = h('div');
     host.append(h('section', { class: 'bagian' }, bagian(1, 'TPT Indonesia dan rentang sasaran', 'Tahunan (Agustus) 2015–2025 · pita = rentang sasaran RPJMN 2025 dan 2029.'), h('div', { class: 'card' }, g)));
     const tunda = [() => I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: (deret('tpt', 'tahunan', '00') || []).filter(d => d[0] >= '2015'), utama: true }], tinggi: 300, fmt, area: true,
@@ -800,7 +799,7 @@
       h('p', { text: 'Dashboard tidak menghitung tingkat, selisih, pertumbuhan, pangsa, rata-rata, atau jumlah. Data yang tidak diterbitkan dibiarkan kosong (arsiran di peta).' }))));
     host.append(h('div', { class: 'metode-kisi', style: 'margin-top:20px;position:relative;z-index:2' },
       blok('info', 'Prinsip', 'Hanya angka resmi; peringkat dan kelas warna peta hanya pengurutan/pengelompokan tampilan.', 'Kosong = tidak ada angka resmi; tidak diisi perkiraan atau interpolasi (garis grafik terputus).', 'Garis putus-putus menandai deret yang tidak sepenuhnya sebanding (patahan seri atau pergantian sumber).', 'Kelas warna peta tetap untuk semua periode.'),
-      blok('jam', 'Frekuensi & periode', 'Tahunan = Sakernas Agustus periode 2015–2025 (metodologi konsisten Sakernas modern BPS).', 'Semesteran = Februari & Agustus sejak 2015. Triwulanan = Februari, Mei, Agustus, November (sejak 2025; Mei 2025 tidak tersedia).', 'Seluruh data telah diselaraskan pada rentang 10 tahun terakhir yang memiliki tingkat konfidensi dan kelengkapan tertinggi.'),
+      blok('jam', 'Frekuensi & periode', 'Tahunan = Sakernas Agustus periode 2015–2025 (metodologi konsisten Sakernas modern BPS).', 'Semesteran = Februari & Agustus sejak 2015.', 'Seluruh data telah diselaraskan pada rentang 10 tahun terakhir yang memiliki tingkat konfidensi dan kelengkapan tertinggi.'),
       blok('peta', 'TPT kab/kota', '2017–2025: tabel BPS pusat (514 kab/kota).', 'Sebelum 2017: tabel BPS provinsi untuk 16–18 provinsi; nama dipadankan ke kode BPS, kode lama Papua dipetakan ke kode setelah pemekaran.', 'Bila keduanya memuat tahun yang sama, dipakai tabel BPS pusat (tidak dirata-rata); ±460 titik tumpang tindih dicatat di data/_log_bangun.txt.'),
       blok('peta', 'Peta', 'Batas provinsi: CC BY 4.0 (denyherianto/indonesia-geojson-topojson-maps-with-38-provinces). Batas kab/kota: ardian28/GeoJson-Indonesia-38-Provinsi. Disederhanakan untuk tampilan.', `${WIL.tanpaPoligon.length} kota kecil tanpa poligon di peta sumber (${WIL.tanpaPoligon.join(', ')}); angkanya tetap ada di tabel, peringkat, dan profil.`)));
     host.append(h('section', { class: 'bagian' }, bagian(1, 'Lapisan peta', 'Definisi, catatan, sumber dengan tautan, dan unduhan CSV lengkap per lapisan.'),
