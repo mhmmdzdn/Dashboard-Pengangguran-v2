@@ -230,12 +230,13 @@ body {
   transition: border-color 0.15s ease;
 }
 
-/* Kartu Gabungan TPT Tertinggi & Terendah */
+/* Kartu Gabungan TPT Tertinggi & Terendah dan KPI Profil */
 .kpi.kpi-rentang-gabung {
   display: flex;
-  align-items: stretch;
-  padding: 10px 12px;
-  gap: 12px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 14px;
+  gap: 8px;
 }
 
 .kpi-sub-item {
@@ -245,7 +246,7 @@ body {
   justify-content: center;
   min-width: 0;
   cursor: pointer;
-  padding: 2px 4px;
+  padding: 4px 6px;
   border-radius: 6px;
   transition: background 0.15s ease;
 }
@@ -261,12 +262,21 @@ body {
   flex: none;
 }
 
+.kpi-divider-horiz {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+  flex: none;
+  opacity: 0.8;
+}
+
 .kpi:hover {
   border-color: var(--accent);
 }
 
 .kpi .atas {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--ink-2);
   display: flex;
@@ -275,25 +285,34 @@ body {
 }
 
 .kpi .atas .bulat {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 5px;
   background: var(--surface-2);
   color: var(--accent);
 }
 
 .kpi .val {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ink);
-  margin: 6px 0 2px;
+  margin: 3px 0 1px;
 }
 
 .kpi .per {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--muted);
-  line-height: 1.35;
+  line-height: 1.3;
+}
+
+.kpi .peringkat-lencana {
+  margin-top: 3px;
+}
+
+.kpi .peringkat-lencana .lencana {
+  font-size: 10px;
+  padding: 1px 6px;
 }
 
 /* 4. Progressive Disclosure Pill Switcher */

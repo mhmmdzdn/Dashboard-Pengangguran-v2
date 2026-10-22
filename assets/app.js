@@ -561,14 +561,14 @@
         h('div', { class: 'val', text: tTptMain ? fmtL(BY.tpt, tTptMain[1]) : '—' }),
         h('div', { class: 'per', text: tTptMain ? lblTahunan(tTptMain[0]) + (vNTptMain != null ? ' · Indonesia ' + fmtL(BY.tpt, vNTptMain) : '') : 'tidak ada angka resmi' }),
         uTptMain ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uTptMain[0]} dari ${uTptMain[1]}${isKab ? ' di provinsi' : ''}` })) : null,
-        sparkTptMain.length ? I.garisMini(sparkTptMain, { tinggi: 26 }) : null
+        sparkTptMain.length ? I.garisMini(sparkTptMain, { tinggi: 22 }) : null
       ),
-      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-divider-horiz' }),
       h('div', { class: 'kpi-sub-item' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('orang')), h('span', { text: 'Jumlah penganggur' })),
         h('div', { class: 'val', text: tPengMain ? fmtL(BY.penganggur, tPengMain[1], true) : '—' }),
         h('div', { class: 'per', text: tPengMain ? lblTahunan(tPengMain[0]) : 'tidak ada angka resmi' }),
-        sparkPengMain.length ? I.garisMini(sparkPengMain, { tinggi: 26 }) : null
+        sparkPengMain.length ? I.garisMini(sparkPengMain, { tinggi: 22 }) : null
       )
     );
 
@@ -582,15 +582,15 @@
         h('div', { class: 'val', text: tL ? fmtL(BY.tpt_l, tL[1]) : '—' }),
         h('div', { class: 'per', text: tL ? lblTahunan(tL[0]) + (vNL != null ? ' · Indonesia ' + fmtL(BY.tpt_l, vNL) : '') : 'tidak ada angka resmi' }),
         uL ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uL[0]} dari ${uL[1]}${isKab ? ' di provinsi' : ''}` })) : null,
-        spkL.length ? I.garisMini(spkL, { tinggi: 26 }) : null
+        spkL.length ? I.garisMini(spkL, { tinggi: 22 }) : null
       ),
-      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-divider-horiz' }),
       h('div', { class: 'kpi-sub-item' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat oranye' }, ikon('wanita')), h('span', { text: 'TPT perempuan' })),
         h('div', { class: 'val', text: tP ? fmtL(BY.tpt_p, tP[1]) : '—' }),
         h('div', { class: 'per', text: tP ? lblTahunan(tP[0]) + (vNP != null ? ' · Indonesia ' + fmtL(BY.tpt_p, vNP) : '') : 'tidak ada angka resmi' }),
         uP ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uP[0]} dari ${uP[1]}${isKab ? ' di provinsi' : ''}` })) : null,
-        spkP.length ? I.garisMini(spkP, { tinggi: 26 }) : null
+        spkP.length ? I.garisMini(spkP, { tinggi: 22 }) : null
       )
     );
 
@@ -604,15 +604,15 @@
         h('div', { class: 'val', text: tNeet ? fmtL(BY.neet, tNeet[1]) : '—' }),
         h('div', { class: 'per', text: tNeet ? lblTahunan(tNeet[0]) + (vNNeet != null ? ' · Indonesia ' + fmtL(BY.neet, vNNeet) : '') : 'tidak ada angka resmi' }),
         uNeet ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uNeet[0]} dari ${uNeet[1]}` })) : null,
-        spkNeet.length ? I.garisMini(spkNeet, { tinggi: 26 }) : null
+        spkNeet.length ? I.garisMini(spkNeet, { tinggi: 22 }) : null
       ),
-      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-divider-horiz' }),
       h('div', { class: 'kpi-sub-item' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('jam')), h('span', { text: 'Setengah pengangguran' })),
         h('div', { class: 'val', text: tSet ? fmtL(BY.setengah, tSet[1]) : '—' }),
         h('div', { class: 'per', text: tSet ? lblTahunan(tSet[0]) + (vNSet != null ? ' · Indonesia ' + fmtL(BY.setengah, vNSet) : '') : 'tidak ada angka resmi' }),
         uSet ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uSet[0]} dari ${uSet[1]}` })) : null,
-        spkSet.length ? I.garisMini(spkSet, { tinggi: 26 }) : null
+        spkSet.length ? I.garisMini(spkSet, { tinggi: 22 }) : null
       )
     ) : null;
 
