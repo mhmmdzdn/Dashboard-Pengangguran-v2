@@ -533,22 +533,36 @@
     const k = S.wil, isKab = !!KAB[k], isNas = k === '00', pk = provDari(k);
     const lokasi = h('div', { class: 'peta-host' });
 
-    // Toggle tingkat wilayah: Provinsi vs Kab/kota
-    const modeLevel = isKab ? 'kab' : 'prov';
-    const segLevel = h('div', { class: 'seg seg-level-profil' });
-    I.segmen(segLevel, [['prov', 'Provinsi'], ['kab', 'Kab/kota']], modeLevel, lvBaru => {
-      if (lvBaru === 'prov') {
-        S.wil = isKab ? pk : (k === '00' ? '00' : k);
+    // Toggle Utama: Nasional vs Wilayah Daerah
+    const segLingkup = h('div', { class: 'seg seg-lingkup-profil' });
+    I.segmen(segLingkup, [['nasional', '🇮🇩 Nasional'], ['wilayah', 'Wilayah']], isNas ? 'nasional' : 'wilayah', lingkupBaru => {
+      if (lingkupBaru === 'nasional') {
+        S.wil = '00';
       } else {
-        const kabs = WIL.kabkota.filter(x => x.prov === (pk === '00' ? '31' : pk));
-        S.wil = kabs.length ? kabs[0].kode : '3101';
+        S.wil = (pk && pk !== '00') ? pk : '31';
       }
       render();
-    }, 'Tingkat Wilayah');
+    }, 'Cakupan Profil');
 
-    // Dropdown seleksi wilayah searchable sesuai mode tingkat
-    let pilihWil;
-    {
+    // Toggle Sub-tingkat Wilayah: Provinsi vs Kab/kota (hanya saat mode Wilayah)
+    let segLevel = null;
+    let modeLevel = isKab ? 'kab' : 'prov';
+    if (!isNas) {
+      segLevel = h('div', { class: 'seg seg-level-profil' });
+      I.segmen(segLevel, [['prov', 'Provinsi'], ['kab', 'Kab/kota']], modeLevel, lvBaru => {
+        if (lvBaru === 'prov') {
+          S.wil = isKab ? pk : k;
+        } else {
+          const kabs = WIL.kabkota.filter(x => x.prov === pk);
+          S.wil = kabs.length ? kabs[0].kode : '3101';
+        }
+        render();
+      }, 'Tingkat Wilayah');
+    }
+
+    // Dropdown seleksi wilayah searchable sesuai mode tingkat (hanya saat mode Wilayah)
+    let pilihWil = null;
+    if (!isNas) {
       const wrap = h('div', { class: 'pilih-wil-wrap' });
       const tombol = h('button', {
         class: 'pilih-wil-btn',
@@ -556,7 +570,7 @@
         'aria-haspopup': 'listbox',
         'aria-expanded': 'false'
       },
-        h('span', { class: 'label-teks', text: namaW(k) + (isNas ? ' (Nasional)' : '') }),
+        h('span', { class: 'label-teks', text: namaW(k) }),
         h('span', { class: 'panah-bawah', text: '▼' })
       );
       const panel = h('div', { class: 'pilih-wil-panel hidden' });
@@ -585,7 +599,6 @@
           });
         });
       } else {
-        items.push({ tipe: 'item', kode: '00', nama: '🇮🇩 Indonesia (Nasional)', sub: 'Seluruh Indonesia' });
         URUT_WIL.forEach(w => {
           const provs = WIL.provinsi.filter(p => p.wilayah === w).sort((a, b) => a.nama.localeCompare(b.nama));
           if (provs.length) {
@@ -689,6 +702,10 @@
         ? [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', h('button', { class: 'btn-tautan', type: 'button', text: namaW(pk), onclick: () => { S.wil = pk; render(); } }), ' › ', KAB[k].jenis]
         : [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', 'Provinsi'];
 
+    const alatProfil = [segLingkup];
+    if (segLevel) alatProfil.push(segLevel);
+    if (pilihWil) alatProfil.push(pilihWil);
+
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-profil' },
       h('div', {},
         h('div', { class: 'remah' }, ...remahWil),
@@ -697,7 +714,7 @@
           h('span', { class: 'chip', text: chipLevel }),
           h('span', { class: 'chip', text: chipWilayah }),
           h('span', { class: 'chip', text: 'Kode BPS ' + k })),
-        h('div', { class: 'hero-alat' }, segLevel, pilihWil)),
+        h('div', { class: 'hero-alat' }, ...alatProfil)),
       h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
     const tunda = [() => petaMini(lokasi, {
       warna: x => (isNas ? '#f5a37f' : x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'),
