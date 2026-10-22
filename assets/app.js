@@ -532,7 +532,14 @@
     if (!PROV[S.wil] && !KAB[S.wil]) S.wil = '31';
     const k = S.wil, isKab = !!KAB[k], pk = provDari(k);
     const cari = h('div', { class: 'cari' }), lokasi = h('div', { class: 'peta-host' });
-    const pilihProv = h('select', { 'aria-label': 'Pilih provinsi', onchange: ev => { S.wil = ev.target.value; render(); } }, PROV_URUT.map(p => h('option', { value: p.kode, selected: p.kode === pk ? true : null, text: p.nama })));
+    const pilihProv = h('select', { 'aria-label': 'Pilih provinsi', onchange: ev => { S.wil = ev.target.value; render(); } },
+      URUT_WIL.map(w => {
+        const provs = WIL.provinsi.filter(p => p.wilayah === w).sort((a, b) => a.kode.localeCompare(b.kode));
+        return h('optgroup', { label: `Wilayah ${w}` },
+          ...provs.map(p => h('option', { value: p.kode, selected: p.kode === pk ? true : null, text: p.nama }))
+        );
+      })
+    );
     const tTpt = terakhir('tpt', 'tahunan', k);
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-profil' },
       h('div', {},

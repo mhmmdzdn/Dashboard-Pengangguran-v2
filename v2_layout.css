@@ -210,6 +210,22 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* Styling dropdown provinsi grouped by wilayah */
+.hero select optgroup {
+  font-weight: 700;
+  color: var(--ink, #0f172a);
+  background: var(--surface-2, #f1f5f9);
+  font-style: normal;
+  padding: 4px 6px;
+}
+
+.hero select option {
+  font-weight: 400;
+  color: var(--ink, #0f172a);
+  background: var(--surface, #ffffff);
+  padding: 4px 10px;
+}
+
 /* 3. Kartu KPI Minimalis & Bersih (Frameless / Light Stroke) */
 .kpi-kisi {
   display: grid;
