@@ -707,7 +707,7 @@
     batangWrap.append(batang);
     const kol = ['tpt', 'tpt_l', 'tpt_p', 'penganggur', 'tpak'];
     const jmlKab = kabs.length;
-    const kelasJmlKab = jmlKab <= 4 ? 'kab-sedikit' : jmlKab <= 8 ? 'kab-sedang' : 'kab-banyak';
+    const kelasJmlKab = jmlKab <= 5 ? 'kab-sedikit' : jmlKab <= 10 ? 'kab-sedang' : 'kab-banyak';
     host.append(h('section', { class: 'bagian' }, bagian(no, `Kabupaten/kota di ${namaW(pk)}`, `${kabs.length} kab/kota · TPT dan indikator lain pada tahun terpilih · klik untuk membuka profil kab/kota.`),
       h('div', { class: 'card' }, h('div', { class: 'tab-rincian' }, h('label', {}, 'Tahun ', sel)),
         h('div', { class: `kisi kisi-2 kisi-kabkota ${kelasJmlKab}` }, h('div', { class: 'peta-kolom' }, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), batangWrap), h('div', { class: 'jarak' }, tb))));

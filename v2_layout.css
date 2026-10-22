@@ -478,7 +478,7 @@ body {
   flex: 1 1 auto;
 }
 
-/* Jika kab/kota sedikit (seperti Papua Selatan 4 kab), chart didistribusikan proporsional & font diperbesar */
+/* Jika kab/kota sedikit (<= 5 kab, seperti Papua Selatan 4 kab), chart terdistribusi proporsional & font diperbesar */
 .kisi-kabkota.kab-sedikit .batang-scroll-wrap > .bars {
   align-content: space-evenly !important;
   gap: 18px 16px !important;
@@ -496,20 +496,25 @@ body {
   height: 16px !important;
 }
 
-/* Jika kab/kota sedang (5-8 kab) */
+/* Jika kab/kota sedang (6-10 kab, seperti Papua 9 kab, Bali 9 kab, DIY 5 kab, Jakarta 6 kab) */
 .kisi-kabkota.kab-sedang .batang-scroll-wrap > .bars {
   align-content: space-evenly !important;
-  gap: 12px 14px !important;
+  gap: 10px 14px !important;
+  padding: 6px 0;
 }
 .kisi-kabkota.kab-sedang .bars .nm {
   font-size: 13px !important;
-  font-weight: 500;
+  font-weight: 600;
+}
+.kisi-kabkota.kab-sedang .bars .v {
+  font-size: 13.5px !important;
+  font-weight: 700;
 }
 .kisi-kabkota.kab-sedang .bars .trk {
-  height: 13px !important;
+  height: 14px !important;
 }
 
-/* Jika kab/kota banyak (>8 kab, misalnya Jawa Timur/Sumut/Jateng), scroll lancar dengan batas tepat border map */
+/* Jika kab/kota banyak (>10 kab, misalnya Jawa Timur/Sumut/Jateng), scroll lancar dengan batas tepat border map */
 .kisi-kabkota.kab-banyak .batang-scroll-wrap > .bars {
   align-content: start !important;
   gap: 8px 14px !important;
