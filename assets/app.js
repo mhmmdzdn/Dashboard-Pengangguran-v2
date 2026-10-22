@@ -680,7 +680,8 @@
           S.pkar === 'pendidikan' && ket && ket.kategori ? h('div', { class: 'catatan-kecil', text: 'Kategori pendidikan periode ini: ' + ket.kategori + '. Kategori dapat berbeda antarperiode sesuai sumber.' }) : null,
           src ? h('div', { class: 'kaki-kartu' }, h('div', { class: 'kecil' }, 'Sumber: ', h('a', { href: src, target: '_blank', rel: 'noopener', text: 'Kemnaker Satu Data — Pengangguran Terbuka (' + lblPer(S.pkper, true) + ')' }))) : null),
         kartuNeet(k))));
-    tunda.push(() => I.daftarBatang(g, { baris: baris.filter(r => !/^total$/i.test(r[0])).map(r => ({ nama: r[0], v: r[1], tip: `Laki-laki ${fmtAngka(r[2])} · Perempuan ${fmtAngka(r[3])}` })), fmt: v => (v == null ? '—' : fmtAngka(v)) }));
+    const kapitalHurufAwal = str => (!str ? '' : str.charAt(0).toUpperCase() + str.slice(1));
+    tunda.push(() => I.daftarBatang(g, { baris: baris.filter(r => !/^total$/i.test(r[0])).map(r => ({ nama: kapitalHurufAwal(r[0]), v: r[1], tip: `Laki-laki ${fmtAngka(r[2])} · Perempuan ${fmtAngka(r[3])}` })), fmt: v => (v == null ? '—' : fmtAngka(v)) }));
   }
   function kartuNeet(k) {
     const N = D.neetKemnaker, d = N.data[k];
