@@ -889,6 +889,15 @@ table.tbl th:first-child {
   inset: 0;
   background: transparent;
 }
+.hero-profil .hero-profil-sticky-header {
+  position: sticky;
+  top: 56px;
+  z-index: 35;
+  background: var(--hero);
+  padding: 4px 0 6px;
+  margin-bottom: 4px;
+}
+
 .hero-profil h1 {
   font-size: clamp(17px, 1.6vw, 21px);
   line-height: 1.25;
