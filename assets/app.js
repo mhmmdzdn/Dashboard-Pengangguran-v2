@@ -619,7 +619,7 @@
     const cards = [kpiTptPengGabung, kpiGenderGabung];
     if (kpiNeetSetGabung) cards.push(kpiNeetSetGabung);
 
-    host.append(h('div', { class: 'kpi-kisi' }, ...cards));
+    host.append(h('div', { class: `kpi-kisi kpi-profil-kisi kpi-count-${cards.length}` }, ...cards));
     // 01 tren
     {
       const fr = frekTersedia('tpt', lvDari(k)); if (!fr.includes(S.pfrek)) S.pfrek = 'tahunan';

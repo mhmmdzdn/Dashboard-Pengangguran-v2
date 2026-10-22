@@ -221,6 +221,18 @@ body {
   z-index: 2;
 }
 
+/* Jika hanya ada 2 kartu KPI (pada level Kab/Kota), pertahankan ukuran normal dan pusatkan (center) */
+.kpi-profil-kisi.kpi-count-2 {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+}
+
+.kpi-profil-kisi.kpi-count-2 > .kpi {
+  width: min(380px, calc(50% - 8px)) !important;
+  flex: 0 1 380px !important;
+}
+
 .kpi {
   background: var(--surface);
   border: 1px solid var(--border);
