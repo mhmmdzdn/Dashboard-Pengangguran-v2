@@ -383,6 +383,15 @@ body {
   box-sizing: border-box !important;
 }
 
+/* Biarkan tinggi kartu karakteristik penganggur alami mengikuti isi tanpa menyisakan ruang kosong */
+.kisi-karakteristik {
+  align-items: start !important;
+}
+
+.kisi-karakteristik > .card {
+  height: fit-content !important;
+}
+
 /* Scroll wrapper untuk grafik batang profil kab/kota agar selaras dengan tinggi peta */
 .batang-scroll-wrap {
   width: 100% !important;
