@@ -545,27 +545,88 @@
     I.kotakCari(cari, { daftar: daftarCari, onPilih: kk => { S.wil = kk; render(); tulis(); }, placeholder: 'Cari provinsi atau kab/kota…' });
     const tunda = [() => petaMini(lokasi, { warna: x => (x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'), onPilih: x => { if (x) { S.wil = x; render(); tulis(); } } })];
     // KPI
-    const ids = isKab ? ['tpt', 'tpt_l', 'tpt_p', 'penganggur', 'tpak'] : ['tpt', 'tpt_l', 'tpt_p', 'neet', 'setengah', 'penganggur', 'tpak'];
-    host.append(h('div', { class: 'kpi-kisi auto' }, ids.map(id => {
+    // Gabungkan TPT & Penganggur, serta TPT Laki-laki & Perempuan
+    const tTptMain = terakhir('tpt', 'tahunan', k);
+    const uTptMain = tTptMain ? urutan('tpt', 'tahunan', k, tTptMain[0]) : null;
+    const vNTptMain = tTptMain ? nilai('tpt', 'tahunan', '00', tTptMain[0]) : null;
+    const sparkTptMain = (deret('tpt', 'tahunan', k) || []).slice(-12);
+
+    const tPengMain = terakhir('penganggur', 'tahunan', k);
+    const sparkPengMain = (deret('penganggur', 'tahunan', k) || []).slice(-12);
+
+    // Kartu Gabungan 1: TPT & Jumlah Penganggur (Gambar 2 & Gambar 3)
+    const kpiTptPengGabung = h('div', { class: 'kpi kpi-rentang-gabung' },
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('tpt')), h('span', { text: 'TPT' })),
+        h('div', { class: 'val', text: tTptMain ? fmtL(BY.tpt, tTptMain[1]) : '—' }),
+        h('div', { class: 'per', text: tTptMain ? lblTahunan(tTptMain[0]) + (vNTptMain != null ? ' · Indonesia ' + fmtL(BY.tpt, vNTptMain) : '') : 'tidak ada angka resmi' }),
+        uTptMain ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uTptMain[0]} dari ${uTptMain[1]}${isKab ? ' di provinsi' : ''}` })) : null,
+        sparkTptMain.length ? I.garisMini(sparkTptMain, { tinggi: 26 }) : null
+      ),
+      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('orang')), h('span', { text: 'Jumlah penganggur' })),
+        h('div', { class: 'val', text: tPengMain ? fmtL(BY.penganggur, tPengMain[1], true) : '—' }),
+        h('div', { class: 'per', text: tPengMain ? lblTahunan(tPengMain[0]) : 'tidak ada angka resmi' }),
+        sparkPengMain.length ? I.garisMini(sparkPengMain, { tinggi: 26 }) : null
+      )
+    );
+
+    // Kartu Gabungan 2: TPT Laki-laki & Perempuan (Gambar 1)
+    const tL = terakhir('tpt_l', 'tahunan', k), uL = tL ? urutan('tpt_l', 'tahunan', k, tL[0]) : null, vNL = tL ? nilai('tpt_l', 'tahunan', '00', tL[0]) : null, spkL = (deret('tpt_l', 'tahunan', k) || []).slice(-12);
+    const tP = terakhir('tpt_p', 'tahunan', k), uP = tP ? urutan('tpt_p', 'tahunan', k, tP[0]) : null, vNP = tP ? nilai('tpt_p', 'tahunan', '00', tP[0]) : null, spkP = (deret('tpt_p', 'tahunan', k) || []).slice(-12);
+
+    const kpiGenderGabung = h('div', { class: 'kpi kpi-rentang-gabung' },
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('pria')), h('span', { text: 'TPT laki-laki' })),
+        h('div', { class: 'val', text: tL ? fmtL(BY.tpt_l, tL[1]) : '—' }),
+        h('div', { class: 'per', text: tL ? lblTahunan(tL[0]) + (vNL != null ? ' · Indonesia ' + fmtL(BY.tpt_l, vNL) : '') : 'tidak ada angka resmi' }),
+        uL ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uL[0]} dari ${uL[1]}${isKab ? ' di provinsi' : ''}` })) : null,
+        spkL.length ? I.garisMini(spkL, { tinggi: 26 }) : null
+      ),
+      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat oranye' }, ikon('wanita')), h('span', { text: 'TPT perempuan' })),
+        h('div', { class: 'val', text: tP ? fmtL(BY.tpt_p, tP[1]) : '—' }),
+        h('div', { class: 'per', text: tP ? lblTahunan(tP[0]) + (vNP != null ? ' · Indonesia ' + fmtL(BY.tpt_p, vNP) : '') : 'tidak ada angka resmi' }),
+        uP ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uP[0]} dari ${uP[1]}${isKab ? ' di provinsi' : ''}` })) : null,
+        spkP.length ? I.garisMini(spkP, { tinggi: 26 }) : null
+      )
+    );
+
+    const sisaIds = isKab ? ['tpak'] : ['neet', 'setengah', 'tpak'];
+    const sisaCards = sisaIds.map(id => {
       const l = BY[id], t = terakhir(id, 'tahunan', k);
       const u = t && l.jenis !== 'jumlah' ? urutan(id, 'tahunan', k, t[0]) : null;
       const vN = t && l.jenis !== 'jumlah' ? nilai(id, 'tahunan', '00', t[0]) : null;
-      return kpi({ ik: IKON_LAP[id], oranye: id === 'tpt_p', label: l.singkat, val: t ? fmtL(l, t[1], l.jenis === 'jumlah') : '—', per: t ? lblTahunan(t[0]) + (vN != null ? ' · Indonesia ' + fmtL(l, vN) : '') : 'tidak ada angka resmi',
+      return kpi({ ik: IKON_LAP[id], oranye: false, label: l.singkat, val: t ? fmtL(l, t[1], l.jenis === 'jumlah') : '—', per: t ? lblTahunan(t[0]) + (vN != null ? ' · Indonesia ' + fmtL(l, vN) : '') : 'tidak ada angka resmi',
         lencana: u ? { teks: `#${u[0]} dari ${u[1]}${isKab ? ' di provinsi' : ''}`, warna: 'biru' } : null, spark: (deret(id, 'tahunan', k) || []).slice(-12) });
-    })));
+    });
+
+    host.append(h('div', { class: 'kpi-kisi' }, kpiTptPengGabung, kpiGenderGabung, ...sisaCards));
     // 01 tren
     {
       const fr = frekTersedia('tpt', lvDari(k)); if (!fr.includes(S.pfrek)) S.pfrek = 'tahunan';
       const seg = h('div', { class: 'seg' }); I.segmen(seg, fr.map(f => [f, FREK[f]]), S.pfrek, f => { S.pfrek = f; renderProfil(); tulis(); }, 'Frekuensi');
       const g = h('div'), gLP = h('div'), am = asalMap('tpt', S.pfrek, k);
       host.append(h('section', { class: 'bagian' }, bagian(1, 'Tingkat pengangguran terbuka', `${namaW(k)}${isKab ? ' dibandingkan ' + namaW(pk) : ''} dan Indonesia, serta TPT laki-laki dan perempuan.`),
-        h('div', { class: 'kisi kisi-8-4' },
+        h('div', { class: 'kisi kisi-2' },
           kartuAksi('Tren TPT', FREK[S.pfrek], fr.length > 1 ? seg : null, g, am ? h('div', { class: 'catatan-kecil', text: 'Titik berongga = angka tabel BPS provinsi (' + Object.keys(am).join(', ') + '). Garis putus-putus = pergantian sumber/patahan seri.' }) : null),
           kartu('Laki-laki & perempuan', 'Tahunan (Agustus) 2017–2025', gLP))));
       tunda.push(() => {
-        const ser = [{ nama: namaW(k), warna: 'var(--accent)', data: deret('tpt', S.pfrek, k) || [], utama: true, asal: am }];
-        if (isKab && deret('tpt', S.pfrek, pk)) ser.push({ nama: namaW(pk), warna: 'var(--cat-2)', data: deret('tpt', S.pfrek, pk) });
-        if (deret('tpt', S.pfrek, '00')) ser.push({ nama: 'Indonesia', warna: 'var(--context)', data: deret('tpt', S.pfrek, '00') });
+        let dWil = deret('tpt', S.pfrek, k) || [];
+        if (S.pfrek === 'tahunan') dWil = dWil.filter(x => x[0] >= '2015');
+        const ser = [{ nama: namaW(k), warna: 'var(--accent)', data: dWil, utama: true, asal: am }];
+        if (isKab && deret('tpt', S.pfrek, pk)) {
+          let dPk = deret('tpt', S.pfrek, pk) || [];
+          if (S.pfrek === 'tahunan') dPk = dPk.filter(x => x[0] >= '2015');
+          ser.push({ nama: namaW(pk), warna: 'var(--cat-2)', data: dPk });
+        }
+        if (deret('tpt', S.pfrek, '00')) {
+          let dNat = deret('tpt', S.pfrek, '00') || [];
+          if (S.pfrek === 'tahunan') dNat = dNat.filter(x => x[0] >= '2015');
+          ser.push({ nama: 'Indonesia', warna: 'var(--context)', data: dNat });
+        }
         I.grafikGaris(g, { seri: potongAwal(ser), tinggi: 300, fmt: v => fmtL(BY.tpt, v), patahan: (BY.tpt.patahan || {})[S.pfrek], asalLabel: 'tabel BPS provinsi' });
         I.grafikGaris(gLP, { seri: [{ nama: 'Laki-laki', warna: 'var(--cat-1)', data: deret('tpt_l', 'tahunan', k) || [], utama: true }, { nama: 'Perempuan', warna: 'var(--cat-2)', data: deret('tpt_p', 'tahunan', k) || [], utama: true }], tinggi: 300, fmt: v => fmtL(BY.tpt, v) });
       });
@@ -1141,6 +1202,6 @@
     h('div', { text: `Versi 2 · data dibangun ${D.dibuat} oleh Data/_skrip/bangun_dashboard_pengangguran.js --versi 2. Angka resmi BPS, Kemnaker, dan Bappenas apa adanya — tanpa hitungan mandiri; data kosong dibiarkan kosong.` }),
     h('div', { text: 'Peringkat dan kelas warna peta hanya pengurutan tampilan. Lihat Metodologi untuk sumber, tautan unduh, dan catatan per lapisan.' }));
   let tRes = null, lebarAkhir = innerWidth;
-  window.addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(() => { if (S.page !== 'peta' && Math.abs(innerWidth - lebarAkhir) > 40) { lebarAkhir = innerWidth; render(); } }, 200); });
+  window.addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(() => { if (S.page !== 'peta' && Math.abs(innerWidth - lebarAkhir) > 15) { lebarAkhir = innerWidth; render(); } }, 100); });
   render();
 })();
