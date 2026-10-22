@@ -376,7 +376,7 @@
     const sparkN = id => (deret(id, 'tahunan', '00') || []).filter(d => d[0] <= per).slice(-12);
     
     // Kartu gabungan TPT Tertinggi & Terendah
-    const kpiEkstremGabung = h('div', { class: 'kpi kpi-rentang-gabung' },
+    const kpiEkstremGabung = h('div', { class: 'kpi kpi-rentang-gabung kpi-rentang-horiz' },
       h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[0]; renderProfil(); tulis(); } }, role: 'button', tabindex: '0' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat oranye' }, ikon('naik')), h('span', { text: 'TPT tertinggi' })),
         h('div', { class: 'val', text: urutP.length ? fmtL(L_, pot[urutP[0]]) : '—' }),
