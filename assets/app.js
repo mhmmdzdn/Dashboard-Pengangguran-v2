@@ -688,7 +688,7 @@
     const kol = ['tpt', 'tpt_l', 'tpt_p', 'penganggur', 'tpak'];
     host.append(h('section', { class: 'bagian' }, bagian(no, `Kabupaten/kota di ${namaW(pk)}`, `${kabs.length} kab/kota · TPT dan indikator lain pada tahun terpilih · klik untuk membuka profil kab/kota.`),
       h('div', { class: 'card' }, h('div', { class: 'tab-rincian' }, h('label', {}, 'Tahun ', sel)),
-        h('div', { class: 'kisi kisi-2' }, h('div', {}, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), h('div', {}, batang)), h('div', { class: 'jarak' }, tb))));
+        h('div', { class: 'kisi kisi-2' }, h('div', {}, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), batang), h('div', { class: 'jarak' }, tb))));
     tunda.push(() => {
       const pm = I.Peta(petaEl, { wil: WIL, statis: true, onPilih: kk => { if (KAB[kk]) { S.wil = kk; render(); tulis(); } }, onHover: (ev, kk) => {
         if (!kk || !KAB[kk]) { I.sembunyiTip(); return; }

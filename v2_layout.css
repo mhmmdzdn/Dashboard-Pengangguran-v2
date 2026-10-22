@@ -375,11 +375,12 @@ body {
 
 /* Batang horizontal elastis memenuhi whitespace */
 .bars {
-  display: grid;
-  grid-template-columns: minmax(130px, auto) minmax(0, 1fr) max-content !important;
+  display: grid !important;
+  grid-template-columns: minmax(130px, max-content) minmax(0, 1fr) max-content !important;
   gap: 8px 14px !important;
   align-items: center;
-  width: 100%;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .bars .nm {
@@ -390,8 +391,13 @@ body {
 }
 
 .bars .trk {
-  width: 100%;
-  flex: 1;
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.bars .v {
+  white-space: nowrap !important;
 }
 
 /* Tab filter rincian responsif */
