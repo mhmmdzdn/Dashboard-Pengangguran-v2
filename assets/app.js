@@ -748,38 +748,38 @@
       const kabs = WIL.kabkota.filter(x => x.prov === pk);
 
       if (isKab) {
-        let s = `TPT ${namaW(k)} tercatat ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
+        let s = `TPT ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += `, ${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari tahun sebelumnya`;
+            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)}% YoY)`;
           }
         }
-        if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} kab/kota di ${namaW(pk)}.`;
+        if (uTpt) s += ` — peringkat ${uTpt[0]} dari ${uTpt[1]} kab/kota di ${namaW(pk)}.`;
         faktaParts.push(s);
 
         if (vProv != null || vNas != null) {
           const comp = [];
           if (vProv != null) comp.push(`${vTpt > vProv ? 'di atas' : 'di bawah'} provinsi (${fmtAngka(vProv, 2)}%)`);
           if (vNas != null) comp.push(`${vTpt > vNas ? 'di atas' : 'di bawah'} nasional (${fmtAngka(vNas, 2)}%)`);
-          faktaParts.push(`Angka ini ${comp.join(' serta ')}.`);
+          faktaParts.push(`Posisi ${comp.join(' & ')}.`);
         }
       } else {
-        let s = `TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
+        let s = `TPT ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += `, ${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari tahun sebelumnya`;
+            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)}% YoY)`;
           }
         }
-        if (uTpt) s += ` — peringkat ke-${uTpt[0]} tertinggi dari ${uTpt[1]} provinsi.`;
+        if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} provinsi.`;
         faktaParts.push(s);
 
         if (vNas != null) {
-          faktaParts.push(`Berada ${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
+          faktaParts.push(`${vTpt > vNas ? 'Di atas' : 'Di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
         }
         if (sas && sas.target2025) {
-          faktaParts.push(`Sasaran RPJMN wilayah ${sas.wilayah}: ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
+          faktaParts.push(`Sasaran RPJMN: ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
         }
       }
     }
