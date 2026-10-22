@@ -732,11 +732,13 @@
   const GLOSS_INSIGHT = {
     tpt: { t: 'TPT (Tingkat Pengangguran Terbuka)', k: 1, d: 'Persentase jumlah penganggur terhadap jumlah seluruh angkatan kerja. Penganggur adalah mereka yang tidak punya pekerjaan dan sedang aktif mencari kerja, mempersiapkan usaha, atau sudah diterima kerja tetapi belum mulai.' },
     angkatan: { t: 'Angkatan Kerja', k: 1, d: 'Penduduk usia kerja (15 tahun ke atas) yang aktif bekerja atau sedang menganggur mencari pekerjaan.' },
+    tpak: { t: 'TPAK (Tingkat Partisipasi Angkatan Kerja)', k: 1, d: 'Persentase jumlah angkatan kerja terhadap seluruh penduduk usia kerja (15 tahun ke atas). Menunjukkan seberapa besar porsi penduduk produktif yang aktif dalam pasar tenaga kerja.' },
     neet: { t: 'NEET', k: 1, d: 'Not in Employment, Education, or Training — persentase pemuda usia 15–24 tahun yang sedang tidak bekerja, tidak menempuh pendidikan sekolah/kuliah, dan tidak sedang mengikuti pelatihan kerja.' },
     setengah: { t: 'Setengah Pengangguran', k: 1, d: 'Pekerja yang jam kerjanya kurang dari 35 jam per minggu dan masih mencari pekerjaan tambahan atau masih bersedia menerima pekerjaan lain.' },
     smk: { t: 'Paradoks SMK', k: 1, d: 'Kondisi di mana lulusan SMK yang disiapkan langsung siap kerja justru memiliki tingkat pengangguran tertinggi dibandingkan jenjang pendidikan lainnya karena ketidaksesuaian (mismatch) dengan kebutuhan industri.' },
     sakernas: { t: 'Sakernas', k: 1, d: 'Survei Angkatan Kerja Nasional oleh Badan Pusat Statistik (BPS), sumber data ketenagakerjaan resmi di Indonesia yang dilaksanakan secara berkala.' },
-    rpjmn: { t: 'Sasaran RPJMN', k: 1, d: 'Rencana Pembangunan Jangka Menengah Nasional 2025–2029 yang menetapkan target batas atas TPT nasional dan koridor wilayah.' }
+    rpjmn: { t: 'Sasaran RPJMN', k: 1, d: 'Rencana Pembangunan Jangka Menengah Nasional 2025–2029 yang menetapkan target batas atas TPT nasional dan koridor wilayah.' },
+    gendergap: { t: 'Disparitas Gender Ketenagakerjaan', k: 1, d: 'Perbedaan tingkat pengangguran atau partisipasi kerja antara laki-laki dan perempuan di suatu wilayah, sering kali dipengaruhi oleh struktur industri lokal dan beban pengurusan rumah tangga.' }
   };
 
   const termI = (k, label) => `<span class="term" data-tip-key="${k}">${label || GLOSS_INSIGHT[k].t}</span>`;
@@ -905,6 +907,84 @@
             </div>
           `).join('') +
           `</div>`
+      },
+      {
+        id: 'disparitas-gender',
+        title: '6. Potret Gender: Kesetaraan Angka Nasional vs Kesenjangan Wilayah',
+        go: 'tpt_p|prov|tahunan|2025|11',
+        aria: 'Lihat TPT perempuan di Aceh',
+        text: `<p>Secara agregat nasional, TPT laki-laki (<b>4,85%</b>) dan perempuan (<b>4,84%</b>) terlihat sangat seimbang. Namun, angka nasional ini menutupi ketimpangan gender yang sangat kontras di tingkat daerah.</p>` +
+          `<p>Di provinsi seperti <b>Aceh</b> dan <b>Papua Barat Daya</b>, TPT perempuan jauh lebih tinggi daripada laki-laki dengan selisih lebih dari <b>2,5 hingga 3,0 persen poin</b> (Aceh: Perempuan 7,52% vs Laki-laki 4,48%).</p>` +
+          `<p>Sementara itu, dari sisi keaktifan pasar kerja, ${termI('tpak')} perempuan nasional masih berada di kisaran <b>55%</b>, jauh di bawah TPAK laki-laki yang mencapai lebih dari <b>84%</b>. Sebagian besar perempuan bukan angkatan kerja tercatat sedang mengurus rumah tangga.</p>`,
+        fig: `<div class="fig-t">Provinsi dengan Selisih TPT Perempuan Tertinggi di Atas Laki-laki (${lastPer})</div>` +
+          `<div class="hb">` +
+          [
+            { prov: 'Aceh', p: 7.52, l: 4.48, gap: '+3,04%' },
+            { prov: 'Papua Barat Daya', p: 8.44, l: 5.87, gap: '+2,57%' },
+            { prov: 'Sulawesi Utara', p: 7.31, l: 5.23, gap: '+2,08%' },
+            { prov: 'Rata-rata Nasional', p: 4.84, l: 4.85, gap: '-0,01%' }
+          ].map(item => `
+            <div class="hb-r">
+              <div class="hb-h"><b>${item.prov}</b><span>Perempuan ${fmtAngka(item.p, 2)}% vs Laki-laki ${fmtAngka(item.l, 2)}% (${item.gap})</span></div>
+              <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.p / 9).toFixed(3)};--wc:#ec4899"></span></div><span class="hb-v">${fmtAngka(item.p, 2)}%</span></div>
+            </div>
+          `).join('') +
+          `</div>`
+      },
+      {
+        id: 'koridor-rpjmn',
+        title: '7. Evaluasi Sasaran RPJMN 2025: Siapa Melampaui, Siapa Masih Tertinggal?',
+        go: 'tpt|prov|tahunan|2025|',
+        aria: 'Buka peta TPT per wilayah',
+        text: `<p>Dokumen RPJMN 2025–2029 menetapkan koridor sasaran TPT untuk 7 wilayah pembangunan Indonesia. Target nasional tahun 2025 dipatok pada rentang <b>4,50% – 5,00%</b>, dan realisasi Sakernas 2025 sebesar <b>4,85%</b> resmi berada di dalam rentang target tersebut.</p>` +
+          `<p>Namun di tingkat wilayah, capaian bervariasi tajam:</p>` +
+          `<ul style="margin:8px 0 12px 18px;font-size:0.95rem;line-height:1.6;color:var(--ink-2)">` +
+          `  <li><b>Wilayah Berhasil di Bawah Target:</b> Bali (1,49%), Nusa Tenggara Barat, Jawa Tengah (4,66%), Jawa Timur (3,88%), dan Kalimantan Selatan (4,16%) sukses menekan pengangguran jauh di batas aman target wilayahnya.</li>` +
+          `  <li><b>Wilayah yang Melampaui Batas Maksimal:</b> Jawa Barat (6,77% vs target koridor Jawa maks 5,62%), Banten (6,69%), DKI Jakarta (6,05%), Maluku (6,27% vs target maks 5,18%), dan Papua (6,96% vs target maks 3,59%).</li>` +
+          `</ul>` +
+          `<p>Tantangan terbesar pencapaian sasaran akhir 2029 (target nasional 4,00% – 4,71%) berada pada revitalisasi penyerapan tenaga kerja di koridor industri barat dan percepatan inklusi ekonomi Indonesia Timur.</p>`,
+        fig: `<div class="fig-t">Status Realisasi TPT Provinsi 2025 terhadap Batas Koridor RPJMN 2025</div>` +
+          `<div class="hb">` +
+          [
+            { prov: 'Jawa Barat (Koridor Jawa maks 5,62%)', val: 6.77, status: 'Melampaui Target', color: '#ea580c' },
+            { prov: 'Banten (Koridor Jawa maks 5,62%)', val: 6.69, status: 'Melampaui Target', color: '#ea580c' },
+            { prov: 'Kepulauan Riau (Koridor Sumatera maks 4,73%)', val: 6.45, status: 'Melampaui Target', color: '#ea580c' },
+            { prov: 'Nasional (Target 4,50% – 5,00%)', val: 4.85, status: 'Memenuhi Target', color: '#10b981' },
+            { prov: 'Jawa Timur (Koridor Jawa maks 5,62%)', val: 3.88, status: 'Memenuhi Target', color: '#10b981' },
+            { prov: 'Bali (Koridor Bali-Nusra maks 2,72%)', val: 1.49, status: 'Memenuhi Target', color: '#10b981' }
+          ].map(item => `
+            <div class="hb-r">
+              <div class="hb-h"><b>${item.prov}</b><span>${item.status}</span></div>
+              <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 7.5).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
+            </div>
+          `).join('') +
+          `</div>`
+      },
+      {
+        id: 'kabkota-ekstrem',
+        title: '8. Disparitas Tajam 514 Daerah: Kota Pusat Jasa vs Lumbung Agraris',
+        go: 'tpt|kab|tahunan|2025|8171',
+        aria: 'Lihat Kota Ambon di peta kab/kota',
+        text: `<p>Melihat tingkat agregat provinsi sering kali menyembunyikan kontras ekstrem antar-kabupaten/kota. Dari 514 daerah di Indonesia, TPT tertinggi tercatat di <b>Kota Ambon (11,37%)</b> dan <b>Kota Sorong (10,35%)</b>.</p>` +
+          `<p>Secara umum, rata-rata TPT di <b>98 wilayah Kota (5,89%)</b> jauh lebih tinggi dibandingkan rata-rata <b>416 Kabupaten (3,78%)</b>. Kota-kota besar menjadi magnet migrasi angkatan kerja terdidik, namun daya serap sektor formal terbatas sehingga menciptakan antrean pencari kerja yang panjang.</p>` +
+          `<p>Sebaliknya, kabupaten dengan TPT terendah berada di wilayah pegunungan dan agraris seperti <b>Kab. Puncak (0,14%)</b> dan <b>Kab. Lanny Jaya (0,50%)</b>, di mana hampir seluruh penduduk aktif bekerja di pertanian subsisten mandiri.</p>`,
+        fig: `<div class="fig-t">Rentang Ekstrem TPT Kabupaten/Kota di Indonesia (${lastPer})</div>` +
+          `<div class="hb">` +
+          [
+            { nama: 'Kota Ambon (Maluku)', val: 11.37, ket: 'Tertinggi #1 di Indonesia', color: '#dc2626' },
+            { nama: 'Kota Sorong (Papua B. Daya)', val: 10.35, ket: 'Tertinggi #2 di Indonesia', color: '#ea580c' },
+            { nama: 'Kota Padang (Sumbar)', val: 9.70, ket: 'Tertinggi #3 di Indonesia', color: '#f97316' },
+            { nama: 'Rata-rata 98 Kota', val: 5.89, ket: 'Agregat Daerah Kota', color: '#2563eb' },
+            { nama: 'Rata-rata 416 Kabupaten', val: 3.78, ket: 'Agregat Daerah Kabupaten', color: '#059669' },
+            { nama: 'Kab. Lanny Jaya (Papua Peg.)', val: 0.50, ket: 'Salah satu terendah', color: '#10b981' },
+            { nama: 'Kab. Puncak (Papua Tengah)', val: 0.14, ket: 'Terendah di Indonesia', color: '#10b981' }
+          ].map(item => `
+            <div class="hb-r">
+              <div class="hb-h"><b>${item.nama}</b><span>${item.ket}</span></div>
+              <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 12).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
+            </div>
+          `).join('') +
+          `</div>`
       }
     ];
 
@@ -916,17 +996,17 @@
     host.innerHTML = `
       <div class="story-in">
         <header class="story-head">
-          <h1>Cerita di Balik Angka Pengangguran Indonesia</h1>
+          <h1>Cerita &amp; Wawasan di Balik Angka Pengangguran Indonesia</h1>
           <p class="lede">
-            Pada Sakernas ${lastPer}, angka ${termI('tpt')} resmi nasional tercatat <b>${fmtAngka(natTpt, 2)}%</b> dengan <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Di balik angka tunggal tersebut, terdapat dinamika ketenagakerjaan yang kaya antarwilayah, kelompok umur, dan latar belakang pendidikan.
+            Pada Sakernas ${lastPer}, angka ${termI('tpt')} resmi nasional tercatat <b>${fmtAngka(natTpt, 2)}%</b> dengan <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Di balik angka tunggal tersebut, terdapat dinamika ketenagakerjaan yang kaya antarwilayah, kelompok umur, kesetaraan gender, hingga capaian sasaran RPJMN.
           </p>
           <p class="lede how">
-            Halaman ini merangkum <b>5 temuan data pokok</b> dari data resmi BPS dan sasaran RPJMN Bappenas. Kata dengan garis bawah titik-titik memiliki penjelasan ringkas saat disentuh atau diarahkan kursor.
+            Halaman ini merangkum <b>8 bab temuan analitis terkurasi</b> dari angka resmi BPS dan Bappenas. Kata dengan garis bawah titik-titik memiliki penjelasan ringkas saat disentuh atau diarahkan kursor.
           </p>
         </header>
 
         <nav class="toc" aria-label="Daftar Isi Cerita">
-          <div class="toc-title">Daftar Bab Analisis</div>
+          <div class="toc-title">Daftar 8 Bab Wawasan Data</div>
           <ul>
             ${chapters.map(c => `<li><a href="#${c.id}" data-jump="${c.id}">${c.title}</a></li>`).join('')}
             <li><a href="#s-kamus" data-jump="s-kamus">Kamus Istilah Ketenagakerjaan</a></li>
@@ -949,7 +1029,7 @@
         `).join('')}
 
         <article class="chap" id="s-kamus">
-          <h2>Kamus Singkat Istilah</h2>
+          <h2>Kamus Singkat Istilah Ketenagakerjaan</h2>
           <dl class="kamus">${kamusList}</dl>
         </article>
       </div>
