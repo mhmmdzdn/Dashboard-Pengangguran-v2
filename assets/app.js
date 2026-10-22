@@ -734,6 +734,62 @@
       return;
     }
 
+    // Bangun narasi fakta / ringkasan analitis daerah
+    const faktaParts = [];
+    if (tTpt) {
+      const [th, vTpt] = tTpt;
+      const dWil = deret('tpt', 'tahunan', k) || [];
+      const dSeb = dWil.find(x => x[0] === String(+th - 1));
+      const uTpt = urutan('tpt', 'tahunan', k, th);
+      const vNas = nilai('tpt', 'tahunan', '00', th);
+      const vProv = isKab ? nilai('tpt', 'tahunan', pk, th) : null;
+      const tPeng = terakhir('penganggur', 'tahunan', k);
+      const sas = D.sasaran.find(x => x.wilayah === (PROV[pk] ? PROV[pk].wilayah : ''));
+      const kabs = WIL.kabkota.filter(x => x.prov === pk);
+
+      if (isKab) {
+        let s = `Pada ${th}, TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}%`;
+        if (dSeb) {
+          const diff = vTpt - dSeb[1];
+          if (Math.abs(diff) >= 0.01) {
+            s += ` (${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin vs ${dSeb[0]})`;
+          }
+        }
+        if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} kab/kota di ${namaW(pk)}.`;
+        faktaParts.push(s);
+
+        if (vProv != null || vNas != null) {
+          const comp = [];
+          if (vProv != null) comp.push(`${vTpt > vProv ? 'di atas' : 'di bawah'} TPT provinsi (${fmtAngka(vProv, 2)}%)`);
+          if (vNas != null) comp.push(`${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%)`);
+          faktaParts.push(`Posisi ini ${comp.join(' serta ')}.`);
+        }
+        if (tPeng && tPeng[0] === th) {
+          faktaParts.push(`Tercatat sekitar ${fmtAngka(tPeng[1])} orang penganggur terbuka.`);
+        }
+      } else {
+        let s = `Pada ${th}, TPT ${namaW(k)} sebesar ${fmtAngka(vTpt, 2)}%`;
+        if (dSeb) {
+          const diff = vTpt - dSeb[1];
+          if (Math.abs(diff) >= 0.01) {
+            s += ` (${diff > 0 ? 'naik' : 'turun'} ${fmtAngka(Math.abs(diff), 2)}% poin dari ${fmtAngka(dSeb[1], 2)}% pada ${dSeb[0]})`;
+          }
+        }
+        if (uTpt) s += ` — peringkat ke-${uTpt[0]} tertinggi dari ${uTpt[1]} provinsi di Indonesia.`;
+        faktaParts.push(s);
+
+        if (vNas != null) {
+          faktaParts.push(`Angka ini berada ${vTpt > vNas ? 'di atas' : 'di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
+        }
+        if (tPeng && tPeng[0] === th) {
+          faktaParts.push(`Total penganggur terbuka mencapai ${fmtAngka(tPeng[1])} orang di ${kabs.length} kabupaten/kota.`);
+        }
+        if (sas && sas.target2025) {
+          faktaParts.push(`Sasaran RPJMN 2025 wilayah ${sas.wilayah} adalah ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
+        }
+      }
+    }
+
     host.replaceChildren(h('div', { class: 'hero' },
       h('div', { class: 'hero-lingkup-bar' }, segLingkup),
       h('div', { class: 'dalam hero-profil' },
@@ -744,6 +800,7 @@
             h('span', { class: 'chip', text: chipLevel }),
             h('span', { class: 'chip', text: chipWilayah }),
             h('span', { class: 'chip', text: 'Kode BPS ' + k })),
+          faktaParts.length ? h('p', { class: 'hero-fakta', text: faktaParts.join(' ') }) : null,
           alatProfil.length ? h('div', { class: 'hero-alat' }, ...alatProfil) : null),
         h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
     tunda.push(() => petaMini(lokasi, {

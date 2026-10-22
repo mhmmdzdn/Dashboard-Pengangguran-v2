@@ -895,6 +895,22 @@ table.tbl th:first-child {
   color: #ffffff;
 }
 
+.hero-fakta {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 10px 0 2px;
+  max-width: 820px;
+}
+.hero-fakta strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+.hero-fakta .sorot-angka {
+  color: #9ec5f4;
+  font-weight: 700;
+}
+
 /* Segmen Lingkup Wilayah Profil (Nasional vs Wilayah Daerah) */
 .hero-lingkup-bar {
   display: flex;
