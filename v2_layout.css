@@ -383,13 +383,30 @@ body {
   box-sizing: border-box !important;
 }
 
-/* Biarkan tinggi kartu karakteristik penganggur alami mengikuti isi tanpa menyisakan ruang kosong */
+/* Sinkronkan tinggi kedua kartu di section karakteristik penganggur */
 .kisi-karakteristik {
-  align-items: start !important;
+  align-items: stretch !important;
 }
 
 .kisi-karakteristik > .card {
-  height: fit-content !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+}
+
+/* Biarkan grafik batang dan area tengah tabel elastis mengisi ruang secara proporsional */
+.kisi-karakteristik > .card > .bars {
+  flex: 1 1 auto;
+  align-content: space-evenly;
+}
+
+.kisi-karakteristik > .card .tbl-wrap {
+  flex: 1 1 auto;
+}
+
+.kisi-karakteristik > .card > .catatan-kecil,
+.kisi-karakteristik > .card > .kaki-kartu {
+  margin-top: auto;
 }
 
 /* Scroll wrapper untuk grafik batang profil kab/kota agar selaras dengan tinggi peta */
