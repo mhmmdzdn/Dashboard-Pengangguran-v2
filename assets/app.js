@@ -684,11 +684,14 @@
     if (!perAda.includes(S.ptahun)) S.ptahun = perAda[perAda.length - 1] || '';
     const th = S.ptahun;
     const sel = h('select', { 'aria-label': 'Tahun', onchange: ev => { S.ptahun = ev.target.value; renderProfil(); tulis(); } }, perAda.slice().reverse().map(p => h('option', { value: p, selected: p === th ? true : null, text: p })));
-    const petaEl = h('div', { class: 'peta-host' }), leg = h('div', { class: 'legenda-mini' }), tb = h('div'), batang = h('div');
+    const petaEl = h('div', { class: 'peta-host' }), leg = h('div', { class: 'legenda-mini' }), tb = h('div');
+    const batangWrap = h('div', { class: 'batang-scroll-wrap' });
+    const batang = h('div');
+    batangWrap.append(batang);
     const kol = ['tpt', 'tpt_l', 'tpt_p', 'penganggur', 'tpak'];
     host.append(h('section', { class: 'bagian' }, bagian(no, `Kabupaten/kota di ${namaW(pk)}`, `${kabs.length} kab/kota · TPT dan indikator lain pada tahun terpilih · klik untuk membuka profil kab/kota.`),
       h('div', { class: 'card' }, h('div', { class: 'tab-rincian' }, h('label', {}, 'Tahun ', sel)),
-        h('div', { class: 'kisi kisi-2' }, h('div', {}, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), batang), h('div', { class: 'jarak' }, tb))));
+        h('div', { class: 'kisi kisi-2' }, h('div', { class: 'peta-kolom' }, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), batangWrap), h('div', { class: 'jarak' }, tb))));
     tunda.push(() => {
       const pm = I.Peta(petaEl, { wil: WIL, statis: true, onPilih: kk => { if (KAB[kk]) { S.wil = kk; render(); tulis(); } }, onHover: (ev, kk) => {
         if (!kk || !KAB[kk]) { I.sembunyiTip(); return; }

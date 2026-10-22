@@ -383,6 +383,32 @@ body {
   box-sizing: border-box !important;
 }
 
+/* Scroll wrapper untuk grafik batang profil kab/kota agar selaras dengan tinggi peta */
+.batang-scroll-wrap {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-height: 480px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  box-sizing: border-box;
+}
+
+/* Custom minimal scrollbar */
+.batang-scroll-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+.batang-scroll-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+.batang-scroll-wrap::-webkit-scrollbar-thumb {
+  background: var(--grid, rgba(0, 0, 0, 0.15));
+  border-radius: 4px;
+}
+.batang-scroll-wrap::-webkit-scrollbar-thumb:hover {
+  background: var(--teks-redup, #888);
+}
+
 .bars .nm {
   max-width: 100% !important;
   white-space: normal !important;
