@@ -243,7 +243,6 @@
   function init() {
     initDesktopPanel();
     initFullscreen();
-    initKeyboard();
     applyBerandaTabs();
     enhanceKpiCards();
     setupObserver();
