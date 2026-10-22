@@ -1,4 +1,4 @@
-﻿/* =====================================================================
+/* =====================================================================
    v2_enhancements.js â€” Interaksi Ergonomis & Progressive Disclosure
    Fokus:
    - Minimalist Progressive Disclosure (Mengelompokkan 6 modul Beranda menjadi Tab Terfokus)
@@ -183,6 +183,9 @@
         if (btn) btn.click();
       } else if (e.key === 's' || e.key === 'S') {
         const btn = document.querySelector('[data-page="sasaran"]');
+        if (btn) btn.click();
+      } else if (e.key === 'i' || e.key === 'I') {
+        const btn = document.querySelector('[data-page="insight"]');
         if (btn) btn.click();
       } else if (e.key === 'f' || e.key === 'F') {
         const panelBtn = document.getElementById('panel-toggle-desktop');

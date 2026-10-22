@@ -118,7 +118,7 @@
   const S = { page: 'beranda', lap: 'tpt', lv: 'prov', frek: 'tahunan', per: '', sel: '', fokus: '',
     dper: '', dfrek: 'tahunan', drinc: 'pendidikan', dmode: 'garis', dsp: 'pendidikan', dspmode: 'garis', dpend: 'tahunan', dumur: '',
     wil: '31', pfrek: 'tahunan', pkar: 'pendidikan', pkper: '', ptahun: '' };
-  const KUNCI = { beranda: ['dper', 'dfrek', 'drinc', 'dmode', 'dsp', 'dspmode', 'dpend', 'dumur'], peta: ['lap', 'lv', 'frek', 'per', 'sel', 'fokus'], profil: ['wil', 'pfrek', 'pkar', 'pkper', 'ptahun'], sasaran: [], metode: [] };
+  const KUNCI = { beranda: ['dper', 'dfrek', 'drinc', 'dmode', 'dsp', 'dspmode', 'dpend', 'dumur'], peta: ['lap', 'lv', 'frek', 'per', 'sel', 'fokus'], profil: ['wil', 'pfrek', 'pkar', 'pkper', 'ptahun'], sasaran: [], insight: [], metode: [] };
   const HALAMAN = Object.keys(KUNCI);
   const tulis = () => I.tulisHash(S, KUNCI[S.page]);
   function normalisasiPeta() {
@@ -727,6 +727,300 @@
   }
 
   // =====================================================================
+  // TAB INSIGHT — Storytelling Naratif ala Apple HIG / Clean Admin
+  // =====================================================================
+  const GLOSS_INSIGHT = {
+    tpt: { t: 'TPT (Tingkat Pengangguran Terbuka)', k: 1, d: 'Persentase jumlah penganggur terhadap jumlah seluruh angkatan kerja. Penganggur adalah mereka yang tidak punya pekerjaan dan sedang aktif mencari kerja, mempersiapkan usaha, atau sudah diterima kerja tetapi belum mulai.' },
+    angkatan: { t: 'Angkatan Kerja', k: 1, d: 'Penduduk usia kerja (15 tahun ke atas) yang aktif bekerja atau sedang menganggur mencari pekerjaan.' },
+    neet: { t: 'NEET', k: 1, d: 'Not in Employment, Education, or Training — persentase pemuda usia 15–24 tahun yang sedang tidak bekerja, tidak menempuh pendidikan sekolah/kuliah, dan tidak sedang mengikuti pelatihan kerja.' },
+    setengah: { t: 'Setengah Pengangguran', k: 1, d: 'Pekerja yang jam kerjanya kurang dari 35 jam per minggu dan masih mencari pekerjaan tambahan atau masih bersedia menerima pekerjaan lain.' },
+    smk: { t: 'Paradoks SMK', k: 1, d: 'Kondisi di mana lulusan SMK yang disiapkan langsung siap kerja justru memiliki tingkat pengangguran tertinggi dibandingkan jenjang pendidikan lainnya karena ketidaksesuaian (mismatch) dengan kebutuhan industri.' },
+    sakernas: { t: 'Sakernas', k: 1, d: 'Survei Angkatan Kerja Nasional oleh Badan Pusat Statistik (BPS), sumber data ketenagakerjaan resmi di Indonesia yang dilaksanakan secara berkala.' },
+    rpjmn: { t: 'Sasaran RPJMN', k: 1, d: 'Rencana Pembangunan Jangka Menengah Nasional 2025–2029 yang menetapkan target batas atas TPT nasional dan koridor wilayah.' }
+  };
+
+  const termI = (k, label) => `<span class="term" data-tip-key="${k}">${label || GLOSS_INSIGHT[k].t}</span>`;
+
+  let insightDibuat = false;
+  let insightCharts = [];
+
+  function insNiceTicks(min, max, n = 4) {
+    if (min === max) max = min + 1;
+    const raw = (max - min) / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), nm = raw / mag;
+    const step = (nm < 1.5 ? 1 : nm < 3 ? 2 : nm < 7 ? 5 : 10) * mag;
+    const lo = Math.floor(min / step) * step, hi = Math.ceil(max / step) * step, t = [];
+    for (let v = lo; v <= hi + step / 2; v += step) t.push(+v.toFixed(10));
+    return t;
+  }
+
+  function insStoryChart(el, o) {
+    if (!el) return;
+    const W0 = Math.max(260, Math.round(el.clientWidth || 460)), H0 = o.h || 240, pad = { l: 44, r: 24, t: 20, b: 28 };
+    const X = t => pad.l + (t - o.t0) / (o.t1 - o.t0) * (W0 - pad.l - pad.r);
+    const tk = insNiceTicks(o.lo, o.hi, 4), lo = tk[0], hi = tk[tk.length - 1];
+    const Y = v => pad.t + (hi - v) / (hi - lo) * (H0 - pad.t - pad.b);
+    let g = '';
+    tk.forEach(t => {
+      g += `<line class="grd" x1="${pad.l}" x2="${W0 - pad.r}" y1="${Y(t).toFixed(1)}" y2="${Y(t).toFixed(1)}"${t === 0 ? ' style="stroke:var(--ink-2)"' : ''}/><text class="ax" x="${pad.l - 8}" y="${(Y(t) + 4).toFixed(1)}" text-anchor="end">${o.yf(t)}</text>`;
+    });
+    const xs = typeof o.xs === 'function' ? o.xs(W0) : (o.xs || 5);
+    for (let y = Math.ceil(o.t0 / xs) * xs; y <= o.t1; y += xs) {
+      g += `<text class="ax" x="${X(y).toFixed(1)}" y="${H0 - 8}" text-anchor="middle">${y}</text>`;
+    }
+    g += o.body({ X, Y, lo, W0, pad });
+    (o.marks || []).forEach(m => {
+      const x = X(m.t), y = Y(m.y);
+      g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="var(--card-bg, #ffffff)" stroke="var(--aksen, #2563eb)" stroke-width="2.5"/><text class="mk" x="${(x + m.dx).toFixed(1)}" y="${(y + m.dy).toFixed(1)}" text-anchor="${m.anc}">${m.txt}</text>`;
+    });
+    el.innerHTML = `<svg width="${W0}" height="${H0}" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="${o.label || 'Grafik'}">${g}</svg>`;
+  }
+
+  function renderInsight() {
+    const host = $('insight');
+    if (!host) return;
+
+    if (insightDibuat) {
+      insightCharts.forEach(fn => fn());
+      return;
+    }
+
+    const tptSr = seri('tpt', 'tahunan', 'prov');
+    const pengSr = seri('penganggur', 'tahunan', 'prov');
+    const neetSr = seri('neet', 'tahunan', 'prov');
+    const setSr = seri('setengah', 'tahunan', 'prov');
+    const rPend = D.rincian.tpt_pendidikan.frek.tahunan;
+    const rUmur = D.rincian.tpt_umur.frek.tahunan;
+    const rDaerah = D.rincian.tpt_daerah.frek.tahunan;
+
+    const lastIdx = tptSr.periode.length - 1;
+    const lastPer = tptSr.periode[lastIdx];
+    const natTpt = tptSr.nilai['00'][lastIdx];
+    const natPeng = pengSr.nilai['00'][lastIdx];
+    const natNeet = neetSr ? neetSr.nilai['00'][neetSr.nilai['00'].length - 1] : 19.44;
+    const natSet = setSr ? setSr.nilai['00'][setSr.nilai['00'].length - 1] : 7.91;
+
+    // Kalkulasi Waffle Jawa vs Luar Jawa
+    const jawaCodes = ['32', '33', '35', '31', '36', '34'];
+    let jawaPeng = 0;
+    jawaCodes.forEach(c => { jawaPeng += (pengSr.nilai[c] ? pengSr.nilai[c][lastIdx] || 0 : 0); });
+    const jbPeng = pengSr.nilai['32'] ? pengSr.nilai['32'][lastIdx] || 0 : 0;
+    const restJawaPeng = jawaPeng - jbPeng;
+    const luarJawaPeng = natPeng - jawaPeng;
+
+    const n_jb = Math.round(jbPeng / natPeng * 100);
+    const n_rj = Math.round(restJawaPeng / natPeng * 100);
+    const n_lj = 100 - n_jb - n_rj;
+
+    // Bab Cerita
+    const chapters = [
+      {
+        id: 'tren-40-tahun',
+        title: '1. Dari Krisis 1998 ke 4,85%: Perjalanan Panjang TPT Indonesia',
+        go: 'tpt|prov|tahunan|2025|00',
+        aria: 'Lihat tren TPT nasional di peta',
+        text: `<p>Pada Sakernas ${lastPer}, ${termI('tpt')} nasional berada di level <b>${fmtAngka(natTpt, 2)}%</b>, dengan total <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Angka ini adalah salah satu yang terendah dalam dua dekade terakhir.</p>` +
+          `<p>Dalam catatan sejarah 1986–${lastPer}, TPT pernah melonjak tajam saat Krisis Moneter 1998 dan mencapai puncaknya pada 2005 di angka <b>11,24%</b>. Sempat kembali melonjak saat pandemi Covid-19 (2020) ke <b>7,07%</b> sebelum berangsur turun ke tren perbaikan saat ini.</p>` +
+          `<p class="note"><b>Catatan Resmi BPS.</b> Sejak 2001, BPS memperluas konsep pengangguran terbuka dengan memasukkan penduduk yang mempersiapkan usaha dan yang merasa putus asa mencari kerja (discouraged workers).</p>`,
+        fig: `<div class="fig-t">Tren TPT Nasional 1986–${lastPer} (%)</div><div class="chart" id="chart-ins-tren"></div><div class="fig-c">Garis menunjukkan laju TPT nasional. Titik menandai krisis 2005 (11,24%), pandemi 2020 (7,07%), dan kondisi terkini ${lastPer} (${fmtAngka(natTpt, 2)}%).</div>`
+      },
+      {
+        id: 'konsentrasi-jawa',
+        title: '2. 6 dari 10 Penganggur Indonesia Berada di Pulau Jawa',
+        go: 'penganggur|prov|tahunan|2025|32',
+        aria: 'Lihat jumlah penganggur Jawa Barat di peta',
+        text: `<p>Bayangkan seluruh penganggur di Indonesia diwakili oleh <b>100 kotak</b>. Pulau Jawa sendirian memegang <b>${n_jb + n_rj} kotak</b> (${((jawaPeng / natPeng) * 100).toFixed(1)}%), atau setara <b>${fmtAngka(jawaPeng)} jiwa</b>.</p>` +
+          `<p>Jawa Barat adalah episentrum terbesar dengan <b>${n_jb} kotak</b> (${((jbPeng / natPeng) * 100).toFixed(1)}% total nasional atau <b>${fmtAngka(jbPeng)} jiwa</b>). Angka penganggur di satu provinsi Jawa Barat lebih banyak daripada seluruh gabungan provinsi di luar Jawa.</p>` +
+          `<p>Sebaliknya, seluruh 32 provinsi di luar Pulau Jawa jika digabungkan hanya mencakup <b>${n_lj} kotak</b> (${((luarJawaPeng / natPeng) * 100).toFixed(1)}%). Ini menunjukkan besarnya konsentrasi tantangan ketenagakerjaan di sentra industri Pulau Jawa.</p>`,
+        fig: `<div class="fig-t">Distribusi 100 Kotak Penganggur Indonesia (${lastPer})</div>` +
+          `<div class="waffle">${'<i style="--wc:#2563eb"></i>'.repeat(n_jb)}${'<i style="--wc:#60a5fa"></i>'.repeat(n_rj)}${'<i style="--wc:#94a3b8"></i>'.repeat(n_lj)}</div>` +
+          `<ul class="wkey">` +
+          `  <li style="--wc:#2563eb"><i></i><span><b>Jawa Barat</b> (${n_jb} kotak)</span><b>${fmtAngka(jbPeng)} jiwa</b><small>Provinsi dengan jumlah penganggur terbanyak di Indonesia</small></li>` +
+          `  <li style="--wc:#60a5fa"><i></i><span><b>Provinsi Jawa Lainnya</b> (${n_rj} kotak)</span><b>${fmtAngka(restJawaPeng)} jiwa</b><small>Jateng, Jatim, Banten, DKI Jakarta, DIY</small></li>` +
+          `  <li style="--wc:#94a3b8"><i></i><span><b>Luar Pulau Jawa (32 Provinsi)</b> (${n_lj} kotak)</span><b>${fmtAngka(luarJawaPeng)} jiwa</b><small>Sumatera, Kalimantan, Sulawesi, Bali-Nusa, Maluku, Papua</small></li>` +
+          `</ul>`
+      },
+      {
+        id: 'paradoks-smk',
+        title: '3. Paradoks Pendidikan: SMK Tertinggi, Lulusan SD Terendah',
+        go: 'tpt|prov|tahunan|2025|',
+        aria: 'Buka peta TPT per wilayah',
+        text: `<p>Data resmi Sakernas memperlihatkan anomali struktural: semakin tinggi jenjang pendidikan dasar-menengah, tingkat penganggurannya justru cenderung semakin besar.</p>` +
+          `<p>Lulusan <b>SMK (Sekolah Menengah Kejuruan)</b> mencatat TPT tertinggi di Indonesia yaitu <b>${fmtAngka(rPend.seri[3].nilai.slice(-1)[0], 2)}%</b>, disusul SMA umum sebesar <b>${fmtAngka(rPend.seri[2].nilai.slice(-1)[0], 2)}%</b>.</p>` +
+          `<p>Sebaliknya, tenaga kerja berpendidikan <b>SD ke bawah</b> memiliki TPT paling rendah, hanya <b>${fmtAngka(rPend.seri[0].nilai.slice(-1)[0], 2)}%</b>. Fenomena ini terjadi karena pekerja berpendidikan rendah tidak memiliki bantalan ekonomi sehingga terpaksa mengambil pekerjaan apa saja di sektor informal.</p>`,
+        fig: `<div class="fig-t">Tingkat Pengangguran Terbuka Berdasarkan Pendidikan (${lastPer})</div>` +
+          `<div class="hb">` +
+          rPend.seri.map(s => {
+            const val = s.nilai.slice(-1)[0];
+            const maxVal = 9.5;
+            const isHighest = s.nama.includes('Kejuruan');
+            return `<div class="hb-r">` +
+              `<div class="hb-h"><b>${s.nama}</b><span>${fmtAngka(val, 2)}%</span></div>` +
+              `<div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(val / maxVal).toFixed(3)};--wc:${isHighest ? '#ea580c' : '#2563eb'}"></span></div><span class="hb-v">${fmtAngka(val, 2)}%</span></div>` +
+              `</div>`;
+          }).join('') +
+          `</div>`
+      },
+      {
+        id: 'generasi-muda-neet',
+        title: '4. Usia Muda & Jeratan NEET: 1 dari 5 Pemuda Tidak Terhubung',
+        go: 'neet|prov|tahunan|2025|',
+        aria: 'Lihat sebaran NEET pemuda di peta',
+        text: `<p>Pengangguran di Indonesia didominasi kelompok usia muda. TPT pada kelompok usia <b>15–19 tahun</b> mencapai <b>${fmtAngka(rUmur.seri[0].nilai.slice(-1)[0], 2)}%</b>, dan usia <b>20–24 tahun</b> sebesar <b>${fmtAngka(rUmur.seri[1].nilai.slice(-1)[0], 2)}%</b> — jauh melampaui rata-rata nasional (${fmtAngka(natTpt, 2)}%).</p>` +
+          `<p>Lebih dari itu, indikator ${termI('neet')} mencatat <b>${fmtAngka(natNeet, 2)}%</b> pemuda Indonesia (hampir 1 dari 5 orang usia 15–24 tahun) berada dalam posisi rentan: tidak sedang sekolah, tidak bekerja, dan tidak mengikuti pelatihan keterampilan.</p>` +
+          `<p class="note"><b>Tantangan Bonus Demografi.</b> Tingginya angka NEET pemuda menuntut transisi mulus dari bangku sekolah ke dunia kerja agar peluang bonus demografi Indonesia dapat dimanfaatkan optimal.</p>`,
+        fig: `<div class="fig-t">Perbandingan TPT Kelompok Umur Muda vs Rata-rata (${lastPer})</div>` +
+          `<div class="hb">` +
+          [
+            { label: 'Kelompok 15–19 Tahun', val: rUmur.seri[0].nilai.slice(-1)[0], color: '#ea580c' },
+            { label: 'Kelompok 20–24 Tahun', val: rUmur.seri[1].nilai.slice(-1)[0], color: '#f97316' },
+            { label: 'Kelompok 25–29 Tahun', val: rUmur.seri[2].nilai.slice(-1)[0], color: '#3b82f6' },
+            { label: 'Rata-rata Seluruh Umur', val: natTpt, color: '#64748b' }
+          ].map(item => `
+            <div class="hb-r">
+              <div class="hb-h"><b>${item.label}</b><span>${fmtAngka(item.val, 2)}%</span></div>
+              <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 25).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
+            </div>
+          `).join('') +
+          `</div>`
+      },
+      {
+        id: 'kota-vs-desa',
+        title: '5. Kota vs Desa: Pengangguran Lebih Pekat di Wilayah Perkotaan',
+        go: 'tpt|prov|tahunan|2025|',
+        aria: 'Buka peta sebaran TPT per provinsi',
+        text: `<p>Karakteristik geografis menunjukkan TPT di wilayah <b>perkotaan (${fmtAngka(rDaerah.seri[0].nilai.slice(-1)[0], 2)}%)</b> konsisten jauh lebih tinggi daripada di <b>perdesaan (${fmtAngka(rDaerah.seri[1].nilai.slice(-1)[0], 2)}%)</b>.</p>` +
+          `<p>Di desa, sektor pertanian menyerap sebagian besar tenaga kerja keluarga atau pekerja lepas, sehingga angka pengangguran terbuka tampak rendah. Namun demikian, persoalan di desa bergeser ke bentuk ${termI('setengah')} (bekerja di bawah 35 jam seminggu).</p>` +
+          `<p>Secara nasional, tingkat setengah pengangguran mencapai <b>${fmtAngka(natSet, 2)}%</b>, mengindikasikan bahwa banyak penduduk yang tercatat bekerja sebenarnya masih kekurangan jam kerja dan produktivitas.</p>`,
+        fig: `<div class="fig-t">TPT Wilayah Perkotaan vs Perdesaan (${lastPer})</div>` +
+          `<div class="hb">` +
+          [
+            { label: 'Perkotaan (Urban)', val: rDaerah.seri[0].nilai.slice(-1)[0], color: '#2563eb' },
+            { label: 'Perdesaan (Rural)', val: rDaerah.seri[1].nilai.slice(-1)[0], color: '#10b981' },
+            { label: 'Nasional (Gabungan)', val: natTpt, color: '#64748b' },
+            { label: 'Tingkat Setengah Pengangguran', val: natSet, color: '#8b5cf6' }
+          ].map(item => `
+            <div class="hb-r">
+              <div class="hb-h"><b>${item.label}</b><span>${fmtAngka(item.val, 2)}%</span></div>
+              <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 9).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
+            </div>
+          `).join('') +
+          `</div>`
+      }
+    ];
+
+    const kamusList = Object.values(GLOSS_INSIGHT)
+      .sort((a, b) => a.t.localeCompare(b.t, 'id'))
+      .map(g => `<div><dt>${g.t}</dt><dd>${g.d}</dd></div>`)
+      .join('');
+
+    host.innerHTML = `
+      <div class="story-in">
+        <header class="story-head">
+          <h1>Cerita di Balik Angka Pengangguran Indonesia</h1>
+          <p class="lede">
+            Pada Sakernas ${lastPer}, angka ${termI('tpt')} resmi nasional tercatat <b>${fmtAngka(natTpt, 2)}%</b> dengan <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Di balik angka tunggal tersebut, terdapat dinamika ketenagakerjaan yang kaya antarwilayah, kelompok umur, dan latar belakang pendidikan.
+          </p>
+          <p class="lede how">
+            Halaman ini merangkum <b>5 temuan data pokok</b> dari data resmi BPS dan sasaran RPJMN Bappenas. Kata dengan garis bawah titik-titik memiliki penjelasan ringkas saat disentuh atau diarahkan kursor.
+          </p>
+        </header>
+
+        <nav class="toc" aria-label="Daftar Isi Cerita">
+          <div class="toc-title">Daftar Bab Analisis</div>
+          <ul>
+            ${chapters.map(c => `<li><a href="#${c.id}" data-jump="${c.id}">${c.title}</a></li>`).join('')}
+            <li><a href="#s-kamus" data-jump="s-kamus">Kamus Istilah Ketenagakerjaan</a></li>
+          </ul>
+        </nav>
+
+        ${chapters.map(c => `
+          <article class="chap" id="${c.id}">
+            <h2>${c.title}</h2>
+            <div class="chap-body">
+              <div class="chap-text">
+                ${c.text}
+                <button type="button" class="maplink" data-go="${c.go}" aria-label="${c.aria}">
+                  Lihat di peta <span aria-hidden="true">&rarr;</span>
+                </button>
+              </div>
+              <figure class="chap-fig">${c.fig}</figure>
+            </div>
+          </article>
+        `).join('')}
+
+        <article class="chap" id="s-kamus">
+          <h2>Kamus Singkat Istilah</h2>
+          <dl class="kamus">${kamusList}</dl>
+        </article>
+      </div>
+    `;
+
+    // Interaktivitas jump link & maplink
+    host.querySelectorAll('a[data-jump]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = host.querySelector('#' + a.dataset.jump);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    host.querySelectorAll('.maplink').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const [lap, lv, frek, per, sel] = btn.dataset.go.split('|');
+        if (lap) S.lap = lap;
+        if (lv) S.lv = lv;
+        if (frek) S.frek = frek;
+        if (per) S.per = per;
+        if (sel) S.sel = sel;
+        gantiHalaman('peta');
+      });
+    });
+
+    // Tooltip interaktif untuk istilah ketenagakerjaan
+    host.querySelectorAll('.term').forEach(el => {
+      el.addEventListener('mouseenter', ev => {
+        const k = el.dataset.tipKey;
+        if (GLOSS_INSIGHT[k]) {
+          I.tampilTip(ev, [I.tipNama(GLOSS_INSIGHT[k].t), I.tipSub(GLOSS_INSIGHT[k].d)]);
+        }
+      });
+      el.addEventListener('mouseleave', () => I.sembunyiTip());
+    });
+
+    // Inisialisasi SVG chart tren 40 tahun
+    const pts = tptSr.periode.map((p, i) => ({ t: +p, y: tptSr.nilai['00'][i] })).filter(p => p.y != null);
+    const drawChartTren = () => {
+      const cEl = host.querySelector('#chart-ins-tren');
+      if (!cEl) return;
+      insStoryChart(cEl, {
+        t0: 1986,
+        t1: 2025,
+        lo: 0,
+        hi: 12,
+        xs: 5,
+        yf: v => v + '%',
+        body: ({ X, Y, lo, pad }) => {
+          const dStr = pts.map((p, k) => (k ? 'L' : 'M') + X(p.t).toFixed(1) + ' ' + Y(p.y).toFixed(1)).join('');
+          const base = Y(0).toFixed(1);
+          const area = `<path d="${dStr}L${X(pts[pts.length - 1].t).toFixed(1)} ${base}L${X(pts[0].t).toFixed(1)} ${base}Z" fill="rgba(37, 99, 235, 0.12)"/>`;
+          const line = `<path class="ln" d="${dStr}" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+          return area + line;
+        },
+        marks: [
+          { t: 2005, y: 11.24, txt: '2005: 11,24%', anc: 'middle', dx: 0, dy: -12 },
+          { t: 2020, y: 7.07, txt: '2020 (Pandemi): 7,07%', anc: 'middle', dx: 0, dy: -12 },
+          { t: 2025, y: natTpt, txt: `2025: ${fmtAngka(natTpt, 2)}%`, anc: 'end', dx: -8, dy: 16 }
+        ],
+        label: `Grafik garis tren TPT nasional 1986 sampai 2025`
+      });
+    };
+
+    insightCharts = [drawChartTren];
+    drawChartTren();
+    insightDibuat = true;
+  }
+
+  // =====================================================================
   // NAVIGASI
   // =====================================================================
   function gantiHalaman(pg) { if (waktu) waktu.berhenti(); S.page = pg; render(); window.scrollTo({ top: 0 }); }
@@ -739,6 +1033,7 @@
     else if (S.page === 'beranda') renderBeranda();
     else if (S.page === 'profil') renderProfil();
     else if (S.page === 'sasaran') renderSasaran();
+    else if (S.page === 'insight') renderInsight();
     else renderMetode();
     tulis();
   }
