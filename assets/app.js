@@ -353,21 +353,22 @@
     const selPer = h('select', { 'aria-label': 'Periode nasional', onchange: ev => pilihPer(ev.target.value) }, perTpt.slice().reverse().map(p => h('option', { value: p, selected: p === per ? true : null, text: lblTahunan(p) })));
     const spark = h('div');
 
-    host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-kisi' },
-      h('div', {},
-        h('div', { class: 'hero-alat', style: 'margin-bottom:12px' }, segLingkup),
-        h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Angka resmi BPS · ' + lblTahunan(per)),
-        h('h1', {}, 'Tingkat pengangguran terbuka Indonesia ', h('em', { text: fmtL(L_, tpt) }), urutP.length ? [`; tertinggi di ${namaW(urutP[0])} (${fmtL(L_, pot[urutP[0]])}), terendah di ${namaW(urutP[urutP.length - 1])} (${fmtL(L_, pot[urutP[urutP.length - 1]])}).`] : '.'),
-        h('p', { text: p2.join(' ') }),
-        h('div', { class: 'chip-baris' },
-          h('label', { class: 'chip' }, 'Periode ', selPer),
-          h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'),
-          h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'))),
-      h('div', { class: 'hero-angka' },
-        h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }),
-        h('div', { class: 'val', text: fmtL(L_, tpt) }),
-        h('div', { class: 'per', text: 'Tren 2015–' + perTpt[perTpt.length - 1] }),
-        spark))));
+    host.replaceChildren(h('div', { class: 'hero' },
+      h('div', { class: 'hero-lingkup-bar' }, segLingkup),
+      h('div', { class: 'dalam hero-kisi' },
+        h('div', {},
+          h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Angka resmi BPS · ' + lblTahunan(per)),
+          h('h1', {}, 'Tingkat pengangguran terbuka Indonesia ', h('em', { text: fmtL(L_, tpt) }), urutP.length ? [`; tertinggi di ${namaW(urutP[0])} (${fmtL(L_, pot[urutP[0]])}), terendah di ${namaW(urutP[urutP.length - 1])} (${fmtL(L_, pot[urutP[urutP.length - 1]])}).`] : '.'),
+          h('p', { text: p2.join(' ') }),
+          h('div', { class: 'chip-baris' },
+            h('label', { class: 'chip' }, 'Periode ', selPer),
+            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'),
+            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'))),
+        h('div', { class: 'hero-angka' },
+          h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }),
+          h('div', { class: 'val', text: fmtL(L_, tpt) }),
+          h('div', { class: 'per', text: 'Tren 2015–' + perTpt[perTpt.length - 1] }),
+          spark))));
 
     spark.append(I.garisMini((deret('tpt', 'tahunan', '00') || []).filter(d => d[0] <= per), { tinggi: 46, lebar: 320 }));
 
@@ -722,7 +723,7 @@
         ? [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', h('button', { class: 'btn-tautan', type: 'button', text: namaW(pk), onclick: () => { S.wil = pk; render(); } }), ' › ', KAB[k].jenis]
         : [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', 'Provinsi'];
 
-    const alatProfil = [segLingkup];
+    const alatProfil = [];
     if (segLevel) alatProfil.push(segLevel);
     if (pilihWil) alatProfil.push(pilihWil);
 
@@ -733,16 +734,18 @@
       return;
     }
 
-    host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-profil' },
-      h('div', {},
-        h('div', { class: 'remah' }, ...remahWil),
-        h('h1', { text: namaW(k) }),
-        h('div', { class: 'chip-baris' },
-          h('span', { class: 'chip', text: chipLevel }),
-          h('span', { class: 'chip', text: chipWilayah }),
-          h('span', { class: 'chip', text: 'Kode BPS ' + k })),
-        h('div', { class: 'hero-alat' }, ...alatProfil)),
-      h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
+    host.replaceChildren(h('div', { class: 'hero' },
+      h('div', { class: 'hero-lingkup-bar' }, segLingkup),
+      h('div', { class: 'dalam hero-profil' },
+        h('div', {},
+          h('div', { class: 'remah' }, ...remahWil),
+          h('h1', { text: namaW(k) }),
+          h('div', { class: 'chip-baris' },
+            h('span', { class: 'chip', text: chipLevel }),
+            h('span', { class: 'chip', text: chipWilayah }),
+            h('span', { class: 'chip', text: 'Kode BPS ' + k })),
+          alatProfil.length ? h('div', { class: 'hero-alat' }, ...alatProfil) : null),
+        h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
     tunda.push(() => petaMini(lokasi, {
       warna: x => (isNas ? '#f5a37f' : x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'),
       zoom: isNas ? [7.9, 5.9, 924.4, 342.6] : null,
