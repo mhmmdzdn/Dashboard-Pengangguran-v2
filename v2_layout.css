@@ -451,15 +451,71 @@ body {
   height: 12px !important;
 }
 
-/* Scroll wrapper untuk grafik batang profil kab/kota agar selaras dengan tinggi peta */
+/* Section Kabupaten/Kota: Sejajarkan tinggi chart persis dengan border map (420px) */
+.kisi-kabkota {
+  align-items: start !important;
+}
+
+.kisi-kabkota .peta-mini.tinggi {
+  height: 420px;
+}
+
+/* Scroll wrapper untuk grafik batang profil kab/kota persis setinggi border map (420px) */
 .batang-scroll-wrap {
   width: 100% !important;
   min-width: 0 !important;
-  max-height: 480px;
+  height: 420px !important;
+  max-height: 420px !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 6px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.batang-scroll-wrap > .bars {
+  flex: 1 1 auto;
+}
+
+/* Jika kab/kota sedikit (seperti Papua Selatan 4 kab), chart didistribusikan proporsional & font diperbesar */
+.kisi-kabkota.kab-sedikit .batang-scroll-wrap > .bars {
+  align-content: space-evenly !important;
+  gap: 18px 16px !important;
+  padding: 8px 0;
+}
+.kisi-kabkota.kab-sedikit .bars .nm {
+  font-size: 14px !important;
+  font-weight: 600;
+}
+.kisi-kabkota.kab-sedikit .bars .v {
+  font-size: 14.5px !important;
+  font-weight: 700;
+}
+.kisi-kabkota.kab-sedikit .bars .trk {
+  height: 16px !important;
+}
+
+/* Jika kab/kota sedang (5-8 kab) */
+.kisi-kabkota.kab-sedang .batang-scroll-wrap > .bars {
+  align-content: space-evenly !important;
+  gap: 12px 14px !important;
+}
+.kisi-kabkota.kab-sedang .bars .nm {
+  font-size: 13px !important;
+  font-weight: 500;
+}
+.kisi-kabkota.kab-sedang .bars .trk {
+  height: 13px !important;
+}
+
+/* Jika kab/kota banyak (>8 kab, misalnya Jawa Timur/Sumut/Jateng), scroll lancar dengan batas tepat border map */
+.kisi-kabkota.kab-banyak .batang-scroll-wrap > .bars {
+  align-content: start !important;
+  gap: 8px 14px !important;
+}
+.kisi-kabkota.kab-banyak .bars .trk {
+  height: 10px !important;
 }
 
 /* Custom minimal scrollbar */
