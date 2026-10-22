@@ -347,9 +347,12 @@
 
     // --- hero ---
     const p2 = [];
-    if (tptSeb != null) p2.push(`Periode sebelumnya ${fmtL(L_, tptSeb)} (${lblTahunan(perSeb)}).`);
-    if (pg != null) p2.push(`BPS mencatat ${fmtAngka(pg)} orang penganggur.`);
-    if (urutK.length) p2.push(`Di tingkat kab/kota${urutK.length < 500 ? ` (${urutK.length} kab/kota dengan angka resmi)` : ''}, tertinggi ${namaW(urutK[0])} (${fmtL(L_, potK[urutK[0]])}), terendah ${namaW(urutK[urutK.length - 1])} (${fmtL(L_, potK[urutK[urutK.length - 1]])}).`);
+    if (tptSeb != null) {
+      const diff = tpt - tptSeb;
+      p2.push(`Periode sebelumnya ${fmtL(L_, tptSeb)} (${Math.abs(diff) >= 0.01 ? (diff > 0 ? '▲ +' : '▼ -') + fmtAngka(Math.abs(diff), 2) + '% YoY' : 'tetap'}).`);
+    }
+    if (pg != null) p2.push(`Penganggur: ${fmtAngka(pg)} orang.`);
+    if (urutK.length) p2.push(`Tingkat kab/kota: tertinggi ${namaW(urutK[0])} (${fmtL(L_, potK[urutK[0]])}), terendah ${namaW(urutK[urutK.length - 1])} (${fmtL(L_, potK[urutK[urutK.length - 1]])}).`);
     const selPer = h('select', { 'aria-label': 'Periode nasional', onchange: ev => pilihPer(ev.target.value) }, perTpt.slice().reverse().map(p => h('option', { value: p, selected: p === per ? true : null, text: lblTahunan(p) })));
     const spark = h('div');
 
