@@ -594,16 +594,32 @@
       )
     );
 
-    const sisaIds = isKab ? ['tpak'] : ['neet', 'setengah', 'tpak'];
-    const sisaCards = sisaIds.map(id => {
-      const l = BY[id], t = terakhir(id, 'tahunan', k);
-      const u = t && l.jenis !== 'jumlah' ? urutan(id, 'tahunan', k, t[0]) : null;
-      const vN = t && l.jenis !== 'jumlah' ? nilai(id, 'tahunan', '00', t[0]) : null;
-      return kpi({ ik: IKON_LAP[id], oranye: false, label: l.singkat, val: t ? fmtL(l, t[1], l.jenis === 'jumlah') : '—', per: t ? lblTahunan(t[0]) + (vN != null ? ' · Indonesia ' + fmtL(l, vN) : '') : 'tidak ada angka resmi',
-        lencana: u ? { teks: `#${u[0]} dari ${u[1]}${isKab ? ' di provinsi' : ''}`, warna: 'biru' } : null, spark: (deret(id, 'tahunan', k) || []).slice(-12) });
-    });
+    // Kartu Gabungan 3: NEET & Setengah Pengangguran (Gambar 1)
+    const tNeet = terakhir('neet', 'tahunan', k), uNeet = tNeet ? urutan('neet', 'tahunan', k, tNeet[0]) : null, vNNeet = tNeet ? nilai('neet', 'tahunan', '00', tNeet[0]) : null, spkNeet = (deret('neet', 'tahunan', k) || []).slice(-12);
+    const tSet = terakhir('setengah', 'tahunan', k), uSet = tSet ? urutan('setengah', 'tahunan', k, tSet[0]) : null, vNSet = tSet ? nilai('setengah', 'tahunan', '00', tSet[0]) : null, spkSet = (deret('setengah', 'tahunan', k) || []).slice(-12);
 
-    host.append(h('div', { class: 'kpi-kisi' }, kpiTptPengGabung, kpiGenderGabung, ...sisaCards));
+    const kpiNeetSetGabung = !isKab ? h('div', { class: 'kpi kpi-rentang-gabung' },
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('neet')), h('span', { text: 'NEET' })),
+        h('div', { class: 'val', text: tNeet ? fmtL(BY.neet, tNeet[1]) : '—' }),
+        h('div', { class: 'per', text: tNeet ? lblTahunan(tNeet[0]) + (vNNeet != null ? ' · Indonesia ' + fmtL(BY.neet, vNNeet) : '') : 'tidak ada angka resmi' }),
+        uNeet ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uNeet[0]} dari ${uNeet[1]}` })) : null,
+        spkNeet.length ? I.garisMini(spkNeet, { tinggi: 26 }) : null
+      ),
+      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-sub-item' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('jam')), h('span', { text: 'Setengah pengangguran' })),
+        h('div', { class: 'val', text: tSet ? fmtL(BY.setengah, tSet[1]) : '—' }),
+        h('div', { class: 'per', text: tSet ? lblTahunan(tSet[0]) + (vNSet != null ? ' · Indonesia ' + fmtL(BY.setengah, vNSet) : '') : 'tidak ada angka resmi' }),
+        uSet ? h('div', { class: 'peringkat-lencana' }, h('span', { class: 'lencana biru', text: `#${uSet[0]} dari ${uSet[1]}` })) : null,
+        spkSet.length ? I.garisMini(spkSet, { tinggi: 26 }) : null
+      )
+    ) : null;
+
+    const cards = [kpiTptPengGabung, kpiGenderGabung];
+    if (kpiNeetSetGabung) cards.push(kpiNeetSetGabung);
+
+    host.append(h('div', { class: 'kpi-kisi' }, ...cards));
     // 01 tren
     {
       const fr = frekTersedia('tpt', lvDari(k)); if (!fr.includes(S.pfrek)) S.pfrek = 'tahunan';
