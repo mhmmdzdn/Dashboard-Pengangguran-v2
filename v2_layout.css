@@ -543,18 +543,23 @@ body {
    7. Section Profil Wilayah, Sasaran RPJMN, Insight & Metodologi Minimalis
    ===================================================================== */
 .hero-profil {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
 }
 .hero-profil .lokasi {
-  width: 120px;
-  height: 60px;
-  border-radius: 8px;
+  height: 170px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+.hero-profil .lokasi .peta-host {
+  position: absolute;
+  inset: 0;
+  background: transparent;
 }
 .hero-profil h1 {
   font-size: 24px;
