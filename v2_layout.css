@@ -398,6 +398,7 @@ body {
 .kisi-karakteristik > .card > .bars {
   flex: 1 1 auto;
   align-content: space-evenly;
+  padding: 10px 0;
 }
 
 .kisi-karakteristik > .card .tbl-wrap {
@@ -407,6 +408,47 @@ body {
 .kisi-karakteristik > .card > .catatan-kecil,
 .kisi-karakteristik > .card > .kaki-kartu {
   margin-top: auto;
+}
+
+/* Penyesuaian ukuran tulisan dan bar chart ketika baris data sedikit agar seimbang dan proporsional */
+.kisi-karakteristik.kar-kota_desa .bars {
+  gap: 20px 16px !important;
+}
+.kisi-karakteristik.kar-kota_desa .bars .nm {
+  font-size: 14.5px !important;
+  font-weight: 600;
+}
+.kisi-karakteristik.kar-kota_desa .bars .v {
+  font-size: 15px !important;
+  font-weight: 700;
+}
+.kisi-karakteristik.kar-kota_desa .bars .trk {
+  height: 18px !important;
+}
+
+.kisi-karakteristik.kar-kategori_pengangguran .bars {
+  gap: 14px 14px !important;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .nm {
+  font-size: 13px !important;
+  font-weight: 500;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .v {
+  font-size: 13.5px !important;
+  font-weight: 600;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .trk {
+  height: 14px !important;
+}
+
+.kisi-karakteristik.kar-pendidikan .bars {
+  gap: 10px 14px !important;
+}
+.kisi-karakteristik.kar-pendidikan .bars .nm {
+  font-size: 13px !important;
+}
+.kisi-karakteristik.kar-pendidikan .bars .trk {
+  height: 12px !important;
 }
 
 /* Scroll wrapper untuk grafik batang profil kab/kota agar selaras dengan tinggi peta */
