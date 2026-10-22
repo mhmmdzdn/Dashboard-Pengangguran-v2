@@ -556,7 +556,7 @@
 
     // Toggle Utama: Nasional vs Wilayah Daerah
     const segLingkup = h('div', { class: 'seg seg-lingkup-profil' });
-    I.segmen(segLingkup, [['nasional', '🇮🇩 Nasional'], ['wilayah', 'Wilayah']], isNas ? 'nasional' : 'wilayah', lingkupBaru => {
+    I.segmen(segLingkup, [['nasional', 'Nasional'], ['wilayah', 'Wilayah']], isNas ? 'nasional' : 'wilayah', lingkupBaru => {
       if (lingkupBaru === 'nasional') {
         S.wil = '00';
       } else {
