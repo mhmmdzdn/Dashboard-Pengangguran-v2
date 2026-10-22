@@ -681,7 +681,7 @@
     }
 
     const tTpt = terakhir('tpt', 'tahunan', k);
-    const chipLevel = isNas ? 'Nasional' : isKab ? (KAB[k].jenis + ' · ' + namaW(pk)) : 'Provinsi';
+    const chipLevel = isNas ? 'Nasional' : isKab ? (KAB[k].jenis + ' · Provinsi ' + namaW(pk)) : 'Provinsi ' + namaW(k);
     const chipWilayah = isNas ? 'Seluruh Indonesia' : ('Wilayah ' + (PROV[pk] ? PROV[pk].wilayah : ''));
     const remahWil = isNas
       ? ['Indonesia (Nasional)']
@@ -696,8 +696,7 @@
         h('div', { class: 'chip-baris' },
           h('span', { class: 'chip', text: chipLevel }),
           h('span', { class: 'chip', text: chipWilayah }),
-          h('span', { class: 'chip', text: 'Kode BPS ' + k }),
-          tTpt ? h('span', { class: 'chip', text: 'TPT ' + fmtL(BY.tpt, tTpt[1]) + ' · ' + lblTahunan(tTpt[0]) }) : null),
+          h('span', { class: 'chip', text: 'Kode BPS ' + k })),
         h('div', { class: 'hero-alat' }, segLevel, pilihWil)),
       h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
     const tunda = [() => petaMini(lokasi, {
