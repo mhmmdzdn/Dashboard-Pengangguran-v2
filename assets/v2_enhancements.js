@@ -12,10 +12,14 @@
   let activeBerandaTab = 'tren'; // bawaan: Modul 1 (Tren & Peta Spasial)
 
   function applyBerandaTabs() {
-    const beranda = document.getElementById('beranda') || document.getElementById('profil');
+    const beranda = document.getElementById('profil') || document.getElementById('beranda');
     if (!beranda) return;
     const sections = beranda.querySelectorAll('section.bagian');
-    if (sections.length < 6) return;
+    if (sections.length < 6) {
+      const oldNav = document.getElementById('beranda-focus-nav');
+      if (oldNav) oldNav.remove();
+      return;
+    }
 
     // Cek apakah tab switcher sudah ada
     let nav = document.getElementById('beranda-focus-nav');
@@ -27,7 +31,7 @@
       nav.setAttribute('aria-label', 'Modul Analisis Beranda');
 
       const tabs = [
-        { id: 'tren', label: '1. Tren & Peta Wilayah', desc: 'Seri 2015â€“2025 & Peta Provinsi' },
+        { id: 'tren', label: '1. Tren & Peta Wilayah', desc: 'Seri 2015–2025 & Peta Provinsi' },
         { id: 'demografi', label: '2. Karakteristik & Struktur', desc: 'Pendidikan, Umur, Gender' },
         { id: 'wilayah', label: '3. Koridor RPJMN', desc: '7 Wilayah Pembangunan' },
         { id: 'kegiatan', label: '4. Dinamika Pasar Kerja', desc: 'Setengah Pengangguran & Kegiatan' },
@@ -202,7 +206,7 @@
 
   // Menambahkan aksen status & ketercapaian target RPJMN pada KPI Card
   function enhanceKpiCards() {
-    const beranda = document.getElementById('beranda') || document.getElementById('profil');
+    const beranda = document.getElementById('profil') || document.getElementById('beranda');
     if (!beranda) return;
     const kpiCards = beranda.querySelectorAll('.kpi-kisi .kpi');
     if (!kpiCards || kpiCards.length === 0) return;
@@ -231,7 +235,7 @@
 
   // Observe mutasi DOM beranda / profil nasional agar tetap rapi saat dipanggil ulang
   function setupObserver() {
-    const targets = [document.getElementById('beranda'), document.getElementById('profil')].filter(Boolean);
+    const targets = [document.getElementById('profil'), document.getElementById('beranda')].filter(Boolean);
     targets.forEach(tgt => {
       const obs = new MutationObserver(() => {
         applyBerandaTabs();
