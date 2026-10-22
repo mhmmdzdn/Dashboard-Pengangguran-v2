@@ -353,19 +353,62 @@ body {
   margin-top: 14px;
 }
 
-/* Menyamakan tinggi kartu di baris Tren & Sebaran */
+/* Menyamakan lebar dan tinggi kartu di kisi 2 kolom */
 .kisi-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   align-items: stretch;
+  gap: 16px;
 }
 
 .kisi-2 > .card {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .kisi-2 > .card > .chart,
 .kisi-2 > .card > div:has(svg) {
   flex: 1;
+}
+
+/* Batang horizontal elastis memenuhi whitespace */
+.bars {
+  display: grid;
+  grid-template-columns: minmax(130px, auto) minmax(0, 1fr) max-content !important;
+  gap: 8px 14px !important;
+  align-items: center;
+  width: 100%;
+}
+
+.bars .nm {
+  max-width: 100% !important;
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.bars .trk {
+  width: 100%;
+  flex: 1;
+}
+
+/* Tab filter rincian responsif */
+.tab-rincian {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.tab-rincian .seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tab-rincian .seg button {
+  white-space: normal;
+  text-align: center;
 }
 
 .bagian-kepala {

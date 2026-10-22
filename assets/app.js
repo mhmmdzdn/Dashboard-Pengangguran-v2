@@ -658,7 +658,7 @@
     const sel = h('select', { 'aria-label': 'Periode', onchange: ev => { S.pkper = ev.target.value; renderProfil(); tulis(); } }, per.slice().reverse().map(p => h('option', { value: p, selected: p === S.pkper ? true : null, text: lblPer(p, true) })));
     const g = h('div'), baris = (data[S.pkper] || {})[k] || [], tot = baris.find(r => /^total$/i.test(r[0])), ket = D.ketPeriode.find(x => x.periode === S.pkper), src = (K.sumber[S.pkper] || [])[0];
     host.append(h('section', { class: 'bagian' }, bagian(no, 'Siapa penganggurnya?', 'Jumlah penganggur menurut karakteristik (olahan Sakernas Kemnaker) dan NEET menurut jenis kelamin — angka apa adanya, tidak dijumlahkan atau dibagi.'),
-      h('div', { class: 'kisi kisi-7-5' },
+      h('div', { class: 'kisi kisi-2' },
         h('div', { class: 'card' }, h('div', { class: 'tab-rincian' }, seg, h('label', {}, 'Periode ', sel)), g,
           tot ? h('div', { class: 'catatan-kecil' }, h('span', { class: 'lencana biru', text: 'Total resmi ' + fmtAngka(tot[1]) + ' orang' }), ` · laki-laki ${fmtAngka(tot[2])} · perempuan ${fmtAngka(tot[3])}`) : null,
           S.pkar === 'pendidikan' && ket && ket.kategori ? h('div', { class: 'catatan-kecil', text: 'Kategori pendidikan periode ini: ' + ket.kategori + '. Kategori dapat berbeda antarperiode sesuai sumber.' }) : null,
