@@ -886,6 +886,27 @@ table.tbl th:first-child {
   color: #ffffff;
 }
 
+/* Segmen Level Profil (Provinsi vs Kab/kota) */
+.seg-level-profil {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 9px !important;
+  padding: 3px !important;
+}
+.seg-level-profil button {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  padding: 5px 12px !important;
+  border-radius: 7px !important;
+  transition: all 0.15s ease !important;
+}
+.seg-level-profil button[aria-checked="true"] {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
 /* Sasaran RPJMN Minimalis: Clean Matrix Table & Flat Bullet Cards */
 .wil-kisi {
   display: grid;

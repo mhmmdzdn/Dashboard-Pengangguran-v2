@@ -1,5 +1,5 @@
-﻿/* =====================================================================
-   v2_layout.css â€” Ergonomic, Minimalist & Focused Layout
+/* =====================================================================
+   v2_layout.css — Ergonomic, Minimalist & Focused Layout
    Prinsip:
    1. Compact Whitespace: Menghilangkan kekosongan berlebih dan hero raksasa.
    2. Progressive Disclosure: Tab Modul Terfokus (tidak menampilkan 6 bagian sekaligus).
@@ -17,58 +17,35 @@ body {
 }
 
 .isi {
-  max-width: 1260px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 48px;
 }
 
-/* =====================================================================
-   Scrollbar Estetik & Halus (Modern Rounded Minimalist Scrollbar)
-   ===================================================================== */
+/* Scrollbar Estetik */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(15, 118, 110, 0.35) transparent;
 }
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
   background: rgba(15, 118, 110, 0.28);
   border-radius: 999px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  transition: background-color 0.2s ease;
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 118, 110, 0.55);
-}
-
 :root[data-theme="dark"] * {
   scrollbar-color: rgba(45, 212, 191, 0.3) transparent;
 }
-
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: rgba(45, 212, 191, 0.25);
 }
 
-:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: rgba(45, 212, 191, 0.5);
-}
-
-/* Navigasi Header Ramping */
+/* Navigasi Header Ramping & Bersih */
 .nav {
-  height: 58px;
+  height: 52px;
   background: var(--nav);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 0 20px;
   gap: 16px;
 }
@@ -79,44 +56,44 @@ body {
 }
 
 .nav .logo .tanda {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
-  border-radius: 8px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.35);
+  box-shadow: 0 1px 4px rgba(15, 118, 110, 0.3);
+}
+
+.nav .logo .tanda .ikon {
+  width: 16px;
+  height: 16px;
 }
 
 .nav .logo .brand b {
   font-size: 14px;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav .logo .brand span:not(.versi):not(.badge-curated) {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.65);
+  color: #ffffff;
 }
 
 .nav .tabs {
-  background: rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.18);
   padding: 3px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  gap: 3px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 2px;
 }
 
 .nav .tabs button {
-  padding: 6px 14px;
-  border-radius: 7px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
   transition: all 0.15s ease;
+  border: none;
 }
 
 .nav .tabs button:hover {
@@ -127,24 +104,25 @@ body {
 .nav .tabs button[aria-selected="true"] {
   background: var(--accent) !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .nav .tema {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   color: rgba(255, 255, 255, 0.85);
   transition: all 0.15s ease;
 }
 
-/* 2. Hero Section Eksekutif Ringkas (Menghilangkan Whitespace Kosong) */
+/* 2. Hero Section Eksekutif Ringkas & Bersih */
 .hero {
   margin: 0 calc(50% - 50vw);
   margin-top: 0 !important;
-  padding: 20px 24px 22px;
+  padding: 18px 24px 20px;
   background: var(--hero);
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -152,8 +130,8 @@ body {
 
 .hero-kisi {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px;
   align-items: center;
 }
 
@@ -162,59 +140,56 @@ body {
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--hero-ink-2);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .hero .alis .titik {
   width: 6px;
   height: 6px;
   background: #34d399;
-  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.25);
 }
 
 .hero h1 {
-  font-size: clamp(18px, 1.8vw, 22px);
+  font-size: clamp(17px, 1.6vw, 21px);
   line-height: 1.25;
   letter-spacing: -0.01em;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-weight: 700;
 }
 
 .hero h1 em {
   font-style: normal;
   color: #5eead4;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .hero p {
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.4;
   max-width: 800px;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .hero .chip-baris {
-  gap: 8px;
+  gap: 6px;
 }
 
 .hero .chip {
-  padding: 5px 12px;
-  font-size: 12px;
+  padding: 4px 10px;
+  font-size: 11.5px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-  border-radius: 7px;
-  transition: all 0.15s ease;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
 }
 
 .hero-angka {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 12px;
-  padding: 14px 16px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 12px 14px;
+  backdrop-filter: blur(8px);
 }
 
 .hero-angka .lbl {
@@ -223,7 +198,7 @@ body {
 }
 
 .hero-angka .val {
-  font-size: 38px;
+  font-size: 34px;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: #ffffff;
@@ -235,41 +210,101 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* 3. Kartu KPI Kompak & Rapi (Bento Data Strip) */
+/* Styling dropdown provinsi grouped by wilayah */
+.hero select optgroup {
+  font-weight: 700;
+  color: var(--ink, #0f172a);
+  background: var(--surface-2, #f1f5f9);
+  font-style: normal;
+  padding: 4px 6px;
+}
+
+.hero select option {
+  font-weight: 400;
+  color: var(--ink, #0f172a);
+  background: var(--surface, #ffffff);
+  padding: 4px 10px;
+}
+
+/* 3. Kartu KPI Minimalis & Bersih (Frameless / Light Stroke) */
 .kpi-kisi {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
   margin-top: 14px;
   margin-bottom: 14px;
   position: relative;
   z-index: 2;
 }
 
-.metode-kisi {
-  margin-top: 20px !important;
-  margin-bottom: 24px;
-  position: relative;
-  z-index: 2;
+/* Jika hanya ada 2 kartu KPI (pada level Kab/Kota), pertahankan ukuran normal dan pusatkan (center) */
+.kpi-profil-kisi.kpi-count-2 {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+}
+
+.kpi-profil-kisi.kpi-count-2 > .kpi {
+  width: min(380px, calc(50% - 8px)) !important;
+  flex: 0 1 380px !important;
 }
 
 .kpi {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 9px;
   padding: 12px 14px 10px;
-  box-shadow: var(--shadow-1);
-  transition: all 0.15s ease;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease;
+}
+
+/* Kartu Gabungan TPT Tertinggi & Terendah dan KPI Profil */
+.kpi.kpi-rentang-gabung {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 14px;
+  gap: 8px;
+}
+
+.kpi-sub-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.kpi-sub-item:hover {
+  background: var(--surface-2);
+}
+
+.kpi-divider-vert {
+  width: 1px;
+  background: var(--border);
+  margin: 2px 0;
+  flex: none;
+}
+
+.kpi-divider-horiz {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+  flex: none;
+  opacity: 0.8;
 }
 
 .kpi:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
   border-color: var(--accent);
 }
 
 .kpi .atas {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--ink-2);
   display: flex;
@@ -278,48 +313,56 @@ body {
 }
 
 .kpi .atas .bulat {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
   background: var(--surface-2);
   color: var(--accent);
 }
 
 .kpi .val {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ink);
-  margin: 6px 0 2px;
+  margin: 3px 0 1px;
 }
 
 .kpi .per {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--muted);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
-/* 4. Progressive Disclosure Pill Switcher (Menghilangkan Informasi Gamblang Sekaligus) */
+.kpi .peringkat-lencana {
+  margin-top: 3px;
+}
+
+.kpi .peringkat-lencana .lencana {
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+/* 4. Progressive Disclosure Pill Switcher */
 .beranda-focus-nav {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: var(--surface);
-  padding: 6px;
-  border-radius: 12px;
+  padding: 4px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-1);
-  margin: 14px 0 18px;
+  margin: 14px 0 16px;
   flex-wrap: wrap;
 }
 
 .focus-pill {
   flex: 1;
-  min-width: 170px;
+  min-width: 160px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 7px 12px;
+  border-radius: 7px;
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
@@ -333,12 +376,11 @@ body {
 
 .focus-pill.active {
   background: var(--surface-2);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-1);
+  border-color: var(--border-2);
 }
 
 .focus-pill .pill-title {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--ink);
 }
@@ -348,48 +390,288 @@ body {
 }
 
 .focus-pill .pill-desc {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* 5. Konten Modul Bagian (Clean Editorial Density) */
+/* 5. Konten Modul Bagian */
 .bagian {
   margin-top: 14px;
 }
 
-.bagian-kepala {
+/* Menyamakan lebar dan tinggi kartu di kisi 2 kolom */
+.kisi-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.kisi-2 > .card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.kisi-2 > .card > .chart,
+.kisi-2 > .card > div:has(svg) {
+  flex: 1;
+}
+
+/* Batang horizontal elastis memenuhi whitespace */
+.bars {
+  display: grid !important;
+  grid-template-columns: minmax(130px, max-content) minmax(0, 1fr) max-content !important;
+  gap: 8px 14px !important;
+  align-items: center;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Sinkronkan tinggi kedua kartu di section karakteristik penganggur */
+.kisi-karakteristik {
+  align-items: stretch !important;
+}
+
+.kisi-karakteristik > .card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+}
+
+/* Biarkan grafik batang dan area tengah tabel elastis mengisi ruang secara proporsional */
+.kisi-karakteristik > .card > .bars {
+  flex: 1 1 auto;
+  align-content: space-evenly;
+  padding: 10px 0;
+}
+
+.kisi-karakteristik > .card .tbl-wrap {
+  flex: 1 1 auto;
+}
+
+.kisi-karakteristik > .card > .catatan-kecil,
+.kisi-karakteristik > .card > .kaki-kartu {
+  margin-top: auto;
+}
+
+/* Penyesuaian ukuran tulisan dan bar chart ketika baris data sedikit agar seimbang dan proporsional */
+.kisi-karakteristik.kar-kota_desa .bars {
+  gap: 20px 16px !important;
+}
+.kisi-karakteristik.kar-kota_desa .bars .nm {
+  font-size: 14.5px !important;
+  font-weight: 600;
+}
+.kisi-karakteristik.kar-kota_desa .bars .v {
+  font-size: 15px !important;
+  font-weight: 700;
+}
+.kisi-karakteristik.kar-kota_desa .bars .trk {
+  height: 18px !important;
+}
+
+.kisi-karakteristik.kar-kategori_pengangguran .bars {
+  gap: 14px 14px !important;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .nm {
+  font-size: 13px !important;
+  font-weight: 500;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .v {
+  font-size: 13.5px !important;
+  font-weight: 600;
+}
+.kisi-karakteristik.kar-kategori_pengangguran .bars .trk {
+  height: 14px !important;
+}
+
+.kisi-karakteristik.kar-pendidikan .bars {
+  gap: 10px 14px !important;
+}
+.kisi-karakteristik.kar-pendidikan .bars .nm {
+  font-size: 13px !important;
+}
+.kisi-karakteristik.kar-pendidikan .bars .trk {
+  height: 12px !important;
+}
+
+/* Section Kabupaten/Kota: Sejajarkan tinggi chart persis dengan border map (420px) */
+.kisi-kabkota {
+  align-items: start !important;
+}
+
+.kisi-kabkota .peta-mini.tinggi {
+  height: 420px;
+}
+
+/* Scroll wrapper untuk grafik batang profil kab/kota persis setinggi border map (420px) */
+.batang-scroll-wrap {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 420px !important;
+  max-height: 420px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.batang-scroll-wrap > .bars {
+  flex: 1 1 auto;
+}
+
+/* Jika kab/kota sedikit (<= 5 kab, seperti Papua Selatan 4 kab), chart terdistribusi proporsional & font diperbesar */
+.kisi-kabkota.kab-sedikit .batang-scroll-wrap > .bars {
+  align-content: space-evenly !important;
+  gap: 18px 16px !important;
+  padding: 8px 0;
+}
+.kisi-kabkota.kab-sedikit .bars .nm {
+  font-size: 14px !important;
+  font-weight: 600;
+}
+.kisi-kabkota.kab-sedikit .bars .v {
+  font-size: 14.5px !important;
+  font-weight: 700;
+}
+.kisi-kabkota.kab-sedikit .bars .trk {
+  height: 16px !important;
+}
+
+/* Jika kab/kota sedang (6-10 kab, seperti Papua 9 kab, Bali 9 kab, DIY 5 kab, Jakarta 6 kab) */
+.kisi-kabkota.kab-sedang .batang-scroll-wrap > .bars {
+  align-content: space-evenly !important;
+  gap: 10px 14px !important;
+  padding: 6px 0;
+}
+.kisi-kabkota.kab-sedang .bars .nm {
+  font-size: 13px !important;
+  font-weight: 600;
+}
+.kisi-kabkota.kab-sedang .bars .v {
+  font-size: 13.5px !important;
+  font-weight: 700;
+}
+.kisi-kabkota.kab-sedang .bars .trk {
+  height: 14px !important;
+}
+
+/* Jika kab/kota banyak (>10 kab, misalnya Jawa Timur/Sumut/Jateng), scroll lancar dengan batas tepat border map */
+.kisi-kabkota.kab-banyak .batang-scroll-wrap > .bars {
+  align-content: start !important;
+  gap: 8px 14px !important;
+}
+.kisi-kabkota.kab-banyak .bars .trk {
+  height: 10px !important;
+}
+
+/* Custom minimal scrollbar */
+.batang-scroll-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+.batang-scroll-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+.batang-scroll-wrap::-webkit-scrollbar-thumb {
+  background: var(--grid, rgba(0, 0, 0, 0.15));
+  border-radius: 4px;
+}
+.batang-scroll-wrap::-webkit-scrollbar-thumb:hover {
+  background: var(--teks-redup, #888);
+}
+
+.bars .nm {
+  max-width: 100% !important;
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.3;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+}
+
+/* Kolom paling kiri pada tabel dibuat bold, rapi 1 baris (nowrap) dan font proporsional */
+table.tbl {
+  font-size: 11.5px !important;
+}
+
+table.tbl th,
+table.tbl td {
+  padding: 6px 8px !important;
+  white-space: nowrap !important;
+}
+
+table.tbl td:first-child,
+table.tbl th:first-child {
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  color: var(--ink) !important;
+  white-space: nowrap !important;
+}
+
+.bars .trk {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.bars .v {
+  white-space: nowrap !important;
+}
+
+/* Tab filter rincian responsif */
+.tab-rincian {
+  width: 100%;
   margin-bottom: 14px;
 }
 
+.tab-rincian .seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tab-rincian .seg button {
+  white-space: normal;
+  text-align: center;
+}
+
+.bagian-kepala {
+  margin-bottom: 12px;
+}
+
 .bagian-kepala h2 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .bagian-kepala .no {
-  min-width: 24px;
-  height: 24px;
+  min-width: 22px;
+  height: 22px;
   border-radius: 5px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   background: var(--accent);
   margin-right: 8px;
 }
 
 .bagian-kepala p {
-  font-size: 12.5px;
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--muted);
   margin-top: 2px;
 }
 
 .card {
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--surface);
-  box-shadow: var(--shadow-1);
+  box-shadow: none !important;
   padding: 16px 18px;
 }
 
@@ -398,7 +680,7 @@ body {
 }
 
 .card-head h2, .card-head h3 {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
 }
 
@@ -406,39 +688,23 @@ body {
   gap: 12px;
 }
 
-/* =====================================================================
-   Highcharts-Inspired Chart Aesthetics
-   ===================================================================== */
+/* Chart Aesthetics */
 .chart .ln {
-  stroke-width: 2.75px !important;
+  stroke-width: 2.2px !important;
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
-}
-
-.chart .dot-marker {
-  transition: transform 0.15s ease, r 0.15s ease;
-}
-
-.chart .dot-pulse {
-  filter: drop-shadow(0 0 6px rgba(15, 118, 110, 0.5));
 }
 
 .chart .gridline {
   stroke: var(--grid) !important;
-  stroke-dasharray: 3 3;
-  opacity: 0.85;
+  stroke-dasharray: 2 3;
+  opacity: 0.6;
 }
 
 .chart text {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 500;
   fill: var(--muted);
-}
-
-.chart text.endlbl {
-  font-weight: 800;
-  font-size: 12px;
 }
 
 /* Highcharts Bar & Bullet Tracks */
@@ -446,19 +712,19 @@ body {
   background: var(--surface-2);
   border-radius: 999px;
   overflow: hidden;
-  height: 12px;
+  height: 10px;
 }
 
 .bars .br {
   top: 0;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #14b8a6 0%, #0f766e 100%);
+  background: var(--accent);
   transition: width 0.3s ease;
 }
 
 .bars .br.sel {
-  background: linear-gradient(90deg, #f97316 0%, #c2410c 100%);
+  background: var(--accent-2);
 }
 
 .bars .ref {
@@ -474,37 +740,37 @@ body {
 .bullet .trk {
   background: var(--surface-2);
   border-radius: 999px;
-  height: 14px;
+  height: 12px;
   position: relative;
   overflow: visible;
 }
 
 .bullet .pita25 {
-  border-radius: 6px;
+  border-radius: 4px;
   opacity: 0.9;
 }
 
 .bullet .pita29 {
-  border-radius: 6px;
+  border-radius: 4px;
   opacity: 0.85;
 }
 
 /* 6. Tata Letak Peta Spasial (Unobstructed & Clean) */
 #page-peta.aktif {
   position: fixed;
-  inset: 58px 0 0 0;
+  inset: 52px 0 0 0;
 }
 
 .rel {
   left: 16px;
   top: 16px;
-  width: 250px;
+  width: 240px;
   max-height: calc(100% - 130px);
-  padding: 12px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--glass);
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(14px) saturate(1.4);
 }
 
@@ -517,62 +783,62 @@ body {
 }
 
 .rel .lap button {
-  padding: 6px 8px;
-  border-radius: 7px;
+  padding: 5px 8px;
+  border-radius: 6px;
   font-size: 12px;
 }
 
 .zoom-alat {
   right: 420px;
   top: 16px;
-  border-radius: 9px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--glass);
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
   padding: 2px;
   gap: 2px;
 }
 
 .zoom-alat button {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  font-size: 15px;
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
 .waktu {
   bottom: 16px;
-  height: 48px;
-  padding: 3px 16px 3px 8px;
+  height: 44px;
+  padding: 3px 14px 3px 6px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--glass);
-  box-shadow: var(--shadow-2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(14px) saturate(1.4);
   z-index: 6;
 }
 
 .waktu .putar {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   background: var(--accent);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .waktu .lbl {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
 }
 
 .legenda-apung {
   left: 16px;
   bottom: 16px;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--glass);
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(12px);
   max-width: 320px;
 }
@@ -581,20 +847,130 @@ body {
   right: 16px;
   top: 16px;
   bottom: 16px;
-  width: 370px;
-  border-radius: 14px;
+  width: 360px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--glass);
-  box-shadow: var(--shadow-2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(16px) saturate(1.4);
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
   overflow: visible !important;
 }
 
-.panel .badan {
-  overflow-y: auto !important;
-  border-radius: 0 0 14px 14px;
+/* =====================================================================
+   7. Section Profil Wilayah, Sasaran RPJMN, Insight & Metodologi Minimalis
+   ===================================================================== */
+.hero-profil {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: center;
 }
+.hero-profil .lokasi {
+  height: 170px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+.hero-profil .lokasi .peta-host {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+.hero-profil h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+  color: #ffffff;
+}
+
+/* Segmen Level Profil (Provinsi vs Kab/kota) */
+.seg-level-profil {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 9px !important;
+  padding: 3px !important;
+}
+.seg-level-profil button {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  padding: 5px 12px !important;
+  border-radius: 7px !important;
+  transition: all 0.15s ease !important;
+}
+.seg-level-profil button[aria-checked="true"] {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Sasaran RPJMN Minimalis: Clean Matrix Table & Flat Bullet Cards */
+.wil-kisi {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.wil-kartu {
+  padding: 14px 16px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 9px !important;
+  box-shadow: none !important;
+}
+.wil-kartu .card-head h3 {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.bullet-leg {
+  display: flex;
+  gap: 16px;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+/* Insight Tab Minimalis: Flat Canvas & Clean Typography */
+#page-insight .chap-fig {
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+}
+#page-insight .toc {
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+}
+#page-insight .chap {
+  margin-top: 40px;
+  padding-top: 28px;
+}
+#page-insight .chap-text p {
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* Metodologi Clean Accordion */
+.blok-metode {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  border: 1px solid var(--border) !important;
+  padding: 14px 16px !important;
+}
+.blok-metode h3 {
+  font-size: 13px !important;
+  font-weight: 700;
+}
+.blok-metode .catatan li {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 
 .panel-toggle-btn {
   position: absolute;

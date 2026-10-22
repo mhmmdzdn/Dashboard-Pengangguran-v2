@@ -529,28 +529,79 @@
   // =====================================================================
   function renderProfil() {
     const host = $('profil');
-    if (!PROV[S.wil] && !KAB[S.wil]) S.wil = '31';
-    const k = S.wil, isKab = !!KAB[k], pk = provDari(k);
+    if (S.wil !== '00' && !PROV[S.wil] && !KAB[S.wil]) S.wil = '00';
+    const k = S.wil, isKab = !!KAB[k], isNas = k === '00', pk = provDari(k);
     const cari = h('div', { class: 'cari' }), lokasi = h('div', { class: 'peta-host' });
-    const pilihProv = h('select', { 'aria-label': 'Pilih provinsi', onchange: ev => { S.wil = ev.target.value; render(); } },
-      URUT_WIL.map(w => {
-        const provs = WIL.provinsi.filter(p => p.wilayah === w).sort((a, b) => a.kode.localeCompare(b.kode));
-        return h('optgroup', { label: `Wilayah ${w}` },
-          ...provs.map(p => h('option', { value: p.kode, selected: p.kode === pk ? true : null, text: p.nama }))
-        );
-      })
-    );
+
+    // Toggle tingkat wilayah: Provinsi vs Kab/kota
+    const modeLevel = isKab ? 'kab' : 'prov';
+    const segLevel = h('div', { class: 'seg seg-level-profil' });
+    I.segmen(segLevel, [['prov', 'Provinsi'], ['kab', 'Kab/kota']], modeLevel, lvBaru => {
+      if (lvBaru === 'prov') {
+        S.wil = isKab ? pk : (k === '00' ? '00' : k);
+      } else {
+        const kabs = WIL.kabkota.filter(x => x.prov === (pk === '00' ? '31' : pk));
+        S.wil = kabs.length ? kabs[0].kode : '3101';
+      }
+      render();
+    }, 'Tingkat Wilayah');
+
+    // Dropdown seleksi wilayah sesuai mode tingkat
+    let pilihWil;
+    if (modeLevel === 'kab') {
+      pilihWil = h('select', { 'aria-label': 'Pilih kab/kota', onchange: ev => { S.wil = ev.target.value; render(); } },
+        URUT_WIL.map(w => {
+          const provs = WIL.provinsi.filter(p => p.wilayah === w).sort((a, b) => a.kode.localeCompare(b.kode));
+          const optGroups = [];
+          provs.forEach(p => {
+            const kabs = WIL.kabkota.filter(x => x.prov === p.kode).sort((a, b) => a.nama.localeCompare(b.nama));
+            if (kabs.length) {
+              optGroups.push(h('optgroup', { label: `${p.nama} (${w})` },
+                ...kabs.map(kb => h('option', { value: kb.kode, selected: kb.kode === k ? true : null, text: kb.nama }))
+              ));
+            }
+          });
+          return optGroups;
+        }).flat()
+      );
+    } else {
+      pilihWil = h('select', { 'aria-label': 'Pilih provinsi', onchange: ev => { S.wil = ev.target.value; render(); } },
+        h('option', { value: '00', selected: isNas ? true : null, text: '🇮🇩 Indonesia (Nasional)' }),
+        URUT_WIL.map(w => {
+          const provs = WIL.provinsi.filter(p => p.wilayah === w).sort((a, b) => a.kode.localeCompare(b.kode));
+          return h('optgroup', { label: `Wilayah ${w}` },
+            ...provs.map(p => h('option', { value: p.kode, selected: p.kode === pk && !isNas ? true : null, text: p.nama }))
+          );
+        })
+      );
+    }
+
     const tTpt = terakhir('tpt', 'tahunan', k);
+    const chipLevel = isNas ? 'Nasional' : isKab ? (KAB[k].jenis + ' · ' + namaW(pk)) : 'Provinsi';
+    const chipWilayah = isNas ? 'Seluruh Indonesia' : ('Wilayah ' + (PROV[pk] ? PROV[pk].wilayah : ''));
+    const remahWil = isNas
+      ? ['Indonesia (Nasional)']
+      : isKab
+        ? [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', h('button', { class: 'btn-tautan', type: 'button', text: namaW(pk), onclick: () => { S.wil = pk; render(); } }), ' › ', KAB[k].jenis]
+        : [h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => { S.wil = '00'; render(); } }), ' › ', 'Provinsi'];
+
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-profil' },
       h('div', {},
-        h('div', { class: 'remah' }, h('button', { class: 'btn-tautan', type: 'button', text: 'Indonesia', onclick: () => gantiHalaman('beranda') }), ' › ', isKab ? [h('button', { class: 'btn-tautan', type: 'button', text: namaW(pk), onclick: () => { S.wil = pk; render(); } }), ' › ', KAB[k].jenis] : 'Provinsi'),
+        h('div', { class: 'remah' }, ...remahWil),
         h('h1', { text: namaW(k) }),
-        h('div', { class: 'chip-baris' }, h('span', { class: 'chip', text: isKab ? KAB[k].jenis + ' · ' + namaW(pk) : 'Provinsi' }), h('span', { class: 'chip', text: 'Wilayah ' + PROV[pk].wilayah }), h('span', { class: 'chip', text: 'Kode BPS ' + k }),
+        h('div', { class: 'chip-baris' },
+          h('span', { class: 'chip', text: chipLevel }),
+          h('span', { class: 'chip', text: chipWilayah }),
+          h('span', { class: 'chip', text: 'Kode BPS ' + k }),
           tTpt ? h('span', { class: 'chip', text: 'TPT ' + fmtL(BY.tpt, tTpt[1]) + ' · ' + lblTahunan(tTpt[0]) }) : null),
-        h('div', { class: 'hero-alat' }, pilihProv, cari)),
+        h('div', { class: 'hero-alat' }, segLevel, pilihWil, cari)),
       h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
     I.kotakCari(cari, { daftar: daftarCari, onPilih: kk => { S.wil = kk; render(); tulis(); }, placeholder: 'Cari provinsi atau kab/kota…' });
-    const tunda = [() => petaMini(lokasi, { warna: x => (x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'), onPilih: x => { if (x) { S.wil = x; render(); tulis(); } } })];
+    const tunda = [() => petaMini(lokasi, {
+      warna: x => (isNas ? '#f5a37f' : x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'),
+      zoom: isNas ? [7.9, 5.9, 924.4, 342.6] : null,
+      onPilih: x => { if (x) { S.wil = x; render(); tulis(); } }
+    })];
     // KPI
     // Gabungkan TPT & Penganggur, serta TPT Laki-laki & Perempuan
     const tTptMain = terakhir('tpt', 'tahunan', k);
@@ -703,6 +754,10 @@
       h('div', { class: 'kaki-kartu' }, h('div', { class: 'kecil' }, 'Sumber: ', h('a', { href: N.sumber[per[0]], target: '_blank', rel: 'noopener', text: 'Kemnaker Satu Data — NEET' }))));
   }
   function profilKabkota(host, k, pk, isKab, tunda, no) {
+    if (pk === '00' || k === '00') {
+      profilProvinsiNasional(host, tunda, no);
+      return;
+    }
     const kabs = WIL.kabkota.filter(x => x.prov === pk);
     const perAda = daftarPeriode('tpt', 'tahunan', 'kab').filter(p => kabs.some(x => nilai('tpt', 'tahunan', x.kode, p) != null));
     if (!perAda.includes(S.ptahun)) S.ptahun = perAda[perAda.length - 1] || '';
@@ -735,6 +790,38 @@
       if (vP != null) batang.prepend(h('div', { class: 'legend-ref', style: 'grid-column:1/-1;margin-bottom:6px' }, h('i'), namaW(pk) + ' ' + fmtL(BY.tpt, vP)));
       I.tabel(tb, { kolom: [{ label: 'Kab/kota' }].concat(kol.map(id => ({ label: BY[id].singkat + (BY[id].satuan === '%' ? ' (%)' : ' (orang)'), num: true }))),
         baris: kabs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), sel: isKab ? k : null, maks: 420 });
+    });
+  }
+
+  function profilProvinsiNasional(host, tunda, no) {
+    const provs = WIL.provinsi.slice().sort((a, b) => a.kode.localeCompare(b.kode));
+    const perAda = daftarPeriode('tpt', 'tahunan', 'prov').filter(p => provs.some(x => nilai('tpt', 'tahunan', x.kode, p) != null));
+    if (!perAda.includes(S.ptahun)) S.ptahun = perAda[perAda.length - 1] || '';
+    const th = S.ptahun;
+    const sel = h('select', { 'aria-label': 'Tahun', onchange: ev => { S.ptahun = ev.target.value; renderProfil(); tulis(); } }, perAda.slice().reverse().map(p => h('option', { value: p, selected: p === th ? true : null, text: p })));
+    const petaEl = h('div', { class: 'peta-host' }), leg = h('div', { class: 'legenda-mini' }), tb = h('div');
+    const batangWrap = h('div', { class: 'batang-scroll-wrap' });
+    const batang = h('div');
+    batangWrap.append(batang);
+    const kol = ['tpt', 'tpt_l', 'tpt_p', 'penganggur', 'tpak', 'neet', 'setengah'];
+    host.append(h('section', { class: 'bagian' }, bagian(no, 'Provinsi di seluruh Indonesia', `${provs.length} provinsi · TPT dan indikator lain pada tahun terpilih · klik untuk membuka profil provinsi.`),
+      h('div', { class: 'card' }, h('div', { class: 'tab-rincian' }, h('label', {}, 'Tahun ', sel)),
+        h('div', { class: 'kisi kisi-2 kisi-kabkota kab-banyak' }, h('div', { class: 'peta-kolom' }, h('div', { class: 'peta-mini tinggi' }, petaEl), leg), batangWrap), h('div', { class: 'jarak' }, tb))));
+    tunda.push(() => {
+      const pm = I.Peta(petaEl, { wil: WIL, statis: true, onPilih: kk => { if (PROV[kk]) { S.wil = kk; render(); tulis(); } }, onHover: (ev, kk) => {
+        if (!kk || !PROV[kk]) { I.sembunyiTip(); return; }
+        I.tampilTip(ev, [I.tipNama(namaW(kk)), I.tipBaris(fmtL(BY.tpt, nilai('tpt', 'tahunan', kk, th)), 'TPT'), I.tipSub(lblTahunan(th))]);
+      } });
+      pm.setLevel('prov');
+      const K = kelasL(BY.tpt, 'prov');
+      pm.warnai(kk => K.warna(nilai('tpt', 'tahunan', kk, th)));
+      pm.label(provs.map(x => ({ kode: x.kode, nama: x.nama, nilai: fmtL(BY.tpt, nilai('tpt', 'tahunan', x.kode, th)), wajib: false })).filter(x => x.nilai !== '—'), 38);
+      I.legendaKelas(leg, { kelas: K, fmt: fmtLeg(BY.tpt), judul: 'TPT (%) · ' + lblTahunan(th), adaKosong: provs.some(x => nilai('tpt', 'tahunan', x.kode, th) == null) });
+      const vN = nilai('tpt', 'tahunan', '00', th);
+      I.daftarBatang(batang, { baris: provs.map(x => ({ kode: x.kode, nama: x.nama, v: nilai('tpt', 'tahunan', x.kode, th) })).sort((a, b) => (a.v == null) - (b.v == null) || b.v - a.v), fmt: v => fmtL(BY.tpt, v), ref: vN, onPilih: kk => { S.wil = kk; render(); tulis(); } });
+      if (vN != null) batang.prepend(h('div', { class: 'legend-ref', style: 'grid-column:1/-1;margin-bottom:6px' }, h('i'), 'Indonesia ' + fmtL(BY.tpt, vN)));
+      I.tabel(tb, { kolom: [{ label: 'Provinsi' }].concat(kol.map(id => ({ label: BY[id].singkat + (BY[id].satuan === '%' ? ' (%)' : ' (orang)'), num: true }))),
+        baris: provs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), maks: 420 });
     });
   }
 
