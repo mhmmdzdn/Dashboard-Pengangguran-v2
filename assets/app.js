@@ -755,7 +755,7 @@
             s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)}% YoY)`;
           }
         }
-        if (uTpt) s += ` — peringkat ${uTpt[0]} dari ${uTpt[1]} kab/kota di ${namaW(pk)}.`;
+        if (uTpt) s += ` — peringkat ${uTpt[0]} dari ${uTpt[1]} kab/kota.`;
         faktaParts.push(s);
 
         if (vProv != null || vNas != null) {
@@ -773,11 +773,11 @@
           }
         }
         if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} provinsi.`;
+        if (vNas != null) {
+          s += ` ${vTpt > vNas ? 'Di atas' : 'Di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`;
+        }
         faktaParts.push(s);
 
-        if (vNas != null) {
-          faktaParts.push(`${vTpt > vNas ? 'Di atas' : 'Di bawah'} rata-rata nasional (${fmtAngka(vNas, 2)}%).`);
-        }
         if (sas && sas.target2025) {
           faktaParts.push(`Sasaran RPJMN: ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
         }
