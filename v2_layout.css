@@ -213,8 +213,8 @@ body {
 /* 3. Kartu KPI Minimalis & Bersih (Frameless / Light Stroke) */
 .kpi-kisi {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
   margin-top: 14px;
   margin-bottom: 14px;
   position: relative;
@@ -228,6 +228,37 @@ body {
   padding: 12px 14px 10px;
   box-shadow: none !important;
   transition: border-color 0.15s ease;
+}
+
+/* Kartu Gabungan TPT Tertinggi & Terendah */
+.kpi.kpi-rentang-gabung {
+  display: flex;
+  align-items: stretch;
+  padding: 10px 12px;
+  gap: 12px;
+}
+
+.kpi-sub-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.kpi-sub-item:hover {
+  background: var(--surface-2);
+}
+
+.kpi-divider-vert {
+  width: 1px;
+  background: var(--border);
+  margin: 2px 0;
+  flex: none;
 }
 
 .kpi:hover {

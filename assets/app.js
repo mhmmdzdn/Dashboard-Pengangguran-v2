@@ -356,10 +356,25 @@
     spark.append(I.garisMini((deret('tpt', 'tahunan', '00') || []).filter(d => d[0] <= per), { tinggi: 46, lebar: 320 }));
     // --- KPI ---
     const sparkN = id => (deret(id, 'tahunan', '00') || []).filter(d => d[0] <= per).slice(-12);
+    
+    // Kartu gabungan TPT Tertinggi & Terendah
+    const kpiEkstremGabung = h('div', { class: 'kpi kpi-rentang-gabung' },
+      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[0]; gantiHalaman('profil'); } }, role: 'button', tabindex: '0' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat oranye' }, ikon('naik')), h('span', { text: 'TPT tertinggi' })),
+        h('div', { class: 'val', text: urutP.length ? fmtL(L_, pot[urutP[0]]) : '—' }),
+        h('div', { class: 'per', text: urutP.length ? namaW(urutP[0]) : '' })
+      ),
+      h('div', { class: 'kpi-divider-vert' }),
+      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[urutP.length - 1]; gantiHalaman('profil'); } }, role: 'button', tabindex: '0' },
+        h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('turun')), h('span', { text: 'TPT terendah' })),
+        h('div', { class: 'val', text: urutP.length ? fmtL(L_, pot[urutP[urutP.length - 1]]) : '—' }),
+        h('div', { class: 'per', text: urutP.length ? namaW(urutP[urutP.length - 1]) : '' })
+      )
+    );
+
     host.append(h('div', { class: 'kpi-kisi' },
       kpi({ ik: 'orang', label: 'Jumlah penganggur', val: pg != null ? nfKompak.format(pg) : '—', per: pg != null ? fmtAngka(pg) + ' orang' : 'tidak tersedia', spark: sparkN('penganggur') }),
-      kpi({ ik: 'naik', oranye: true, label: 'TPT tertinggi', val: urutP.length ? fmtL(L_, pot[urutP[0]]) : '—', per: urutP.length ? namaW(urutP[0]) : '', onKlik: () => { S.wil = urutP[0]; gantiHalaman('profil'); } }),
-      kpi({ ik: 'turun', label: 'TPT terendah', val: urutP.length ? fmtL(L_, pot[urutP[urutP.length - 1]]) : '—', per: urutP.length ? namaW(urutP[urutP.length - 1]) : '', onKlik: () => { S.wil = urutP[urutP.length - 1]; gantiHalaman('profil'); } }),
+      kpiEkstremGabung,
       kpi({ ik: 'neet', label: 'NEET usia 15–24', val: fmtL(BY.neet, neet), per: neet != null ? lblTahunan(per) : 'tersedia 2015–2025', spark: sparkN('neet') }),
       kpi({ ik: 'jam', label: 'Setengah pengangguran', val: fmtL(BY.setengah, sp), per: sp != null ? lblTahunan(per) : 'tersedia 2015–2025', spark: sparkN('setengah') }),
       kpi({ ik: 'tpak', label: 'TPAK', val: fmtL(BY.tpak, tpak), per: tpak != null ? lblTahunan(per) : 'tersedia 2021–2026', spark: sparkN('tpak') })));
@@ -369,7 +384,7 @@
       const g = h('div'), seg = h('div', { class: 'seg' }), pmEl = h('div', { class: 'peta-host' }), legEl = h('div', { class: 'legenda-mini' }), ekstrem = h('div', { class: 'daftar-ekstrem' });
       I.segmen(seg, Object.keys(FREK).map(f => [f, FREK[f]]), S.dfrek, f => { S.dfrek = f; renderBeranda(); tulis(); }, 'Frekuensi');
       host.append(h('section', { class: 'bagian' }, bagian(1, 'Tren dan sebaran', 'TPT Indonesia sejak 2015 dengan rentang sasaran RPJMN, serta peta TPT provinsi pada periode terpilih.'),
-        h('div', { class: 'kisi kisi-8-4' },
+        h('div', { class: 'kisi kisi-2' },
           kartuAksi('Tren TPT Indonesia', S.dfrek === 'tahunan' ? '2015–2025 · pita = rentang sasaran RPJMN 2025–2029 · klik titik untuk memilih periode' : FREK[S.dfrek], seg, g, catatanR({ catatan: [BY.tpt.catatan[0]] })),
           kartuAksi('TPT provinsi', lblTahunan(per) + ' · klik untuk membuka profil', h('button', { class: 'btn', type: 'button', onclick: () => { S.lap = 'tpt'; S.lv = 'prov'; S.frek = 'tahunan'; S.per = per; gantiHalaman('peta'); } }, 'Peta penuh ', ikon('panah')),
             h('div', { class: 'peta-mini' }, pmEl), legEl, ekstrem))));
