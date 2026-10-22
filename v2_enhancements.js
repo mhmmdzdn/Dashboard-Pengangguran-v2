@@ -12,7 +12,7 @@
   let activeBerandaTab = 'tren'; // bawaan: Modul 1 (Tren & Peta Spasial)
 
   function applyBerandaTabs() {
-    const beranda = document.getElementById('beranda');
+    const beranda = document.getElementById('beranda') || document.getElementById('profil');
     if (!beranda) return;
     const sections = beranda.querySelectorAll('section.bagian');
     if (sections.length < 6) return;
@@ -202,7 +202,7 @@
 
   // Menambahkan aksen status & ketercapaian target RPJMN pada KPI Card
   function enhanceKpiCards() {
-    const beranda = document.getElementById('beranda');
+    const beranda = document.getElementById('beranda') || document.getElementById('profil');
     if (!beranda) return;
     const kpiCards = beranda.querySelectorAll('.kpi-kisi .kpi');
     if (!kpiCards || kpiCards.length === 0) return;
@@ -229,15 +229,16 @@
     });
   }
 
-  // Observe mutasi DOM beranda agar tetap rapi saat renderBeranda dipanggil ulang
+  // Observe mutasi DOM beranda / profil nasional agar tetap rapi saat dipanggil ulang
   function setupObserver() {
-    const beranda = document.getElementById('beranda');
-    if (!beranda) return;
-    const obs = new MutationObserver(() => {
-      applyBerandaTabs();
-      enhanceKpiCards();
+    const targets = [document.getElementById('beranda'), document.getElementById('profil')].filter(Boolean);
+    targets.forEach(tgt => {
+      const obs = new MutationObserver(() => {
+        applyBerandaTabs();
+        enhanceKpiCards();
+      });
+      obs.observe(tgt, { childList: true, subtree: false });
     });
-    obs.observe(beranda, { childList: true, subtree: false });
   }
 
   function init() {

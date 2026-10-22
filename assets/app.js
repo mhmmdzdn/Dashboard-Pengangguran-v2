@@ -115,10 +115,14 @@
   const kakiKartu = (r, id, f) => h('div', { class: 'kaki-kartu' }, sumberR(r), id ? tombolCsvRinc(id, f) : null);
 
   // ---------- status ----------
-  const S = { page: 'beranda', lap: 'tpt', lv: 'prov', frek: 'tahunan', per: '', sel: '', fokus: '',
+  const S = { page: 'profil', lap: 'tpt', lv: 'prov', frek: 'tahunan', per: '', sel: '', fokus: '',
     dper: '', dfrek: 'tahunan', drinc: 'pendidikan', dmode: 'garis', dsp: 'pendidikan', dspmode: 'garis', dpend: 'tahunan', dumur: '',
-    wil: '31', pfrek: 'tahunan', pkar: 'pendidikan', pkper: '', ptahun: '' };
-  const KUNCI = { beranda: ['dper', 'dfrek', 'drinc', 'dmode', 'dsp', 'dspmode', 'dpend', 'dumur'], peta: ['lap', 'lv', 'frek', 'per', 'sel', 'fokus'], profil: ['wil', 'pfrek', 'pkar', 'pkper', 'ptahun'], sasaran: [], insight: [], metode: [] };
+    wil: '00', pfrek: 'tahunan', pkar: 'pendidikan', pkper: '', ptahun: '' };
+  const KUNCI = {
+    profil: ['wil', 'pfrek', 'pkar', 'pkper', 'ptahun', 'dper', 'dfrek', 'drinc', 'dmode', 'dsp', 'dspmode', 'dpend', 'dumur'],
+    peta: ['lap', 'lv', 'frek', 'per', 'sel', 'fokus'],
+    sasaran: [], insight: [], metode: []
+  };
   const HALAMAN = Object.keys(KUNCI);
   const tulis = () => I.tulisHash(S, KUNCI[S.page]);
   function normalisasiPeta() {
@@ -318,7 +322,7 @@
   }
 
   // =====================================================================
-  // BERANDA
+  // KONTEN NASIONAL & WILAYAH (PROFIL)
   // =====================================================================
   const RINC_TPT = { pendidikan: 'tpt_pendidikan', umur: 'tpt_umur', daerah: 'tpt_daerah', jk: 'tpt_jk' };
   const RINC_SP = { pendidikan: 'setengah_pendidikan', umur: 'setengah_umur', daerah: 'setengah_daerah', jk: 'setengah_jk' };
@@ -330,8 +334,8 @@
     if (label) pm.label(label, 8);
     return pm;
   }
-  function renderBeranda() {
-    const host = $('beranda');
+
+  function renderKontenNasional(host, tunda, segLingkup) {
     const perTpt = daftarPeriode('tpt', 'tahunan', 'prov').filter(p => p >= '2015');
     if (!perTpt.includes(S.dper)) S.dper = perTpt[perTpt.length - 1];
     const per = S.dper, iPer = perTpt.indexOf(per), perSeb = perTpt[iPer - 1];
@@ -339,33 +343,46 @@
     const pot = potong('tpt', 'tahunan', 'prov', per), urutP = Object.keys(pot).filter(k => k !== '00').sort((a, b) => pot[b] - pot[a]);
     const potK = potong('tpt', 'tahunan', 'kab', per), urutK = Object.keys(potK).sort((a, b) => potK[b] - potK[a]);
     const pg = nilai('penganggur', 'tahunan', '00', per), neet = nilai('neet', 'tahunan', '00', per), sp = nilai('setengah', 'tahunan', '00', per), tpak = nilai('tpak', 'tahunan', '00', per);
-    const pilihPer = p => { if (perTpt.includes(p)) { S.dper = p; renderBeranda(); tulis(); } };
+    const pilihPer = p => { if (perTpt.includes(p)) { S.dper = p; renderProfil(); tulis(); } };
+
     // --- hero ---
     const p2 = [];
     if (tptSeb != null) p2.push(`Periode sebelumnya ${fmtL(L_, tptSeb)} (${lblTahunan(perSeb)}).`);
     if (pg != null) p2.push(`BPS mencatat ${fmtAngka(pg)} orang penganggur.`);
     if (urutK.length) p2.push(`Di tingkat kab/kota${urutK.length < 500 ? ` (${urutK.length} kab/kota dengan angka resmi)` : ''}, tertinggi ${namaW(urutK[0])} (${fmtL(L_, potK[urutK[0]])}), terendah ${namaW(urutK[urutK.length - 1])} (${fmtL(L_, potK[urutK[urutK.length - 1]])}).`);
-    const selPer = h('select', { 'aria-label': 'Periode beranda', onchange: ev => pilihPer(ev.target.value) }, perTpt.slice().reverse().map(p => h('option', { value: p, selected: p === per ? true : null, text: lblTahunan(p) })));
+    const selPer = h('select', { 'aria-label': 'Periode nasional', onchange: ev => pilihPer(ev.target.value) }, perTpt.slice().reverse().map(p => h('option', { value: p, selected: p === per ? true : null, text: lblTahunan(p) })));
     const spark = h('div');
+
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-kisi' },
-      h('div', {}, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Angka resmi BPS · ' + lblTahunan(per)),
+      h('div', {},
+        h('div', { class: 'hero-alat', style: 'margin-bottom:12px' }, segLingkup),
+        h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Angka resmi BPS · ' + lblTahunan(per)),
         h('h1', {}, 'Tingkat pengangguran terbuka Indonesia ', h('em', { text: fmtL(L_, tpt) }), urutP.length ? [`; tertinggi di ${namaW(urutP[0])} (${fmtL(L_, pot[urutP[0]])}), terendah di ${namaW(urutP[urutP.length - 1])} (${fmtL(L_, pot[urutP[urutP.length - 1]])}).`] : '.'),
         h('p', { text: p2.join(' ') }),
-        h('div', { class: 'chip-baris' }, h('label', { class: 'chip' }, 'Periode ', selPer), h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'), h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'))),
-      h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }), h('div', { class: 'val', text: fmtL(L_, tpt) }), h('div', { class: 'per', text: 'Tren 2015–' + perTpt[perTpt.length - 1] }), spark))));
+        h('div', { class: 'chip-baris' },
+          h('label', { class: 'chip' }, 'Periode ', selPer),
+          h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'),
+          h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'))),
+      h('div', { class: 'hero-angka' },
+        h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }),
+        h('div', { class: 'val', text: fmtL(L_, tpt) }),
+        h('div', { class: 'per', text: 'Tren 2015–' + perTpt[perTpt.length - 1] }),
+        spark))));
+
     spark.append(I.garisMini((deret('tpt', 'tahunan', '00') || []).filter(d => d[0] <= per), { tinggi: 46, lebar: 320 }));
+
     // --- KPI ---
     const sparkN = id => (deret(id, 'tahunan', '00') || []).filter(d => d[0] <= per).slice(-12);
     
     // Kartu gabungan TPT Tertinggi & Terendah
     const kpiEkstremGabung = h('div', { class: 'kpi kpi-rentang-gabung' },
-      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[0]; gantiHalaman('profil'); } }, role: 'button', tabindex: '0' },
+      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[0]; renderProfil(); tulis(); } }, role: 'button', tabindex: '0' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat oranye' }, ikon('naik')), h('span', { text: 'TPT tertinggi' })),
         h('div', { class: 'val', text: urutP.length ? fmtL(L_, pot[urutP[0]]) : '—' }),
         h('div', { class: 'per', text: urutP.length ? namaW(urutP[0]) : '' })
       ),
       h('div', { class: 'kpi-divider-vert' }),
-      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[urutP.length - 1]; gantiHalaman('profil'); } }, role: 'button', tabindex: '0' },
+      h('div', { class: 'kpi-sub-item klik', onclick: () => { if (urutP.length) { S.wil = urutP[urutP.length - 1]; renderProfil(); tulis(); } }, role: 'button', tabindex: '0' },
         h('div', { class: 'atas' }, h('span', { class: 'bulat' }, ikon('turun')), h('span', { text: 'TPT terendah' })),
         h('div', { class: 'val', text: urutP.length ? fmtL(L_, pot[urutP[urutP.length - 1]]) : '—' }),
         h('div', { class: 'per', text: urutP.length ? namaW(urutP[urutP.length - 1]) : '' })
@@ -378,11 +395,11 @@
       kpi({ ik: 'neet', label: 'NEET usia 15–24', val: fmtL(BY.neet, neet), per: neet != null ? lblTahunan(per) : 'tersedia 2015–2025', spark: sparkN('neet') }),
       kpi({ ik: 'jam', label: 'Setengah pengangguran', val: fmtL(BY.setengah, sp), per: sp != null ? lblTahunan(per) : 'tersedia 2015–2025', spark: sparkN('setengah') }),
       kpi({ ik: 'tpak', label: 'TPAK', val: fmtL(BY.tpak, tpak), per: tpak != null ? lblTahunan(per) : 'tersedia 2021–2026', spark: sparkN('tpak') })));
-    const tunda = [];
+
     // 01 tren + peta
     {
       const g = h('div'), seg = h('div', { class: 'seg' }), pmEl = h('div', { class: 'peta-host' }), legEl = h('div', { class: 'legenda-mini' }), ekstrem = h('div', { class: 'daftar-ekstrem' });
-      I.segmen(seg, Object.keys(FREK).map(f => [f, FREK[f]]), S.dfrek, f => { S.dfrek = f; renderBeranda(); tulis(); }, 'Frekuensi');
+      I.segmen(seg, Object.keys(FREK).map(f => [f, FREK[f]]), S.dfrek, f => { S.dfrek = f; renderProfil(); tulis(); }, 'Frekuensi');
       host.append(h('section', { class: 'bagian' }, bagian(1, 'Tren dan sebaran', 'TPT Indonesia sejak 2015 dengan rentang sasaran RPJMN, serta peta TPT provinsi pada periode terpilih.'),
         h('div', { class: 'kisi kisi-2' },
           kartuAksi('Tren TPT Indonesia', S.dfrek === 'tahunan' ? '2015–2025 · pita = rentang sasaran RPJMN 2025–2029 · klik titik untuk memilih periode' : FREK[S.dfrek], seg, g, catatanR({ catatan: [BY.tpt.catatan[0]] })),
@@ -396,18 +413,19 @@
         I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: d, utama: true }], tinggi: 480, fmt: v => fmtL(L_, v), patahan: (BY.tpt.patahan || {})[S.dfrek], pita, area: true,
           periodeTambahan: S.dfrek === 'tahunan' ? ['2026', '2027', '2028', '2029'] : [], aktif: S.dfrek === 'tahunan' ? per : null, onKlik: S.dfrek === 'tahunan' ? pilihPer : null, label: 'Tren TPT Indonesia' });
         const K = kelasL(L_, 'prov');
-        petaMini(pmEl, { warna: k => K.warna(pot[k]), onPilih: k => { if (k) { S.wil = k; gantiHalaman('profil'); } },
+        petaMini(pmEl, { warna: k => K.warna(pot[k]), onPilih: k => { if (k) { S.wil = k; renderProfil(); tulis(); } },
           onHover: (ev, k) => { if (!k) { I.sembunyiTip(); return; } I.tampilTip(ev, [I.tipNama(namaW(k)), I.tipBaris(fmtL(L_, pot[k]), 'TPT'), I.tipSub(lblTahunan(per))]); } });
         I.legendaKelas(legEl, { kelas: K, fmt: fmtLeg(L_), judul: 'TPT (%)' });
-        const li = k => h('li', { onclick: () => { S.wil = k; gantiHalaman('profil'); } }, h('span', { text: (urutP.indexOf(k) + 1) + '. ' + namaW(k) }), h('b', { text: fmtL(L_, pot[k]) }));
+        const li = k => h('li', { onclick: () => { S.wil = k; renderProfil(); tulis(); } }, h('span', { text: (urutP.indexOf(k) + 1) + '. ' + namaW(k) }), h('b', { text: fmtL(L_, pot[k]) }));
         ekstrem.replaceChildren(h('div', {}, h('h4', { text: '5 tertinggi' }), h('ol', {}, urutP.slice(0, 5).map(li))), h('div', {}, h('h4', { text: '5 terendah' }), h('ol', {}, urutP.slice(-5).reverse().map(li))));
       });
     }
+
     // 02 siapa yang menganggur
     {
       const segRinc = h('div', { class: 'seg' }), segMode = h('div', { class: 'seg' }), id = RINC_TPT[S.drinc], r = R[id], g = h('div');
-      I.segmen(segRinc, Object.keys(RINC_TPT).map(k => [k, NAMA_RINC[k]]), S.drinc, v => { S.drinc = v; renderBeranda(); tulis(); }, 'Rincian');
-      I.segmen(segMode, [['garis', 'Garis Tunggal'], ['grid', 'Panel Kisi']], S.dmode, v => { S.dmode = v; renderBeranda(); tulis(); }, 'Tampilan');
+      I.segmen(segRinc, Object.keys(RINC_TPT).map(k => [k, NAMA_RINC[k]]), S.drinc, v => { S.drinc = v; renderProfil(); tulis(); }, 'Rincian');
+      I.segmen(segMode, [['garis', 'Garis Tunggal'], ['grid', 'Panel Kisi']], S.dmode, v => { S.dmode = v; renderProfil(); tulis(); }, 'Tampilan');
       
       const tabWrap = h('div', { class: 'tab-rincian', style: 'display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px' },
         segRinc,
@@ -419,7 +437,6 @@
       tunda.push(() => {
         const f = rinc(id, 'tahunan');
         if (S.dmode === 'garis') {
-          // Warna palet Highcharts / Editorial Design
           const warnaPalet = ['#0f766e', '#c2410c', '#2563eb', '#d97706', '#8b5cf6', '#10b981', '#06b6d4', '#ec4899', '#64748b', '#f97316', '#14b8a6'];
           const seriGaris = f.seri.map((s, idx) => ({
             nama: s.nama,
@@ -441,13 +458,14 @@
         }
       });
     }
+
     // 03 struktur penganggur
     {
       const id = 'penganggur_pendidikan', r = R[id], seg = h('div', { class: 'seg' }), g = h('div');
-      I.segmen(seg, [['tahunan', 'Tahunan'], ['semesteran', 'Semesteran']], S.dpend, v => { S.dpend = v; renderBeranda(); tulis(); }, 'Frekuensi');
+      I.segmen(seg, [['tahunan', 'Tahunan'], ['semesteran', 'Semesteran']], S.dpend, v => { S.dpend = v; renderProfil(); tulis(); }, 'Frekuensi');
       const idU = 'penganggur_umur', rU = R[idU], fU = rinc(idU, 'semesteran');
       if (!fU.periode.includes(S.dumur)) S.dumur = selaraskan(per + '-08', fU.periode);
-      const selU = h('select', { 'aria-label': 'Periode', onchange: ev => { S.dumur = ev.target.value; renderBeranda(); tulis(); } }, fU.periode.slice().reverse().map(p => h('option', { value: p, selected: p === S.dumur ? true : null, text: lblPer(p, true) })));
+      const selU = h('select', { 'aria-label': 'Periode', onchange: ev => { S.dumur = ev.target.value; renderProfil(); tulis(); } }, fU.periode.slice().reverse().map(p => h('option', { value: p, selected: p === S.dumur ? true : null, text: lblPer(p, true) })));
       const gU = h('div');
       host.append(h('section', { class: 'bagian' }, bagian(3, 'Struktur penganggur', 'Jumlah penganggur menurut pendidikan (2015–2025) serta menurut umur dan pengalaman kerja. Garis hitam = total resmi BPS.'),
         h('div', { class: 'kisi kisi-7-5' },
@@ -462,6 +480,7 @@
           total: umur.map(u => ambil(u, 'Jumlah Pengangguran')), totalLabel: 'Jumlah (angka resmi)', fmt: v => (v == null ? '—' : fmtAngka(v) + ' orang'), tinggi: 320, label: 'Penganggur menurut umur' });
       });
     }
+
     // 04 sebaran wilayah
     {
       const grid = h('div', { class: 'wil-kisi' });
@@ -469,14 +488,15 @@
       URUT_WIL.forEach(w => {
         const b = h('div'), prov = WIL.provinsi.filter(p => p.wilayah === w);
         grid.append(h('div', { class: 'card wil-kartu' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: w }), h('div', { class: 'sub', text: prov.length + ' provinsi' }))), b));
-        tunda.push(() => I.daftarBatang(b, { baris: prov.map(p => ({ kode: p.kode, nama: p.nama, v: pot[p.kode] != null ? pot[p.kode] : null })).sort((a, c) => (a.v == null) - (c.v == null) || c.v - a.v), fmt: v => fmtL(L_, v), ref: tpt, onPilih: k => { S.wil = k; gantiHalaman('profil'); } }));
+        tunda.push(() => I.daftarBatang(b, { baris: prov.map(p => ({ kode: p.kode, nama: p.nama, v: pot[p.kode] != null ? pot[p.kode] : null })).sort((a, c) => (a.v == null) - (c.v == null) || c.v - a.v), fmt: v => fmtL(L_, v), ref: tpt, onPilih: k => { S.wil = k; renderProfil(); tulis(); } }));
       });
     }
+
     // 05 setengah pengangguran
     {
       const segRinc = h('div', { class: 'seg' }), segMode = h('div', { class: 'seg' }), id = RINC_SP[S.dsp], r = R[id], g = h('div');
-      I.segmen(segRinc, Object.keys(RINC_SP).map(k => [k, NAMA_RINC[k]]), S.dsp, v => { S.dsp = v; renderBeranda(); tulis(); }, 'Rincian');
-      I.segmen(segMode, [['garis', 'Garis Tunggal'], ['grid', 'Panel Kisi']], S.dspmode, v => { S.dspmode = v; renderBeranda(); tulis(); }, 'Tampilan');
+      I.segmen(segRinc, Object.keys(RINC_SP).map(k => [k, NAMA_RINC[k]]), S.dsp, v => { S.dsp = v; renderProfil(); tulis(); }, 'Rincian');
+      I.segmen(segMode, [['garis', 'Garis Tunggal'], ['grid', 'Panel Kisi']], S.dspmode, v => { S.dspmode = v; renderProfil(); tulis(); }, 'Tampilan');
 
       const tabWrap = h('div', { class: 'tab-rincian', style: 'display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px' },
         segRinc,
@@ -509,6 +529,7 @@
         }
       });
     }
+
     // 06 kegiatan penduduk
     {
       const r = R.kegiatan, f = rinc('kegiatan', 'tahunan');
@@ -521,7 +542,6 @@
         I.kecilBanyak(g2, { periode: f.periode, seri: tkt.map(x => ({ ...x, nama: x.nama.replace(/\s*\(%\)/, '') })), fmt: v => (v == null ? '—' : fmtAngka(v, 2) + '%'), aktif: per, patahan: BY.tpt.patahan.tahunan, tinggi: 80, bersama: false });
       });
     }
-    requestAnimationFrame(() => tunda.forEach(x => x()));
   }
 
   // =====================================================================
@@ -706,6 +726,13 @@
     if (segLevel) alatProfil.push(segLevel);
     if (pilihWil) alatProfil.push(pilihWil);
 
+    const tunda = [];
+    if (isNas) {
+      renderKontenNasional(host, tunda, segLingkup);
+      requestAnimationFrame(() => tunda.forEach(x => x()));
+      return;
+    }
+
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-profil' },
       h('div', {},
         h('div', { class: 'remah' }, ...remahWil),
@@ -716,11 +743,11 @@
           h('span', { class: 'chip', text: 'Kode BPS ' + k })),
         h('div', { class: 'hero-alat' }, ...alatProfil)),
       h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi))));
-    const tunda = [() => petaMini(lokasi, {
+    tunda.push(() => petaMini(lokasi, {
       warna: x => (isNas ? '#f5a37f' : x === pk ? '#f5a37f' : 'rgba(255,255,255,.22)'),
       zoom: isNas ? [7.9, 5.9, 924.4, 342.6] : null,
       onPilih: x => { if (x) { S.wil = x; render(); tulis(); } }
-    })];
+    }));
     // KPI
     // Gabungkan TPT & Penganggur, serta TPT Laki-laki & Perempuan
     const tTptMain = terakhir('tpt', 'tahunan', k);
@@ -1421,7 +1448,7 @@
     document.querySelectorAll('.page').forEach(p => p.classList.toggle('aktif', p.id === 'page-' + S.page));
     document.body.classList.toggle('mode-peta', S.page === 'peta');
     if (S.page === 'peta') { if (!peta) { initPeta(); renderPeta(); if (S.sel || S.fokus) zoomWilayah(S.sel || S.fokus); } else renderPeta(); }
-    else if (S.page === 'beranda') renderBeranda();
+    else if (S.page === 'beranda') { S.page = 'profil'; S.wil = '00'; renderProfil(); }
     else if (S.page === 'profil') renderProfil();
     else if (S.page === 'sasaran') renderSasaran();
     else if (S.page === 'insight') renderInsight();
@@ -1431,7 +1458,7 @@
   I.bacaHash(S, HALAMAN);
   I.pasangTema($('tema'), 'peng2-tema');
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
-  document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); gantiHalaman('beranda'); });
+  document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); S.wil = '00'; gantiHalaman('profil'); });
   $('kaki').replaceChildren(
     h('div', { text: `Versi 2 · data dibangun ${D.dibuat} oleh Data/_skrip/bangun_dashboard_pengangguran.js --versi 2. Angka resmi BPS, Kemnaker, dan Bappenas apa adanya — tanpa hitungan mandiri; data kosong dibiarkan kosong.` }),
     h('div', { text: 'Peringkat dan kelas warna peta hanya pengurutan tampilan. Lihat Metodologi untuk sumber, tautan unduh, dan catatan per lapisan.' }));
