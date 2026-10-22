@@ -1,0 +1,1065 @@
+﻿/* =====================================================================
+   v2_layout.css â€” Ergonomic, Minimalist & Focused Layout
+   Prinsip:
+   1. Compact Whitespace: Menghilangkan kekosongan berlebih dan hero raksasa.
+   2. Progressive Disclosure: Tab Modul Terfokus (tidak menampilkan 6 bagian sekaligus).
+   3. Visual Density: Bento grid yang terstruktur, rapi, dan mudah dicerna.
+   4. Unobstructed Map: Peta bersih tanpa widget bertabrakan + tombol lipat panel.
+   ===================================================================== */
+
+/* 1. Global Shell & Typography */
+body {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--page);
+  color: var(--ink);
+}
+
+.isi {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+}
+
+/* =====================================================================
+   Scrollbar Estetik & Halus (Modern Rounded Minimalist Scrollbar)
+   ===================================================================== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 118, 110, 0.35) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 118, 110, 0.28);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 118, 110, 0.55);
+}
+
+:root[data-theme="dark"] * {
+  scrollbar-color: rgba(45, 212, 191, 0.3) transparent;
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(45, 212, 191, 0.25);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 212, 191, 0.5);
+}
+
+/* Navigasi Header Ramping */
+.nav {
+  height: 58px;
+  background: var(--nav);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.15);
+  padding: 0 20px;
+  gap: 16px;
+}
+
+.nav .logo {
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav .logo .tanda {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.35);
+}
+
+.nav .logo .brand b {
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav .logo .brand span:not(.versi):not(.badge-curated) {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.nav .tabs {
+  background: rgba(0, 0, 0, 0.22);
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 3px;
+}
+
+.nav .tabs button {
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  transition: all 0.15s ease;
+}
+
+.nav .tabs button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav .tabs button[aria-selected="true"] {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.nav .tema {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.15s ease;
+}
+
+/* 2. Hero Section Eksekutif Ringkas (Menghilangkan Whitespace Kosong) */
+.hero {
+  margin: 0 calc(50% - 50vw);
+  margin-top: 0 !important;
+  padding: 20px 24px 22px;
+  background: var(--hero);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.hero-kisi {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: center;
+}
+
+.hero .alis {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--hero-ink-2);
+  margin-bottom: 6px;
+}
+
+.hero .alis .titik {
+  width: 6px;
+  height: 6px;
+  background: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+}
+
+.hero h1 {
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: #5eead4;
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 800px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 10px;
+}
+
+.hero .chip-baris {
+  gap: 8px;
+}
+
+.hero .chip {
+  padding: 5px 12px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  border-radius: 7px;
+  transition: all 0.15s ease;
+}
+
+.hero-angka {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 14px 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.2);
+}
+
+.hero-angka .lbl {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-angka .val {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 2px 0 0;
+}
+
+.hero-angka .per {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 3. Kartu KPI Kompak & Rapi (Bento Data Strip) */
+.kpi-kisi {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.metode-kisi {
+  margin-top: 20px !important;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px 10px;
+  box-shadow: var(--shadow-1);
+  transition: all 0.15s ease;
+}
+
+.kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.kpi .atas {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi .atas .bulat {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.kpi .val {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 6px 0 2px;
+}
+
+.kpi .per {
+  font-size: 10.5px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* 4. Progressive Disclosure Pill Switcher (Menghilangkan Informasi Gamblang Sekaligus) */
+.beranda-focus-nav {
+  display: flex;
+  gap: 8px;
+  background: var(--surface);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+  margin: 14px 0 18px;
+  flex-wrap: wrap;
+}
+
+.focus-pill {
+  flex: 1;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.focus-pill:hover {
+  background: var(--surface-2);
+}
+
+.focus-pill.active {
+  background: var(--surface-2);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-1);
+}
+
+.focus-pill .pill-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.focus-pill.active .pill-title {
+  color: var(--accent);
+}
+
+.focus-pill .pill-desc {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* 5. Konten Modul Bagian (Clean Editorial Density) */
+.bagian {
+  margin-top: 14px;
+}
+
+.bagian-kepala {
+  margin-bottom: 14px;
+}
+
+.bagian-kepala h2 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.bagian-kepala .no {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--accent);
+  margin-right: 8px;
+}
+
+.bagian-kepala p {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  padding: 16px 18px;
+}
+
+.card-head {
+  margin-bottom: 10px;
+}
+
+.card-head h2, .card-head h3 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.kisi {
+  gap: 12px;
+}
+
+/* =====================================================================
+   Highcharts-Inspired Chart Aesthetics
+   ===================================================================== */
+.chart .ln {
+  stroke-width: 2.75px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+}
+
+.chart .dot-marker {
+  transition: transform 0.15s ease, r 0.15s ease;
+}
+
+.chart .dot-pulse {
+  filter: drop-shadow(0 0 6px rgba(15, 118, 110, 0.5));
+}
+
+.chart .gridline {
+  stroke: var(--grid) !important;
+  stroke-dasharray: 3 3;
+  opacity: 0.85;
+}
+
+.chart text {
+  font-size: 11px;
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+.chart text.endlbl {
+  font-weight: 800;
+  font-size: 12px;
+}
+
+/* Highcharts Bar & Bullet Tracks */
+.bars .trk {
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 12px;
+}
+
+.bars .br {
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #14b8a6 0%, #0f766e 100%);
+  transition: width 0.3s ease;
+}
+
+.bars .br.sel {
+  background: linear-gradient(90deg, #f97316 0%, #c2410c 100%);
+}
+
+.bars .ref {
+  border-left: 2px dashed #0f172a;
+  z-index: 3;
+}
+
+:root[data-theme="dark"] .bars .ref {
+  border-left-color: #f8fafc;
+}
+
+/* Bullet Chart Sasaran RPJMN */
+.bullet .trk {
+  background: var(--surface-2);
+  border-radius: 999px;
+  height: 14px;
+  position: relative;
+  overflow: visible;
+}
+
+.bullet .pita25 {
+  border-radius: 6px;
+  opacity: 0.9;
+}
+
+.bullet .pita29 {
+  border-radius: 6px;
+  opacity: 0.85;
+}
+
+/* 6. Tata Letak Peta Spasial (Unobstructed & Clean) */
+#page-peta.aktif {
+  position: fixed;
+  inset: 58px 0 0 0;
+}
+
+.rel {
+  left: 16px;
+  top: 16px;
+  width: 250px;
+  max-height: calc(100% - 130px);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px) saturate(1.4);
+}
+
+.rel h2 {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.rel .lap button {
+  padding: 6px 8px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.zoom-alat {
+  right: 420px;
+  top: 16px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 2px;
+  gap: 2px;
+}
+
+.zoom-alat button {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.waktu {
+  bottom: 16px;
+  height: 48px;
+  padding: 3px 16px 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(14px) saturate(1.4);
+  z-index: 6;
+}
+
+.waktu .putar {
+  width: 34px;
+  height: 34px;
+  background: var(--accent);
+  font-size: 13px;
+}
+
+.waktu .lbl {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.legenda-apung {
+  left: 16px;
+  bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  max-width: 320px;
+}
+
+.panel {
+  right: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 370px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(16px) saturate(1.4);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  overflow: visible !important;
+}
+
+.panel .badan {
+  overflow-y: auto !important;
+  border-radius: 0 0 14px 14px;
+}
+
+.panel-toggle-btn {
+  position: absolute;
+  left: -36px;
+  top: 16px;
+  width: 36px;
+  height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -4px 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-2);
+  z-index: 9;
+  transition: all 0.15s ease;
+}
+
+.panel-toggle-btn:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.panel.desktop-ciut {
+  transform: translateX(calc(100% - 10px));
+}
+
+body.panel-terlipat .zoom-alat {
+  right: 56px !important;
+}
+
+/* 7. Responsif */
+@media (max-width: 1350px) {
+  .waktu {
+    left: 280px;
+    right: 400px;
+    transform: none;
+    min-width: 260px;
+  }
+  body.panel-terlipat .waktu {
+    right: 60px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .kpi-kisi {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .hero-kisi {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .kpi-kisi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .focus-pill {
+    min-width: 100%;
+  }
+}
+
+/* 8. Responsif Grafik & Visualisasi */
+.chart {
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.kisi-8-4, .kisi-7-5, .kisi-5-7 {
+  min-width: 0;
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .bars {
+    grid-template-columns: minmax(80px, 35%) minmax(0, 1fr) max-content;
+    gap: 4px 6px;
+    font-size: 11.5px;
+  }
+  .bars .nm {
+    max-width: 140px;
+  }
+  .bullet {
+    grid-template-columns: minmax(80px, 32%) minmax(0, 1fr) 52px;
+    gap: 4px 8px;
+    font-size: 11.5px;
+  }
+  .kecil-banyak {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+  .leg {
+    gap: 4px 10px;
+    font-size: 11px;
+  }
+}
+
+
+/* =====================================================================
+   Full Screen Button, Frosted Glass & Polish
+   ===================================================================== */
+.nav {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(6, 35, 30, 0.88) !important;
+}
+
+.nav-aksi {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-left: 8px !important;
+}
+
+.nav .btn-icon {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.nav .btn-icon:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+.nav .btn-icon .ikon {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: #ffffff !important;
+}
+
+.mengapung {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.kpi {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(15, 118, 110, 0.14), 0 3px 8px -2px rgba(0, 0, 0, 0.04);
+  border-color: var(--border-2);
+}
+
+.kpi .angka {
+  font-feature-settings: "tnum" 1, "cv05" 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+@keyframes v2FadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.v2-fade-in {
+  animation: v2FadeInUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.kpi-delta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 5px;
+}
+
+.kpi-delta-pill.turun {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.kpi-delta-pill.naik {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+[data-tema="gelap"] .kpi-delta-pill.turun {
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+}
+
+[data-tema="gelap"] .kpi-delta-pill.naik {
+  background: rgba(239, 68, 68, 0.22);
+  color: #f87171;
+}
+
+.shortcut-hint {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  margin-left: 4px;
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Explicit styling for #btn-fullscreen anywhere in nav */
+#btn-fullscreen {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 9px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex: none !important;
+  margin-right: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+#btn-fullscreen:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+#btn-fullscreen .ikon {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: #ffffff !important;
+}
+
+/* =====================================================================
+   Apple HIG Liquid Glass & Guided Tour Styles (Inspired by Kredit Indonesia)
+   ===================================================================== */
+:root {
+  --z-tour: 9999;
+}
+
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-tour);
+  pointer-events: auto;
+}
+
+.tour-dim, .tour-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: clip-path 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tour-dim {
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.tour-ring {
+  background: var(--surface, #ffffff);
+}
+
+.tour.snap .tour-dim, .tour.snap .tour-ring, .tour.snap .tour-card {
+  transition: none !important;
+}
+
+.tour-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(340px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 18px 20px 16px;
+  border-radius: 20px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: #0f172a;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10000;
+}
+
+[data-tema="gelap"] .tour-card {
+  background: linear-gradient(165deg, rgba(20, 32, 28, 0.95) 0%, rgba(15, 24, 21, 0.90) 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f1f5f9;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.tour-n {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0;
+}
+
+[data-tema="gelap"] .tour-n {
+  color: #94a3b8;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.tour-dots i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+[data-tema="gelap"] .tour-dots i {
+  background: #475569;
+}
+
+.tour-dots i.on {
+  width: 16px;
+  background: var(--accent, #0f766e);
+}
+
+.tour-card h2 {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.tour-d {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+[data-tema="gelap"] .tour-d {
+  color: #cbd5e1;
+}
+
+.tour-d ul {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+}
+
+.tour-d li {
+  margin-top: 4px;
+}
+
+.tour-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tour-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.tbtn {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tbtn:hover {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+[data-tema="gelap"] .tbtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tbtn.pri {
+  background: var(--accent, #0f766e) !important;
+  border-color: var(--accent, #0f766e) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.35);
+}
+
+.tbtn.pri:hover {
+  filter: brightness(1.1);
+}
+
+.tbtn.ghost {
+  border-color: transparent !important;
+  color: #64748b !important;
+}
+
+.tbtn.ghost:hover {
+  color: #0f172a !important;
+  background: rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Timeline Play/Pause Scrubber Enhancement */
+.waktu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-play-pause {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background: var(--accent, #0f766e) !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex: none !important;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.4) !important;
+  transition: transform 0.15s ease !important;
+}
+
+.btn-play-pause:hover {
+  transform: scale(1.08) !important;
+}
+
+.btn-play-pause svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}

@@ -1,0 +1,372 @@
+/* =====================================================================
+   v2_minimalist_map.css — Ultra Minimalist, Clean & Unobstructed Map
+   Target:
+   1. Menghilangkan tumpukan widget apung (rel, legenda, slider, panel)
+   2. Peta menjadi bersih, lega, dan fokus pada data visual
+   3. Kontrol layer & legenda disatukan rapi di bilah atas / drawer ramping
+   4. Panel analisis tertutup secara default / mode minimalis
+   ===================================================================== */
+
+/* 1. Shell Peta: Lebih Luas & Tenang */
+#page-peta.aktif {
+  position: fixed;
+  inset: 58px 0 0 0;
+  background: var(--sea);
+}
+
+.peta-host {
+  background: radial-gradient(ellipse at 50% 50%, var(--sea-2) 0%, var(--sea) 80%);
+}
+
+/* 2. Label Peta Lebih Halus & Tidak Menutupi Daratan */
+.label-lapis text {
+  font-size: 10.5px !important;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.label-lapis line {
+  stroke-width: 0.75px;
+  opacity: 0.5;
+}
+
+.label-lapis circle {
+  r: 1.5;
+}
+
+/* 3. Panel Lapisan Kiri: Ramping, Bersih, dan Minim Ruang */
+.rel {
+  left: 16px;
+  top: 16px;
+  width: 220px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  max-height: calc(100vh - 160px);
+}
+
+.rel h2 {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 2px 4px 4px;
+}
+
+.rel .lap .grp-lap {
+  font-size: 8.5px;
+  margin: 6px 4px 2px;
+  color: var(--muted);
+}
+
+.rel .lap button {
+  padding: 5px 6px;
+  gap: 8px;
+  border-radius: 6px;
+  font-size: 11.5px;
+}
+
+.rel .lap button .ik {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+}
+
+.rel .lap button .ik .ikon {
+  width: 13px;
+  height: 13px;
+}
+
+.rel .lap button small {
+  display: none; /* Hilangkan teks tanggal panjang agar tidak semak */
+}
+
+/* 4. Legenda Apung: Sangat Kompak & Minimalis */
+.legenda-apung {
+  left: 16px;
+  bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  max-width: 260px;
+  z-index: 6;
+}
+
+.legenda-apung .jdl {
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.skala i {
+  height: 8px;
+  width: 32px;
+}
+
+.skala small {
+  font-size: 9px;
+  margin-top: 2px;
+}
+
+.legenda-apung .ket {
+  display: none !important; /* Hilangkan teks penjelasan panjang yang memenuhi layar */
+}
+
+/* 5. Timeline Slider (Waktu): Ramping & Mengambang Lembut di Tengah */
+.waktu {
+  bottom: 16px;
+  height: 40px;
+  padding: 2px 14px 2px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  gap: 8px 10px;
+}
+
+.waktu .putar {
+  width: 30px;
+  height: 30px;
+  font-size: 11px;
+}
+
+.waktu .lbl {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.waktu .tanda {
+  display: none; /* Hilangkan angka penanda tahun yang ramai */
+}
+
+.waktu .cepat button {
+  font-size: 10px;
+  padding: 1px 4px;
+}
+
+/* 6. Zoom Controls: Minimalis & Berjarak Bersih */
+.zoom-alat {
+  right: 400px;
+  top: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 2px;
+  gap: 1px;
+}
+
+.zoom-alat button {
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
+  border-radius: 5px;
+}
+
+/* 7. Panel Analisis: Lebih Ramping (340px) dan Tampilan Bersih */
+.panel {
+  right: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 340px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.10);
+  overflow: visible !important;
+}
+
+.panel .kepala {
+  padding: 10px 12px 8px;
+}
+
+.panel .cari input {
+  padding: 6px 10px 6px 32px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.panel .badan {
+  padding: 12px 14px;
+}
+
+/* Tombol Toggle Panel: Halus & Minimalis */
+.panel-toggle-btn {
+  left: -32px;
+  top: 14px;
+  width: 32px;
+  height: 34px;
+  border-radius: 7px 0 0 7px;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Mode Peta Penuh saat Panel Dikecilkan */
+.panel.desktop-ciut {
+  transform: translateX(calc(100% - 10px));
+}
+
+body.panel-terlipat .zoom-alat {
+  right: 56px !important;
+}
+
+/* Sembunyikan elemen dekoratif yang berat */
+.peringkat .batang {
+  height: 3px;
+  opacity: 0.6;
+}
+
+
+/* =====================================================================
+   Pembersihan Dropdown Pencarian & Perbaikan Z-Index
+   Mengatasi masalah dropdown yang terpotong di balik kartu KPI / hero
+   dan memastikan teks dropdown terlihat jelas dengan kontras tinggi.
+   ===================================================================== */
+
+/* Pastikan wadah cari memiliki z-index tinggi saat aktif */
+.hero .hero-alat {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* =====================================================================
+   Pembersihan Dropdown Pencarian & Perbaikan Z-Index
+   ===================================================================== */
+
+/* Pastikan wadah pencarian memiliki z-index tinggi */
+.hero .hero-alat {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cari {
+  position: relative;
+  z-index: 120;
+}
+
+/* Dropdown Hasil Pencarian: Latar 100% Solid & Bayangan Jelas */
+.cari ul {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--border-2) !important;
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 99999 !important;
+  opacity: 1 !important;
+}
+
+:root[data-theme="light"] .cari ul,
+:root:not([data-theme="dark"]) .cari ul {
+  background: #ffffff !important;
+  border: 1.5px solid #0f766e !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+}
+
+:root[data-theme="dark"] .cari ul,
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cari ul {
+    background: #0d1e1a !important;
+    border: 1.5px solid #2dd4bf !important;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.85) !important;
+  }
+}
+
+.cari li {
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--grid);
+}
+
+.cari li:last-child {
+  border-bottom: none;
+}
+
+/* Warna teks di mode terang */
+:root[data-theme="light"] .cari li span,
+:root:not([data-theme="dark"]) .cari li span {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+:root[data-theme="light"] .cari li small,
+:root:not([data-theme="dark"]) .cari li small {
+  color: #475569 !important;
+  font-weight: 500;
+  font-size: 11px;
+}
+
+/* Warna teks di mode gelap */
+:root[data-theme="dark"] .cari li span,
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cari li span {
+    color: #f0fdf4 !important;
+    font-weight: 700;
+  }
+  :root:not([data-theme="light"]) .cari li small {
+    color: #94a3b8 !important;
+    font-weight: 500;
+    font-size: 11px;
+  }
+}
+
+.cari li:hover,
+.cari li[aria-selected="true"] {
+  background: var(--accent-soft) !important;
+}
+
+.cari li:hover span,
+.cari li[aria-selected="true"] span {
+  color: var(--accent-ink) !important;
+}
+
+/* Pastikan Hero tidak memotong dropdown yang melayang ke bawah dan stacking context paling depan */
+.hero {
+  position: relative;
+  z-index: 50 !important;
+  overflow: visible !important;
+}
+
+.hero .dalam,
+.hero-profil {
+  position: relative;
+  z-index: 55 !important;
+  overflow: visible !important;
+}
+
+/* Pada Profil Wilayah: letakkan kartu KPI dengan jarak rapi di bawah hero */
+.kpi-kisi,
+.kpi-kisi.auto,
+#page-profil .kpi-kisi {
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  position: relative;
+  z-index: 1 !important;
+}

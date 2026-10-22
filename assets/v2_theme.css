@@ -1,0 +1,239 @@
+/* =====================================================================
+   v2_theme.css — Modern Executive & Geospatial Palette (UI/UX Redesign)
+   Palet: Deep Emerald & Slate Teal (Tema Resmi Perencanaan Bappenas)
+   ===================================================================== */
+
+/* 1. Base / Light Theme */
+:root {
+  color-scheme: light;
+  --page: #f8faf9;
+  --surface: #ffffff;
+  --surface-2: #f1f5f3;
+  --surface-3: #e5ece8;
+  --glass: rgba(255, 255, 255, 0.90);
+  --glass-border: rgba(15, 118, 110, 0.12);
+
+  --ink: #0f1c18;
+  --ink-2: #243831;
+  --muted: #536b62;
+  --border: rgba(15, 118, 110, 0.10);
+  --border-2: rgba(15, 118, 110, 0.18);
+  --grid: #e2eae5;
+  --axis: #b8c9c1;
+
+  /* Brand / Aksen Utama: Deep Emerald & Slate Teal */
+  --accent: #0f766e;
+  --accent-ink: #042f2e;
+  --accent-soft: #e6f4f2;
+  --accent-2: #c2410c;
+  --accent-2-soft: #ffedd5;
+  --context: #6b857a;
+
+  /* Data Choropleth Peta (7 Langkah Sekuensial Emerald) */
+  --stroke-map: #ffffff;
+  --sea: #eaf3f0;
+  --sea-2: #f4f9f7;
+  --nodata: #eaece8;
+  --nodata-line: #cad3cc;
+
+  --seq-1: #d1f2eb;
+  --seq-2: #a3e4d7;
+  --seq-3: #76d7c4;
+  --seq-4: #48c9b0;
+  --seq-5: #1abc9c;
+  --seq-6: #16a085;
+  --seq-7: #0e6251;
+
+  --cat-1: #0f766e;
+  --cat-2: #c2410c;
+  --cat-3: #2563eb;
+  --cat-4: #d97706;
+  --cat-5: #8b5cf6;
+  --cat-6: #10b981;
+  --cat-7: #475569;
+  --cat-8: #ef4444;
+
+  --bar: #a2ded0;
+  --bar-sel: #0f766e;
+  --band: rgba(15, 118, 110, 0.16);
+
+  --nav: #06231e;
+  --hero: linear-gradient(135deg, #051d19 0%, #0c3d35 50%, #115e59 100%);
+  --hero-ink: #ffffff;
+  --hero-ink-2: #a7f3d0;
+  --hero-line: rgba(255, 255, 255, 0.16);
+
+  --shadow-1: 0 1px 3px rgba(6, 35, 30, 0.05);
+  --shadow: 0 4px 16px -2px rgba(6, 35, 30, 0.08), 0 2px 4px -1px rgba(6, 35, 30, 0.04);
+  --shadow-2: 0 12px 32px -4px rgba(6, 35, 30, 0.14);
+  --land-shadow: drop-shadow(0 2px 3px rgba(6, 35, 30, 0.16));
+}
+
+/* 2. Explicit Light Theme */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page: #f8faf9;
+  --surface: #ffffff;
+  --surface-2: #f1f5f3;
+  --surface-3: #e5ece8;
+  --glass: rgba(255, 255, 255, 0.90);
+  --ink: #0f1c18;
+  --ink-2: #243831;
+  --muted: #536b62;
+  --accent: #0f766e;
+  --accent-ink: #042f2e;
+  --accent-soft: #e6f4f2;
+  --accent-2: #c2410c;
+  --accent-2-soft: #ffedd5;
+  --seq-1: #d1f2eb;
+  --seq-2: #a3e4d7;
+  --seq-3: #76d7c4;
+  --seq-4: #48c9b0;
+  --seq-5: #1abc9c;
+  --seq-6: #16a085;
+  --seq-7: #0e6251;
+  --nav: #06231e;
+  --hero: linear-gradient(135deg, #051d19 0%, #0c3d35 50%, #115e59 100%);
+}
+
+/* 3. Dark Theme Media Query */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #071311;
+    --surface: #0d1e1a;
+    --surface-2: #132a25;
+    --surface-3: #1a3831;
+    --glass: rgba(13, 30, 26, 0.92);
+    --glass-border: rgba(255, 255, 255, 0.09);
+
+    --ink: #f0fdf4;
+    --ink-2: #cbdcd5;
+    --muted: #8aa49b;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-2: rgba(255, 255, 255, 0.16);
+    --grid: #17312b;
+    --axis: #284c43;
+
+    --accent: #2dd4bf;
+    --accent-ink: #99f6e4;
+    --accent-soft: rgba(45, 212, 191, 0.16);
+    --accent-2: #fb923c;
+    --accent-2-soft: rgba(251, 146, 60, 0.16);
+    --context: #6e8a81;
+
+    --stroke-map: #071311;
+    --sea: #050e0c;
+    --sea-2: #081714;
+    --nodata: #12211e;
+    --nodata-line: #223c36;
+
+    /* Peta Mode Gelap: Hijau Kebiruan / Teal Menawan */
+    --seq-1: #092e27;
+    --seq-2: #0f4d42;
+    --seq-3: #116859;
+    --seq-4: #0d9488;
+    --seq-5: #14b8a6;
+    --seq-6: #2dd4bf;
+    --seq-7: #99f6e4;
+
+    --cat-1: #2dd4bf;
+    --cat-2: #fb923c;
+    --cat-3: #60a5fa;
+    --cat-4: #fbbf24;
+    --cat-5: #c084fc;
+    --cat-6: #34d399;
+    --cat-7: #94a3b8;
+    --cat-8: #f87171;
+
+    --bar: #164e43;
+    --bar-sel: #2dd4bf;
+    --band: rgba(45, 212, 191, 0.2);
+
+    --nav: #041210;
+    --hero: linear-gradient(135deg, #030f0d 0%, #082420 50%, #0d3832 100%);
+    --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+    --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 40px -12px rgba(0, 0, 0, 0.85);
+    --land-shadow: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  }
+}
+
+/* 4. Explicit Dark Theme */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #071311;
+  --surface: #0d1e1a;
+  --surface-2: #132a25;
+  --surface-3: #1a3831;
+  --glass: rgba(13, 30, 26, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.09);
+
+  --ink: #f0fdf4;
+  --ink-2: #cbdcd5;
+  --muted: #8aa49b;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-2: rgba(255, 255, 255, 0.16);
+  --grid: #17312b;
+  --axis: #284c43;
+
+  --accent: #2dd4bf;
+  --accent-ink: #99f6e4;
+  --accent-soft: rgba(45, 212, 191, 0.16);
+  --accent-2: #fb923c;
+  --accent-2-soft: rgba(251, 146, 60, 0.16);
+  --context: #6e8a81;
+
+  --stroke-map: #071311;
+  --sea: #050e0c;
+  --sea-2: #081714;
+  --nodata: #12211e;
+  --nodata-line: #223c36;
+
+  --seq-1: #092e27;
+  --seq-2: #0f4d42;
+  --seq-3: #116859;
+  --seq-4: #0d9488;
+  --seq-5: #14b8a6;
+  --seq-6: #2dd4bf;
+  --seq-7: #99f6e4;
+
+  --bar: #164e43;
+  --bar-sel: #2dd4bf;
+  --band: rgba(45, 212, 191, 0.2);
+
+  --nav: #041210;
+  --hero: linear-gradient(135deg, #030f0d 0%, #082420 50%, #0d3832 100%);
+}
+
+/* Polesan Elemen UI */
+.badge-curated {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(45, 212, 191, 0.16);
+  color: #5eead4;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  margin-left: 8px;
+  letter-spacing: 0.03em;
+}
+
+.nav .logo .tanda {
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%) !important;
+  color: #ffffff !important;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.45);
+}
+
+.tabs button[aria-selected="true"] {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+}
+
+.chart .aktif-garis {
+  stroke: var(--accent-2) !important;
+}
