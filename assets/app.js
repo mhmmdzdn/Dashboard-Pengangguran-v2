@@ -332,7 +332,7 @@
   }
   function renderBeranda() {
     const host = $('beranda');
-    const perTpt = daftarPeriode('tpt', 'tahunan', 'prov');
+    const perTpt = daftarPeriode('tpt', 'tahunan', 'prov').filter(p => p >= '2015');
     if (!perTpt.includes(S.dper)) S.dper = perTpt[perTpt.length - 1];
     const per = S.dper, iPer = perTpt.indexOf(per), perSeb = perTpt[iPer - 1];
     const L_ = BY.tpt, tpt = nilai('tpt', 'tahunan', '00', per), tptSeb = perSeb ? nilai('tpt', 'tahunan', '00', perSeb) : null;
@@ -390,9 +390,10 @@
             h('div', { class: 'peta-mini' }, pmEl), legEl, ekstrem))));
       const sn = D.sasaran.find(x => x.level === 'nasional');
       tunda.push(() => {
-        const d = deret('tpt', S.dfrek, '00') || [];
+        let d = deret('tpt', S.dfrek, '00') || [];
+        if (S.dfrek === 'tahunan') d = d.filter(x => x[0] >= '2015');
         const pita = S.dfrek === 'tahunan' && sn ? [{ dari: '2025', sampai: '2025', lo: sn.target2025[0], hi: sn.target2025[1], label: 'Sasaran 2025', legenda: 'Rentang sasaran RPJMN' }, { dari: '2029', sampai: '2029', lo: sn.target2029[0], hi: sn.target2029[1], label: 'Sasaran 2029', legenda: 'Rentang sasaran RPJMN' }] : [];
-        I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: d, utama: true }], tinggi: 330, fmt: v => fmtL(L_, v), patahan: (BY.tpt.patahan || {})[S.dfrek], pita, area: true,
+        I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: d, utama: true }], tinggi: 480, fmt: v => fmtL(L_, v), patahan: (BY.tpt.patahan || {})[S.dfrek], pita, area: true,
           periodeTambahan: S.dfrek === 'tahunan' ? ['2026', '2027', '2028', '2029'] : [], aktif: S.dfrek === 'tahunan' ? per : null, onKlik: S.dfrek === 'tahunan' ? pilihPer : null, label: 'Tren TPT Indonesia' });
         const K = kelasL(L_, 'prov');
         petaMini(pmEl, { warna: k => K.warna(pot[k]), onPilih: k => { if (k) { S.wil = k; gantiHalaman('profil'); } },
