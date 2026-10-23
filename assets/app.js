@@ -582,40 +582,7 @@
       });
     }
 
-    // 04 sebaran wilayah
-    {
-      const grid = h('div', { class: 'wil-kisi' });
-      const sasWilMap = Object.fromEntries(D.sasaran.filter(x => x.level === 'wilayah').map(x => [x.wilayah, x]));
-      const sasProvMap = Object.fromEntries(D.sasaran.filter(x => x.level === 'provinsi').map(x => [x.kode, x]));
-      const rgT = r => (r ? fmtAngka(r[0], 2) + '–' + fmtAngka(r[1], 2) + '%' : '—');
-      host.append(h('section', { class: 'bagian' }, bagian(4, 'Sebaran menurut wilayah & sasaran RPJMN', `TPT provinsi ${lblTahunan(per)}, dikelompokkan menurut koridor wilayah RPJMN · pita pada batang = sasaran provinsi 2025 · garis vertikal = Indonesia ${fmtL(L_, tpt)} · klik nama untuk membuka profil.`), grid));
-      URUT_WIL.forEach(w => {
-        const b = h('div'), prov = WIL.provinsi.filter(p => p.wilayah === w);
-        const sw = sasWilMap[w];
-        const subWil = prov.length + ' provinsi' + (sw && sw.target2025 ? ` · Target Wilayah 2025: ${rgT(sw.target2025)} | 2029: ${rgT(sw.target2029)}` : '');
-        grid.append(h('div', { class: 'card wil-kartu' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: w }), h('div', { class: 'sub', text: subWil }))), b));
-        tunda.push(() => I.daftarBatang(b, {
-          baris: prov.map(p => {
-            const sp = sasProvMap[p.kode];
-            const tipParts = [];
-            if (sp && sp.target2025) tipParts.push(`Target Provinsi 2025: ${rgT(sp.target2025)} | 2029: ${rgT(sp.target2029)}`);
-            if (sw && sw.target2025) tipParts.push(`Target Wilayah ${w} 2025: ${rgT(sw.target2025)}`);
-            return {
-              kode: p.kode,
-              nama: p.nama,
-              v: pot[p.kode] != null ? pot[p.kode] : null,
-              pita: sp ? sp.target2025 : (sw ? sw.target2025 : null),
-              tip: tipParts.join(' · ')
-            };
-          }).sort((a, c) => (a.v == null) - (c.v == null) || c.v - a.v),
-          fmt: v => fmtL(L_, v),
-          ref: tpt,
-          onPilih: k => { S.wil = k; renderProfil(); tulis(); }
-        }));
-      });
-    }
-
-    // 05 setengah pengangguran
+    // 04 setengah pengangguran
     {
       const segRinc = h('div', { class: 'seg' }), segMode = h('div', { class: 'seg' }), id = RINC_SP[S.dsp], r = R[id], g = h('div');
       I.segmen(segRinc, Object.keys(RINC_SP).map(k => [k, NAMA_RINC[k]]), S.dsp, v => { S.dsp = v; renderProfil(); tulis(); }, 'Rincian');
@@ -625,7 +592,7 @@
         segRinc,
         h('div', { style: 'display:flex;align-items:center;gap:8px' }, h('span', { class: 'kecil', text: 'Tampilan: ' }), segMode));
 
-      host.append(h('section', { class: 'bagian' }, bagian(5, 'Setengah pengangguran', S.dspmode === 'garis' ? 'Perbandingan multi-garis tingkat setengah pengangguran menurut karakteristik penduduk (2015–2025).' : 'Pekerja di bawah jam kerja normal (< 35 jam/minggu) yang masih mencari atau bersedia menerima pekerjaan lain, tahunan 2015–2025.'),
+      host.append(h('section', { class: 'bagian' }, bagian(4, 'Setengah pengangguran', S.dspmode === 'garis' ? 'Perbandingan multi-garis tingkat setengah pengangguran menurut karakteristik penduduk (2015–2025).' : 'Pekerja di bawah jam kerja normal (< 35 jam/minggu) yang masih mencari atau bersedia menerima pekerjaan lain, tahunan 2015–2025.'),
         h('div', { class: 'card' }, tabWrap, g, kakiKartu(r, id, 'tahunan'))));
 
       tunda.push(() => {
@@ -653,16 +620,16 @@
       });
     }
 
-    // 06 kegiatan penduduk
+    // 05 kegiatan penduduk
     {
       const r = R.kegiatan, f = rinc('kegiatan', 'tahunan');
       const jml = f.seri.filter(x => !/%|Tingkat/.test(x.nama)), tkt = f.seri.filter(x => /%|Tingkat/.test(x.nama));
       const g1 = h('div'), g2 = h('div');
-      host.append(h('section', { class: 'bagian' }, bagian(6, 'Penduduk 15+ menurut kegiatan', 'Indonesia, 2015–2025 (Sakernas Agustus) · tiap panel berskala sendiri · angka resmi BPS.'),
+      host.append(h('section', { class: 'bagian' }, bagian(5, 'Penduduk 15+ menurut kegiatan', 'Indonesia, 2015–2025 (Sakernas Agustus) · tiap panel berskala sendiri · angka resmi BPS.'),
         h('div', { class: 'kisi kisi-5-7' }, kartu('Tingkat (persen)', 'TPAK, TPT, tingkat kesempatan kerja', g2), kartu('Jumlah (orang)', 'Penduduk 15+, angkatan kerja, bekerja, penganggur, bukan angkatan kerja', g1)), h('div', { class: 'jarak' }, sumberR(r))));
       tunda.push(() => {
-        I.kecilBanyak(g1, { periode: f.periode, seri: jml, fmt: v => (v == null ? '—' : nfKompak.format(v)), aktif: per, patahan: BY.tpt.patahan.tahunan, tinggi: 80, bersama: false });
-        I.kecilBanyak(g2, { periode: f.periode, seri: tkt.map(x => ({ ...x, nama: x.nama.replace(/\s*\(%\)/, '') })), fmt: v => (v == null ? '—' : fmtAngka(v, 2) + '%'), aktif: per, patahan: BY.tpt.patahan.tahunan, tinggi: 80, bersama: false });
+        I.kecilBanyak(g1, { periode: f.periode, seri: jml, fmt: v => (v == null ? '—' : nfKompak.format(v)), aktif: per, patahan: (BY.tpt.patahan || {}).tahunan, tinggi: 80, bersama: false });
+        I.kecilBanyak(g2, { periode: f.periode, seri: tkt.map(x => ({ ...x, nama: x.nama.replace(/\s*\(%\)/, '') })), fmt: v => (v == null ? '—' : fmtAngka(v, 2) + '%'), aktif: per, patahan: (BY.tpt.patahan || {}).tahunan, tinggi: 80, bersama: false });
       });
     }
   }

@@ -16,7 +16,7 @@
     const beranda = document.getElementById('profil') || document.getElementById('beranda');
     if (!beranda) return;
     const sections = beranda.querySelectorAll('section.bagian');
-    if (sections.length < 6) {
+    if (sections.length < 4) {
       const oldNav = document.getElementById('beranda-focus-nav');
       if (oldNav) oldNav.remove();
       return;
@@ -34,9 +34,8 @@
       const tabs = [
         { id: 'tren', label: '1. Tren & Peta Wilayah', desc: 'Seri 2015–2025 & Peta Provinsi' },
         { id: 'demografi', label: '2. Karakteristik & Struktur', desc: 'Pendidikan, Umur, Gender' },
-        { id: 'wilayah', label: '3. Koridor RPJMN', desc: '7 Wilayah Pembangunan' },
-        { id: 'kegiatan', label: '4. Dinamika Pasar Kerja', desc: 'Setengah Pengangguran & Kegiatan' },
-        { id: 'semua', label: 'Tampilkan Lengkap', desc: 'Seluruh 6 Modul' }
+        { id: 'kegiatan', label: '3. Dinamika Pasar Kerja', desc: 'Setengah Pengangguran & Kegiatan' },
+        { id: 'semua', label: 'Tampilkan Lengkap', desc: 'Seluruh 5 Modul' }
       ];
 
       nav.innerHTML = tabs.map(t => `
@@ -69,13 +68,12 @@
   }
 
   function updateSectionVisibility(sections) {
-    // Mapping 6 section:
+    // Mapping 5 section:
     // 0: Tren & Peta
     // 1: Siapa yang menganggur
     // 2: Struktur penganggur
-    // 3: Sebaran menurut wilayah
-    // 4: Setengah pengangguran
-    // 5: Kegiatan penduduk
+    // 3: Setengah pengangguran
+    // 4: Kegiatan penduduk
     sections.forEach((sec, idx) => {
       let visible = false;
       if (activeBerandaTab === 'semua') {
@@ -84,10 +82,8 @@
         visible = (idx === 0);
       } else if (activeBerandaTab === 'demografi') {
         visible = (idx === 1 || idx === 2);
-      } else if (activeBerandaTab === 'wilayah') {
-        visible = (idx === 3);
       } else if (activeBerandaTab === 'kegiatan') {
-        visible = (idx === 4 || idx === 5);
+        visible = (idx === 3 || idx === 4);
       }
       sec.style.display = visible ? '' : 'none';
       if (visible) {
