@@ -1093,6 +1093,16 @@ table.tbl tr.klik-baris:hover td {
   gap: 10px;
 }
 
+/* Hilangkan kotak hitam default outline/focus browser saat mengklik path peta */
+.peta path.w,
+.peta path.w:focus,
+.peta path.w:focus-visible,
+.peta-host svg.peta:focus,
+.peta-host:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
 /* 7.1 Floating Sticky Wilayah Bar */
 .sticky-wilayah-bar {
   position: fixed;
@@ -2684,6 +2694,24 @@ table.tbl thead th:hover {
   background: var(--lap-c, var(--accent)) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* Penyelarasan Garis Sorot Peta yang Bersih & Elegan (Menggantikan Kotak/Garis Tebal Hitam) */
+.peta .sorot .sel-luar {
+  stroke: var(--lap-color, var(--accent)) !important;
+  stroke-width: 2.8 !important;
+}
+
+.peta .sorot .sel-dalam {
+  stroke: #ffffff !important;
+  stroke-width: 1.2 !important;
+}
+
+.peta .sorot .prov-batas {
+  stroke: var(--lap-color, var(--accent)) !important;
+  stroke-width: 1.5 !important;
+  stroke-dasharray: 4 3 !important;
+  opacity: 0.8 !important;
 }
 
 /* Penyelarasan Warna Identitas Lapisan pada Panel Analisis */

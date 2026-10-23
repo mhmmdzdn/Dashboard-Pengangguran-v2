@@ -19,6 +19,15 @@
 }
 
 /* 2. Label Peta Lebih Halus & Tidak Menutupi Daratan */
+.peta path.w,
+.peta path.w:focus,
+.peta path.w:focus-visible,
+.peta-host svg:focus,
+.peta-host:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
 .label-lapis text {
   font-size: 10.5px !important;
   font-weight: 600;
