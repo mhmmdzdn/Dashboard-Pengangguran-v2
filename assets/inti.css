@@ -6,7 +6,7 @@
 :root {
   color-scheme: light;
   --page: #f3f5f9; --surface: #ffffff; --surface-2: #f1f4f9; --surface-3: #e8edf5; --glass: rgba(255, 255, 255, .9);
-  --ink: #0f172a; --ink-2: #475569; --muted: #64748b;
+  --ink: #0f172a; --ink-2: #334155; --muted: #475569;
   --grid: #e5e9f0; --axis: #cbd2dd; --border: rgba(15, 23, 42, .08); --border-2: rgba(15, 23, 42, .14);
   --accent: #2a78d6; --accent-ink: #1c5cab; --accent-soft: #e8f1fc; --accent-2: #eb6834; --accent-2-soft: #fdeee7;
   --context: #94a3b8;
@@ -31,7 +31,7 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --page: #0a0f1c; --surface: #111827; --surface-2: #172033; --surface-3: #1e293b; --glass: rgba(17, 24, 39, .9);
-    --ink: #f8fafc; --ink-2: #cbd5e1; --muted: #94a3b8; --grid: #1f2a3c; --axis: #334155; --border: rgba(255, 255, 255, .08); --border-2: rgba(255, 255, 255, .16);
+    --ink: #f8fafc; --ink-2: #e2e8f0; --muted: #a0aec0; --grid: #1f2a3c; --axis: #334155; --border: rgba(255, 255, 255, .08); --border-2: rgba(255, 255, 255, .16);
     --accent: #3987e5; --accent-ink: #86b6ef; --accent-soft: rgba(57, 135, 229, .16); --accent-2: #d95926; --accent-2-soft: rgba(217, 89, 38, .16);
     --context: #7b8799; --bar: #27497a; --bar-sel: #5598e7;
     --nodata: #1a2234; --nodata-line: #33415a; --stroke-map: #0f1a2e; --sea: #0c1424; --sea-2: #101a2e;
@@ -49,7 +49,7 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --page: #0a0f1c; --surface: #111827; --surface-2: #172033; --surface-3: #1e293b; --glass: rgba(17, 24, 39, .9);
-  --ink: #f8fafc; --ink-2: #cbd5e1; --muted: #94a3b8; --grid: #1f2a3c; --axis: #334155; --border: rgba(255, 255, 255, .08); --border-2: rgba(255, 255, 255, .16);
+  --ink: #f8fafc; --ink-2: #e2e8f0; --muted: #a0aec0; --grid: #1f2a3c; --axis: #334155; --border: rgba(255, 255, 255, .08); --border-2: rgba(255, 255, 255, .16);
   --accent: #3987e5; --accent-ink: #86b6ef; --accent-soft: rgba(57, 135, 229, .16); --accent-2: #d95926; --accent-2-soft: rgba(217, 89, 38, .16);
   --context: #7b8799; --bar: #27497a; --bar-sel: #5598e7;
   --nodata: #1a2234; --nodata-line: #33415a; --stroke-map: #0f1a2e; --sea: #0c1424; --sea-2: #101a2e;
