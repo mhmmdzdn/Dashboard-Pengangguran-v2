@@ -1989,8 +1989,9 @@
         mekanisme: 'Ekosistem dapur MBG menyerap ratusan ribu tenaga kerja operasional lokal, petani, dan UMKM katering di daerah, sementara insentif pajak PPh 21 DTP meringankan beban arus kas industri padat karya agar tetap mempertahankan pekerjanya.',
         tags: ['Makan Bergizi Gratis (MBG)', 'Insentif PPh 21 DTP', 'Vokasi Digital & AI'],
         warna: '#059669',
-        img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80',
-        imgAlt: 'Pelayanan dapur nutrisi Makan Bergizi Gratis dan katering lokal',
+        img: 'assets/logo-bgn.png',
+        imgFit: 'contain',
+        imgAlt: 'Logo Resmi Badan Gizi Nasional (BGN) Republik Indonesia - Pelaksana Makan Bergizi Gratis',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(5, 150, 105, 0.08)"/>
           <circle cx="46" cy="46" r="14" fill="#059669" opacity="0.18" stroke="#059669" stroke-width="2.5"/>
@@ -2087,7 +2088,7 @@
                   </div>
                   <div class="ms-illus" aria-hidden="true">
                     ${m.img ? `
-                      <img class="ms-thumb-img" src="${m.img}" alt="${m.imgAlt || m.judul}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                      <img class="ms-thumb-img ${m.imgFit === 'contain' ? 'ms-thumb-contain' : ''}" src="${m.img}" alt="${m.imgAlt || m.judul}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
                       <div class="ms-illus-fallback" style="display:none;width:100%;height:100%">${m.svg}</div>
                     ` : m.svg}
                   </div>

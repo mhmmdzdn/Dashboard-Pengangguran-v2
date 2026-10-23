@@ -3374,6 +3374,12 @@ table.tbl thead th:hover {
   transition: transform 0.3s ease;
 }
 
+.ms-thumb-img.ms-thumb-contain {
+  object-fit: contain;
+  padding: 8px;
+  background: #ffffff;
+}
+
 .ms-card:hover .ms-thumb-img {
   transform: scale(1.05);
 }
