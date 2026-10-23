@@ -2410,7 +2410,7 @@
             const maxVal = 9.5;
             const isHighest = s.nama.includes('Kejuruan');
             return `<div class="hb-r">` +
-              `<div class="hb-h"><b>${s.nama}</b><span>${fmtAngka(val, 2)}%</span></div>` +
+              `<div class="hb-h"><b>${s.nama}</b></div>` +
               `<div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(val / maxVal).toFixed(3)};--wc:${isHighest ? '#ea580c' : 'var(--accent, #0f766e)'}"></span></div><span class="hb-v">${fmtAngka(val, 2)}%</span></div>` +
               `</div>`;
           }).join('') +
@@ -2433,7 +2433,7 @@
             { label: 'Rata-rata Seluruh Umur', val: natTpt, color: '#64748b' }
           ].map(item => `
             <div class="hb-r">
-              <div class="hb-h"><b>${item.label}</b><span>${fmtAngka(item.val, 2)}%</span></div>
+              <div class="hb-h"><b>${item.label}</b></div>
               <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 25).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
             </div>
           `).join('') +
@@ -2456,7 +2456,7 @@
             { label: 'Tingkat Setengah Pengangguran', val: natSet, color: '#8b5cf6' }
           ].map(item => `
             <div class="hb-r">
-              <div class="hb-h"><b>${item.label}</b><span>${fmtAngka(item.val, 2)}%</span></div>
+              <div class="hb-h"><b>${item.label}</b></div>
               <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 9).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
             </div>
           `).join('') +
