@@ -1175,7 +1175,7 @@
     gendergap: { t: 'Disparitas Gender Ketenagakerjaan', k: 1, d: 'Perbedaan tingkat pengangguran atau partisipasi kerja antara laki-laki dan perempuan di suatu wilayah, sering kali dipengaruhi oleh struktur industri lokal dan beban pengurusan rumah tangga.' }
   };
 
-  const termI = (k, label) => `<span class="term" data-tip-key="${k}">${label || GLOSS_INSIGHT[k].t}</span>`;
+  const termI = (k, label) => `<span class="term" data-tip-key="${k}" tabindex="0" role="button" aria-label="Penjelasan istilah ${label || GLOSS_INSIGHT[k].t}">${label || GLOSS_INSIGHT[k].t}</span>`;
 
   let insightDibuat = false;
   let insightCharts = [];
@@ -1521,15 +1521,33 @@
       });
     });
 
-    // Tooltip interaktif untuk istilah ketenagakerjaan
+    // Tooltip interaktif untuk istilah ketenagakerjaan (Mouse, Sentuh, & Keyboard)
+    const bukaTipTerm = (el, ev) => {
+      const k = el.dataset.tipKey;
+      if (!GLOSS_INSIGHT[k]) return;
+      const rc = el.getBoundingClientRect();
+      const fakeEv = (ev && typeof ev.clientX === 'number' && ev.clientX > 0)
+        ? ev
+        : { clientX: Math.round(rc.left + rc.width / 2), clientY: Math.round(rc.bottom) };
+      I.tampilTip(fakeEv, [I.tipNama(GLOSS_INSIGHT[k].t), I.tipSub(GLOSS_INSIGHT[k].d)]);
+    };
     host.querySelectorAll('.term').forEach(el => {
-      el.addEventListener('mouseenter', ev => {
-        const k = el.dataset.tipKey;
-        if (GLOSS_INSIGHT[k]) {
-          I.tampilTip(ev, [I.tipNama(GLOSS_INSIGHT[k].t), I.tipSub(GLOSS_INSIGHT[k].d)]);
+      el.addEventListener('mouseenter', ev => bukaTipTerm(el, ev));
+      el.addEventListener('mouseleave', () => I.sembunyiTip());
+      el.addEventListener('focus', ev => bukaTipTerm(el, ev));
+      el.addEventListener('blur', () => I.sembunyiTip());
+      el.addEventListener('click', ev => {
+        ev.stopPropagation();
+        bukaTipTerm(el, ev);
+      });
+      el.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          bukaTipTerm(el, ev);
+        } else if (ev.key === 'Escape') {
+          I.sembunyiTip();
         }
       });
-      el.addEventListener('mouseleave', () => I.sembunyiTip());
     });
 
     // Inisialisasi SVG chart tren 40 tahun

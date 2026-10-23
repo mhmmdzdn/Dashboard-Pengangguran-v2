@@ -194,8 +194,102 @@
       } else if (e.key === 'f' || e.key === 'F') {
         const panelBtn = document.getElementById('panel-toggle-desktop');
         if (panelBtn) panelBtn.click();
+      } else if (e.key === '?') {
+        e.preventDefault();
+        toggleShortcutModal();
       }
     });
+  }
+
+  function initBackToTopAndShortcuts() {
+    if (document.getElementById('v2-fab-stack')) return;
+
+    const stack = document.createElement('div');
+    stack.id = 'v2-fab-stack';
+    stack.className = 'v2-fab-stack';
+    stack.innerHTML = `
+      <button type="button" id="btn-back-top" class="v2-fab-btn hidden" title="Kembali ke Atas" aria-label="Kembali ke bagian atas halaman">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+        <span>Ke Atas</span>
+      </button>
+      <button type="button" id="btn-kbd-help" class="v2-fab-btn v2-fab-icon" title="Pintasan Keyboard (?)" aria-label="Tampilkan daftar pintasan keyboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>
+      </button>
+    `;
+    document.body.appendChild(stack);
+
+    const topBtn = document.getElementById('btn-back-top');
+    const kbdBtn = document.getElementById('btn-kbd-help');
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isMap = document.body.classList.contains('mode-peta');
+          if (!isMap && window.scrollY > 420) {
+            topBtn.classList.remove('hidden');
+          } else {
+            topBtn.classList.add('hidden');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    topBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    kbdBtn.addEventListener('click', () => {
+      toggleShortcutModal();
+    });
+  }
+
+  function toggleShortcutModal(forceClose) {
+    let modal = document.getElementById('v2-kbd-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'v2-kbd-modal';
+      modal.className = 'v2-kbd-modal hidden';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Daftar Pintasan Keyboard');
+      modal.innerHTML = `
+        <div class="v2-kbd-backdrop"></div>
+        <div class="v2-kbd-card">
+          <div class="v2-kbd-head">
+            <h3>Pintasan Navigasi Cepat</h3>
+            <button type="button" class="v2-kbd-close" aria-label="Tutup">&times;</button>
+          </div>
+          <div class="v2-kbd-grid">
+            <div><kbd>R</kbd><span>Buka tab <b>Profil</b></span></div>
+            <div><kbd>P</kbd><span>Buka tab <b>Peta Spasial</b></span></div>
+            <div><kbd>S</kbd><span>Buka tab <b>Sasaran RPJMN</b></span></div>
+            <div><kbd>I</kbd><span>Buka tab <b>Insight</b></span></div>
+            <div><kbd>M</kbd><span>Buka tab <b>Metodologi</b></span></div>
+            <div><kbd>F</kbd><span>Lipat/buka <b>Panel Peta</b></span></div>
+            <div><kbd>?</kbd><span>Buka/tutup <b>Bantuan Pintasan</b></span></div>
+            <div><kbd>Esc</kbd><span>Tutup dialog / keluar tur</span></div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      modal.querySelector('.v2-kbd-backdrop').addEventListener('click', () => toggleShortcutModal(true));
+      modal.querySelector('.v2-kbd-close').addEventListener('click', () => toggleShortcutModal(true));
+      window.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && !modal.classList.contains('hidden')) {
+          toggleShortcutModal(true);
+        }
+      });
+    }
+
+    if (forceClose === true) {
+      modal.classList.add('hidden');
+    } else {
+      modal.classList.toggle('hidden');
+    }
   }
 
   // Menambahkan aksen status & konteks pada KPI Card Nasional
@@ -247,6 +341,7 @@
     initDesktopPanel();
     initFullscreen();
     initKeyboard();
+    initBackToTopAndShortcuts();
     applyBerandaTabs();
     enhanceKpiCards();
     setupObserver();

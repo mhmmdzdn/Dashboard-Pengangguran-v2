@@ -2019,3 +2019,226 @@ details.lapisan-det[open] > summary::after {
   background: var(--accent);
   color: #ffffff;
 }
+
+/* =====================================================================
+   7. Evaluasi & Improvisasi Berdasarkan Frontend-Design & UI-UX-Pro-Max
+   - Editorial Section Headers (Tanpa Kotak Nomor AI-Slop 01/02)
+   - Motion & Hover Restraint (Hanya Elemen Klik yang Mengangkat)
+   - Touch & Keyboard Accessibility pada Istilah (.term) & Target Sentuh
+   - Floating Quick-Action (Ke Atas + Modal Pintasan Keyboard ?)
+   - prefers-reduced-motion & focus-not-obscured (scroll-margin-top)
+   ===================================================================== */
+
+/* 7.1 Editorial Section Headers — mengganti kotak nomor 01/02 menjadi aksen vertikal editorial */
+.bagian-kepala {
+  position: relative;
+  padding-left: 14px;
+  border-left: 3.5px solid var(--accent);
+  margin-bottom: 16px !important;
+}
+.bagian-kepala .no {
+  display: none !important;
+}
+.bagian-kepala h2 {
+  font-size: 19.5px !important;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.bagian-kepala p {
+  margin: 4px 0 0 0 !important;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* 7.2 Motion & Hover Restraint — Kartu statis tidak terangkat; hanya kartu interaktif (.klik) yang memberi sinyal klik */
+.kpi:not(.klik) {
+  transform: none !important;
+}
+.kpi:not(.klik):hover {
+  transform: none !important;
+  border-color: var(--border-2) !important;
+  box-shadow: none !important;
+}
+.kpi.klik {
+  cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, box-shadow 0.16s ease !important;
+}
+.kpi.klik:hover,
+.kpi.klik:focus-visible {
+  transform: translateY(-2px) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 8px 20px -6px rgba(15, 118, 110, 0.18) !important;
+}
+.kpi-sub-item.klik:hover,
+.kpi-sub-item.klik:focus-visible {
+  background: var(--accent-soft) !important;
+}
+
+/* 7.3 Aksesibilitas Istilah (.term) & Focus-Not-Obscured (WCAG 2.2 AA) */
+#page-insight .chap,
+.bagian,
+details.lapisan-det {
+  scroll-margin-top: 96px;
+}
+#page-insight .term {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+#page-insight .term:hover,
+#page-insight .term:focus-visible {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  outline: none;
+}
+
+/* 7.4 Floating Action Stack (Tombol Ke Atas & Pintasan Keyboard) */
+.v2-fab-stack {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 44;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+body.mode-peta .v2-fab-stack {
+  display: none !important;
+}
+.v2-fab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid var(--border-2);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -4px rgba(6, 35, 30, 0.18);
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+.v2-fab-btn.v2-fab-icon {
+  width: 38px;
+  padding: 0;
+}
+.v2-fab-btn:hover,
+.v2-fab-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 7.5 Modal Pintasan Keyboard (?) */
+.v2-kbd-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.v2-kbd-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 20, 18, 0.55);
+  backdrop-filter: blur(4px);
+}
+.v2-kbd-card {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-2);
+  color: var(--ink);
+}
+.v2-kbd-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.v2-kbd-head h3 {
+  font-size: 15px;
+  font-weight: 700;
+}
+.v2-kbd-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.v2-kbd-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.v2-kbd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  font-size: 12.5px;
+}
+.v2-kbd-grid > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.v2-kbd-grid kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 1px 0 var(--border-2);
+  font-family: var(--font);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 7.6 Touch Targets & Reduced Motion (WCAG 2.2 / UI-UX-Pro-Max) */
+@media (max-width: 768px) {
+  .tabs button,
+  .seg button,
+  .btn,
+  .focus-pill {
+    min-height: 38px;
+  }
+  .v2-kbd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
