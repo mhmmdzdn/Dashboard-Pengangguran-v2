@@ -1206,7 +1206,7 @@
     g += o.body({ X, Y, lo, W0, pad });
     (o.marks || []).forEach(m => {
       const x = X(m.t), y = Y(m.y);
-      g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="var(--card-bg, #ffffff)" stroke="var(--aksen, #2563eb)" stroke-width="2.5"/><text class="mk" x="${(x + m.dx).toFixed(1)}" y="${(y + m.dy).toFixed(1)}" text-anchor="${m.anc}">${m.txt}</text>`;
+      g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="var(--surface, #ffffff)" stroke="var(--accent, #0f766e)" stroke-width="2.5"/><text class="mk" x="${(x + m.dx).toFixed(1)}" y="${(y + m.dy).toFixed(1)}" text-anchor="${m.anc}">${m.txt}</text>`;
     });
     el.innerHTML = `<svg width="${W0}" height="${H0}" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="${o.label || 'Grafik'}">${g}</svg>`;
   }
@@ -1296,10 +1296,10 @@
           `<p>Jawa Barat adalah episentrum terbesar dengan <b>${n_jb} kotak</b> (${((jbPeng / natPeng) * 100).toFixed(1)}% total nasional atau <b>${fmtAngka(jbPeng)} jiwa</b>). Angka penganggur di satu provinsi Jawa Barat lebih banyak daripada seluruh gabungan provinsi di luar Jawa.</p>` +
           `<p>Sebaliknya, seluruh 32 provinsi di luar Pulau Jawa jika digabungkan hanya mencakup <b>${n_lj} kotak</b> (${((luarJawaPeng / natPeng) * 100).toFixed(1)}%). Ini menunjukkan besarnya konsentrasi tantangan ketenagakerjaan di sentra industri Pulau Jawa.</p>`,
         fig: `<div class="fig-t">Distribusi 100 Kotak Penganggur Indonesia (${lastPer})</div>` +
-          `<div class="waffle">${'<i style="--wc:#2563eb"></i>'.repeat(n_jb)}${'<i style="--wc:#60a5fa"></i>'.repeat(n_rj)}${'<i style="--wc:#94a3b8"></i>'.repeat(n_lj)}</div>` +
+          `<div class="waffle">${'<i style="--wc:#0f766e"></i>'.repeat(n_jb)}${'<i style="--wc:#2dd4bf"></i>'.repeat(n_rj)}${'<i style="--wc:#94a3b8"></i>'.repeat(n_lj)}</div>` +
           `<ul class="wkey">` +
-          `  <li style="--wc:#2563eb"><i></i><span><b>Jawa Barat</b> (${n_jb} kotak)</span><b>${fmtAngka(jbPeng)} jiwa</b><small>Provinsi dengan jumlah penganggur terbanyak di Indonesia</small></li>` +
-          `  <li style="--wc:#60a5fa"><i></i><span><b>Provinsi Jawa Lainnya</b> (${n_rj} kotak)</span><b>${fmtAngka(restJawaPeng)} jiwa</b><small>Jateng, Jatim, Banten, DKI Jakarta, DIY</small></li>` +
+          `  <li style="--wc:#0f766e"><i></i><span><b>Jawa Barat</b> (${n_jb} kotak)</span><b>${fmtAngka(jbPeng)} jiwa</b><small>Provinsi dengan jumlah penganggur terbanyak di Indonesia</small></li>` +
+          `  <li style="--wc:#2dd4bf"><i></i><span><b>Provinsi Jawa Lainnya</b> (${n_rj} kotak)</span><b>${fmtAngka(restJawaPeng)} jiwa</b><small>Jateng, Jatim, Banten, DKI Jakarta, DIY</small></li>` +
           `  <li style="--wc:#94a3b8"><i></i><span><b>Luar Pulau Jawa (32 Provinsi)</b> (${n_lj} kotak)</span><b>${fmtAngka(luarJawaPeng)} jiwa</b><small>Sumatera, Kalimantan, Sulawesi, Bali-Nusa, Maluku, Papua</small></li>` +
           `</ul>`
       },
@@ -1319,7 +1319,7 @@
             const isHighest = s.nama.includes('Kejuruan');
             return `<div class="hb-r">` +
               `<div class="hb-h"><b>${s.nama}</b><span>${fmtAngka(val, 2)}%</span></div>` +
-              `<div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(val / maxVal).toFixed(3)};--wc:${isHighest ? '#ea580c' : '#2563eb'}"></span></div><span class="hb-v">${fmtAngka(val, 2)}%</span></div>` +
+              `<div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(val / maxVal).toFixed(3)};--wc:${isHighest ? '#ea580c' : 'var(--accent, #0f766e)'}"></span></div><span class="hb-v">${fmtAngka(val, 2)}%</span></div>` +
               `</div>`;
           }).join('') +
           `</div>`
@@ -1454,17 +1454,22 @@
       .join('');
 
     host.innerHTML = `
-      <div class="story-in">
-        <header class="story-head">
-          <h1>Cerita &amp; Wawasan di Balik Angka Pengangguran Indonesia</h1>
-          <p class="lede">
-            Pada Sakernas ${lastPer}, angka ${termI('tpt')} resmi nasional tercatat <b>${fmtAngka(natTpt, 2)}%</b> dengan <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Di balik angka tunggal tersebut, terdapat dinamika ketenagakerjaan yang kaya antarwilayah, kelompok umur, kesetaraan gender, hingga capaian sasaran RPJMN.
-          </p>
-          <p class="lede how">
-            Halaman ini merangkum <b>8 bab temuan analitis terkurasi</b> dari angka resmi BPS dan Bappenas. Kata dengan garis bawah titik-titik memiliki penjelasan ringkas saat disentuh atau diarahkan kursor.
-          </p>
-        </header>
+      <div class="hero">
+        <div class="dalam hero-kisi">
+          <div>
+            <div class="alis"><span class="titik"></span>Cerita &amp; Wawasan Data · Sakernas ${lastPer}</div>
+            <h1>Wawasan Analitis di Balik Angka <em>${fmtAngka(natTpt, 2)}%</em> Pengangguran Terbuka Indonesia.</h1>
+            <p>Di balik <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka nasional, terdapat dinamika struktural antarwilayah, kelompok umur, kesetaraan gender, hingga capaian koridor RPJMN. Halaman ini merangkum 8 bab temuan terkurasi dari angka resmi BPS dan Bappenas.</p>
+          </div>
+          <div class="hero-angka">
+            <div class="lbl">Ringkasan Wawasan</div>
+            <div class="val">8 Bab</div>
+            <div class="per">Sentuh istilah bergaris bawah titik-titik untuk penjelasan</div>
+          </div>
+        </div>
+      </div>
 
+      <div class="story-in">
         <nav class="toc" aria-label="Daftar Isi Cerita">
           <div class="toc-title">Daftar 8 Bab Wawasan Data</div>
           <ul>
@@ -1542,8 +1547,8 @@
         body: ({ X, Y, lo, pad }) => {
           const dStr = pts.map((p, k) => (k ? 'L' : 'M') + X(p.t).toFixed(1) + ' ' + Y(p.y).toFixed(1)).join('');
           const base = Y(0).toFixed(1);
-          const area = `<path d="${dStr}L${X(pts[pts.length - 1].t).toFixed(1)} ${base}L${X(pts[0].t).toFixed(1)} ${base}Z" fill="rgba(37, 99, 235, 0.12)"/>`;
-          const line = `<path class="ln" d="${dStr}" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+          const area = `<path d="${dStr}L${X(pts[pts.length - 1].t).toFixed(1)} ${base}L${X(pts[0].t).toFixed(1)} ${base}Z" fill="var(--accent-soft, rgba(15, 118, 110, 0.14))"/>`;
+          const line = `<path class="ln" d="${dStr}" fill="none" stroke="var(--accent, #0f766e)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
           return area + line;
         },
         marks: [

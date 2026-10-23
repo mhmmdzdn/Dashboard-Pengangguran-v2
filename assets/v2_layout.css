@@ -1797,3 +1797,225 @@ body.panel-terlipat .zoom-alat {
 .waktu .putar:hover {
   transform: scale(1.08) !important;
 }
+
+/* =====================================================================
+   Estetika Tambahan: Ikon Tema, Tab Berikon, Liquid Glass Tooltip,
+   Harmonisasi Tab Insight, Bullet Chart Emerald, & Akordeon Modern
+   ===================================================================== */
+
+/* 1. Ikon Tema Dinamis (Matahari vs Bulan Sabit) */
+#tema .ikon-tema-gelap {
+  display: inline-block;
+}
+#tema .ikon-tema-terang {
+  display: none;
+}
+:root[data-theme="dark"] #tema .ikon-tema-gelap {
+  display: none;
+}
+:root[data-theme="dark"] #tema .ikon-tema-terang {
+  display: inline-block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #tema .ikon-tema-gelap {
+    display: none;
+  }
+  :root:not([data-theme="light"]) #tema .ikon-tema-terang {
+    display: inline-block;
+  }
+}
+
+/* 2. Tab Navigasi Utama dengan Ikon Halus */
+.nav .tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav .tabs button .ikon {
+  width: 15px;
+  height: 15px;
+  opacity: 0.85;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.nav .tabs button:hover .ikon,
+.nav .tabs button[aria-selected="true"] .ikon {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* 3. Liquid Glass Tooltip (.tip) */
+.tip {
+  background: var(--glass) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  border: 1px solid var(--border-2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 14px 34px -6px rgba(6, 35, 30, 0.22), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  padding: 10px 14px !important;
+}
+:root[data-theme="dark"] .tip {
+  box-shadow: 0 16px 38px -6px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
+}
+.tip .t-nm {
+  font-family: var(--font-d);
+  font-size: 12.5px;
+  letter-spacing: -0.01em;
+}
+
+/* 4. Harmonisasi Tab Insight (Mode Terang & Gelap + Emerald Brand) */
+#page-insight {
+  background: var(--page) !important;
+  color: var(--ink) !important;
+}
+#page-insight .story-in {
+  padding-top: 24px !important;
+}
+#page-insight .toc {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  margin-top: 6px !important;
+}
+#page-insight .toc-title {
+  color: var(--muted) !important;
+}
+#page-insight .toc a {
+  color: var(--ink) !important;
+}
+#page-insight .toc a::before {
+  background: var(--accent) !important;
+}
+#page-insight .toc a:hover {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+}
+#page-insight .chap {
+  border-top-color: var(--border) !important;
+}
+#page-insight .chap > h2 {
+  color: var(--ink) !important;
+  font-family: var(--font-d);
+}
+#page-insight .chap-text p {
+  color: var(--ink-2) !important;
+}
+#page-insight .chap-text b {
+  color: var(--ink) !important;
+}
+#page-insight .chap-text .note {
+  background: var(--surface-2) !important;
+  color: var(--ink-2) !important;
+  border-left: 3px solid var(--accent) !important;
+}
+#page-insight .maplink {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-2) !important;
+  color: var(--accent) !important;
+}
+#page-insight .maplink:hover {
+  background: var(--accent-soft) !important;
+  border-color: var(--accent) !important;
+}
+#page-insight .chap-fig {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+}
+#page-insight .fig-t,
+#page-insight .hb-h b,
+#page-insight .hb-v,
+#page-insight .kamus dt {
+  color: var(--ink) !important;
+}
+#page-insight .fig-c,
+#page-insight .hb-h span,
+#page-insight .wkey small,
+#page-insight .kamus dd {
+  color: var(--muted) !important;
+}
+#page-insight .hb-bg {
+  background: var(--surface-2) !important;
+}
+#page-insight .grd {
+  stroke: var(--grid) !important;
+}
+#page-insight .ax {
+  fill: var(--muted) !important;
+}
+#page-insight .mk {
+  fill: var(--ink) !important;
+  stroke: var(--surface) !important;
+}
+#page-insight .term {
+  border-bottom-color: var(--accent) !important;
+}
+#page-insight .term:hover {
+  color: var(--accent) !important;
+}
+#page-insight .kamus div {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+#page-insight .kamus div:hover {
+  border-color: var(--border-2) !important;
+  transform: translateY(-1px);
+}
+
+/* 5. Penyempurnaan Bullet Chart Sasaran RPJMN */
+.bullet .pita25,
+.bullet-leg .l25 {
+  background: rgba(15, 118, 110, 0.22) !important;
+  border-color: var(--accent) !important;
+}
+:root[data-theme="dark"] .bullet .pita25,
+:root[data-theme="dark"] .bullet-leg .l25 {
+  background: rgba(45, 212, 191, 0.25) !important;
+}
+.bullet .titik {
+  width: 12px !important;
+  height: 12px !important;
+  background: var(--accent) !important;
+  border: 2px solid var(--surface) !important;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.28), 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+  transition: transform 0.15s ease;
+}
+.bullet .trk:hover .titik {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+/* 6. Akordeon Modern di Halaman Metodologi */
+details.lapisan-det {
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+details.lapisan-det:hover {
+  border-color: var(--border-2) !important;
+}
+details.lapisan-det[open] {
+  border-left: 3.5px solid var(--accent) !important;
+  box-shadow: var(--shadow-1) !important;
+}
+details.lapisan-det > summary::after {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  display: inline-grid;
+  place-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.2s ease;
+}
+details.lapisan-det:hover > summary::after {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+details.lapisan-det[open] > summary::after {
+  background: var(--accent);
+  color: #ffffff;
+}

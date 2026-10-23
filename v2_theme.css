@@ -6,6 +6,8 @@
 /* 1. Base / Light Theme */
 :root {
   color-scheme: light;
+  --font: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --font-d: "Plus Jakarta Sans", "Inter", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
   --page: #f8faf9;
   --surface: #ffffff;
   --surface-2: #f1f5f3;
