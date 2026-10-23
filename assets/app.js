@@ -1509,6 +1509,8 @@
         kejadian: 'Penurunan harga komoditas global (batu bara dan CPO) serta perlambatan ekonomi Tiongkok menekan sektor pertambangan dan perkebunan di luar Jawa, memicu gelombang PHK di sektor primer.',
         tags: ['Harga Batu Bara & CPO', 'Perlambatan Tiongkok', 'Sektor Primer Luar Jawa'],
         warna: '#d97706',
+        img: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pelabuhan kargo ekspor dan komoditas batu bara/kontainer',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M22 28 L46 52 L64 40 L94 64" stroke="#d97706" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1532,6 +1534,8 @@
         kejadian: 'Ledakan awal <i>ride-hailing</i> (Gojek, Grab) dan <i>e-commerce</i> yang menyerap jutaan tenaga kerja ke sektor informal/kemitraan. Di sisi lain, otomatisasi perbankan dan pergeseran ritel konvensional ke digital mulai mengurangi serapan tenaga kerja formal di perkotaan.',
         tags: ['Ledakan Ride-Hailing', 'E-Commerce', 'Otomatisasi Perbankan & Ritel'],
         warna: '#0f766e',
+        img: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pengiriman paket e-commerce dan aplikasi digital ride hailing',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <rect x="42" y="18" width="36" height="54" rx="6" stroke="#0f766e" stroke-width="3" fill="var(--surface)"/>
@@ -1557,6 +1561,8 @@
         kejadian: 'Ketegangan perang dagang AS-Tiongkok mengganggu rantai pasok global dan menahan ekspansi manufaktur berorientasi ekspor. Namun, struktur pasar kerja domestik mampu bertahan sehingga TPT berhasil menyentuh titik terendah pra-pandemi pada Agustus 2019 (<b>5,23%</b>).',
         tags: ['Perang Dagang AS-Tiongkok', 'Disrupsi Rantai Pasok', 'Titik Terendah Pra-Pandemi'],
         warna: '#2563eb',
+        img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Peti kemas kargo logistik perdagangan internasional',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <circle cx="45" cy="45" r="18" stroke="#2563eb" stroke-width="2.5" fill="#2563eb" fill-opacity="0.12"/>
@@ -1578,6 +1584,8 @@
         kejadian: 'Pembatasan Sosial Berskala Besar (PSBB) melumpuhkan sektor pariwisata, akomodasi, transportasi, dan manufaktur. Terjadi kontraksi ekonomi (<b>-2,07%</b>) yang memicu gelombang PHK massal dan merumahkan jutaan pekerja, melambungkan TPT ke <b>7,07%</b> (sekitar 9,77 juta orang).',
         tags: ['Pandemi COVID-19', 'PSBB Nasional', 'Kontraksi Ekonomi -2,07%'],
         warna: '#dc2626',
+        img: 'https://images.unsplash.com/photo-1584483766114-2cea6facdf57?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Protokol darurat masker dan krisis masa pandemi',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(220, 38, 38, 0.08)"/>
           <circle cx="60" cy="45" r="18" fill="#dc2626" opacity="0.18" stroke="#dc2626" stroke-width="2.5"/>
@@ -1598,6 +1606,8 @@
         kejadian: 'Munculnya varian Delta pada pertengahan 2021 memaksa penerapan <b>PPKM Darurat</b>, yang kembali menahan laju rekrutmen di sektor jasa, transportasi, dan perdagangan ritel.',
         tags: ['Varian Delta', 'PPKM Darurat', 'Penahanan Rekrutmen Ritel'],
         warna: '#ea580c',
+        img: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Transportasi publik dan pengetatan mobilitas',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M22 52 H42 L50 28 L62 66 L72 42 L80 52 H98" stroke="#ea580c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1617,6 +1627,8 @@
         kejadian: 'Perang Rusia-Ukraina memicu inflasi energi dan pangan global. Pengetatan suku bunga The Fed memicu fenomena <i>Tech Winter</i> (efisiensi dan PHK besar-besaran di sektor startup teknologi nasional) serta penurunan pesanan ekspor tekstil dan alas kaki dari pasar Eropa/AS.',
         tags: ['Perang Rusia-Ukraina', 'Suku Bunga The Fed', 'Fenomena Tech Winter'],
         warna: '#0f766e',
+        img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Kantor startup teknologi informasi masa pergeseran efisiensi',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <circle cx="60" cy="45" r="22" stroke="#0f766e" stroke-width="2.5" fill="var(--surface)"/>
@@ -1638,6 +1650,8 @@
         kejadian: 'Pelemahan permintaan global dan banjir barang impor murah menekan industri padat karya berorientasi ekspor—khususnya Tekstil dan Produk Tekstil (TPT) serta alas kaki di Jawa Barat dan Jawa Tengah—yang memicu gelombang penutupan pabrik.',
         tags: ['Pelemahan Permintaan Global', 'Banjir Impor Murah', 'Tekanan Industri Tekstil'],
         warna: '#0d9488',
+        img: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pabrik manufaktur dan mesin tekstil industri garmen',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M26 66 V40 L44 50 V40 L62 50 V30 H88 V66 Z" fill="#0d9488" opacity="0.16" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
@@ -1657,6 +1671,8 @@
         kejadian: 'Walaupun TPT secara agregat turun di bawah level pra-pandemi (<b>4,91%</b> pada Agustus 2024), muncul fenomena struktural: proporsi pekerja informal tetap tinggi (sekitar 58–59%), maraknya PHK di manufaktur tekstil, dan sorotan tajam terhadap tingginya TPT usia muda (15–24 tahun) akibat <i>skill mismatch</i> serta syarat rekrutmen yang ketat.',
         tags: ['Pekerja Informal 58–59%', 'Pengangguran Muda / Gen-Z', 'Skill Mismatch'],
         warna: '#7c3aed',
+        img: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pencari kerja usia muda, interview dan rekrutmen tenaga kerja',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <circle cx="46" cy="38" r="10" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="2.5"/>
@@ -1678,6 +1694,8 @@
         kejadian: 'TPT terus melandai ke <b>4,85%</b> (Agustus 2025), <b>4,74%</b> (November 2025), hingga <b>4,68%</b> (Februari 2026). Namun, pasar kerja menghadapi tantangan adopsi kecerdasan buatan (AI) dan otomasi yang mengurangi lowongan <i>entry-level</i> administratif (memicu tingginya pengangguran lulusan sarjana di bidang manajemen, ekonomi, dan hukum) serta dinamika tarif perdagangan global.',
         tags: ['Disrupsi Kecerdasan Buatan (AI)', 'Otomasi Entry-Level', 'Dinamika Tarif Global'],
         warna: '#059669',
+        img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pusat data digital dan otomasi kecerdasan buatan',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(5, 150, 105, 0.08)"/>
           <rect x="42" y="27" width="36" height="36" rx="8" fill="#059669" opacity="0.18" stroke="#059669" stroke-width="2.5"/>
@@ -1706,6 +1724,8 @@
         mekanisme: 'Menahan arus urbanisasi pencari kerja desa ke kota dengan menciptakan pekerjaan konstruksi skala mikro di perdesaan, sembari memberikan kepastian biaya upah bagi pabrik manufaktur.',
         tags: ['Dana Desa Swakelola', 'Paket Ekonomi I–VIII', 'PP No. 78/2015'],
         warna: '#d97706',
+        img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pemberdayaan dan pembangunan perdesaan swakelola',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M30 52 L60 26 L90 52" stroke="#d97706" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1730,6 +1750,8 @@
         mekanisme: 'Efek pengganda (<i>multiplier effect</i>) proyek konstruksi menyerap ratusan ribu pekerja bangunan dan logistik, sementara KUR murah memacu penciptaan lapangan kerja mandiri (<i>self-employment</i>) di sektor UMKM.',
         tags: ['Proyek Strategis Nasional (PSN)', 'Bunga KUR 9%', 'Multiplier Konstruksi'],
         warna: '#0f766e',
+        img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pembangunan proyek strategis nasional dan infrastruktur sipil',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M22 64 H98 M34 64 V36 M86 64 V36" stroke="#0f766e" stroke-width="3" stroke-linecap="round"/>
@@ -1754,6 +1776,8 @@
         mekanisme: 'Mengganti penggunaan alat berat/kontraktor pada proyek pemeliharaan irigasi, jalan lingkungan, dan jembatan desa dengan tenaga manusia lokal yang sedang menganggur.',
         tags: ['Padat Karya Tunai (PKT)', 'Cash for Work', '30% Upah Dana Desa'],
         warna: '#0d9488',
+        img: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Penyaluran program cash for work dan permodalan kerja mikro',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <rect x="30" y="32" width="60" height="32" rx="6" fill="#0d9488" opacity="0.18" stroke="#0d9488" stroke-width="2.5"/>
@@ -1778,6 +1802,8 @@
         mekanisme: 'Mempercepat realisasi investasi pabrik baru (PMA/PMDN) sehingga pembukaan lowongan kerja formal tetap tumbuh di tengah gejolak perdagangan global.',
         tags: ['Sistem Perizinan OSS', 'Making Indonesia 4.0', '5 Sektor Manufaktur Utama'],
         warna: '#2563eb',
+        img: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Digitalisasi perizinan online single submission dan perencanaan industri',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <rect x="32" y="24" width="56" height="38" rx="5" stroke="#2563eb" stroke-width="2.5" fill="var(--surface)"/>
@@ -1802,6 +1828,8 @@
         mekanisme: 'Mendorong perusahaan swasta terlibat langsung melatih calon pekerja sesuai standar mesin/industri mereka, sehingga lulusan vokasi langsung terserap (<i>link and match</i>).',
         tags: ['Super Deduction Tax 200%', 'PP No. 45/2019', 'BLK 3-in-1 Link & Match'],
         warna: '#4f46e5',
+        img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pelatihan vokasi terstandarisasi dan pendidikan keahlian industri',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M60 22 L88 34 L60 46 L32 34 Z" fill="#4f46e5" opacity="0.2" stroke="#4f46e5" stroke-width="2.5" stroke-linejoin="round"/>
@@ -1828,6 +1856,8 @@
         mekanisme: 'BSU dan relaksasi kredit menahan laju PHK lebih dalam di sektor formal, sementara Prakerja dan Bantuan Produktif Usaha Mikro (BPUM) menopang pekerja yang beralih ke sektor informal selama krisis.',
         tags: ['Program PEN', 'Subsidi Upah (BSU)', 'Kartu Prakerja', 'UU Cipta Kerja'],
         warna: '#dc2626',
+        img: 'https://images.unsplash.com/photo-1584483766114-2cea6facdf57?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Bantuan darurat ekonomi dan perlindungan sosial masa krisis',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(220, 38, 38, 0.08)"/>
           <path d="M36 44 C36 30 84 30 84 44 Z" fill="#dc2626" opacity="0.2" stroke="#dc2626" stroke-width="2.5"/>
@@ -1851,6 +1881,8 @@
         mekanisme: 'JKP memberikan jaring pengaman berupa uang tunai 6 bulan, konseling pasar kerja, dan pelatihan <i>reskilling</i> agar korban PHK cepat kembali bekerja, sementara KUR Super Mikro menyerap korban PHK menjadi wirausaha mikro.',
         tags: ['Jaminan Kehilangan Pekerjaan (JKP)', 'PP No. 37/2021', 'KUR Super Mikro 3%'],
         warna: '#ea580c',
+        img: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Jaminan perlindungan tenaga kerja dan advokasi sosial terpadu',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M60 20 L84 30 V46 C84 60 73 70 60 74 C47 70 36 60 36 46 V30 L60 20 Z" fill="#ea580c" opacity="0.16" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round"/>
@@ -1875,6 +1907,8 @@
         mekanisme: 'Kawasan industri hilirisasi menciptakan pusat penyerapan tenaga kerja manufaktur baru di luar Pulau Jawa, sedangkan belanja wajib produk lokal menjaga keberlangsungan pabrik dan UMKM domestik.',
         tags: ['Smelter Hilirisasi Nikel', 'Perpres No. 68/2022 Vokasi', '40% Belanja PDN & UMKM'],
         warna: '#0f766e',
+        img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Industri smelter pengolahan mineral dan manufaktur berat',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M28 66 V38 L46 48 V38 L64 48 V26 H86 V66 Z" fill="#0f766e" opacity="0.18" stroke="#0f766e" stroke-width="2.5" stroke-linejoin="round"/>
@@ -1900,6 +1934,8 @@
         mekanisme: 'Menghidupkan kembali serapan tenaga kerja di sektor pariwisata, perhotelan, dan konstruksi properti, sekaligus meningkatkan daya saing pencari kerja muda di bidang digital dan teknis.',
         tags: ['Prakerja Skema Normal', 'Portal SIAPkerja', 'PPN DTP 100% Properti'],
         warna: '#0d9488',
+        img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pelatihan upskilling platform digital dan sertifikasi keahlian',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <path d="M26 58 C38 58 44 34 60 34 C76 34 82 26 96 26" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round"/>
@@ -1926,6 +1962,8 @@
         mekanisme: 'Mencegah pemutusan hubungan kerja lebih lanjut di sektor manufaktur Jawa Barat dan Jawa Tengah, sekaligus membuka kantong penyerapan tenaga kerja pabrik baru di koridor utara Jawa.',
         tags: ['Satgas Impor Ilegal', 'KIT Batang & KEK Kendal', 'BPJS Pekerja Rentan'],
         warna: '#7c3aed',
+        img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Kawasan industri modern dan manufaktur koridor ekonomi',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
           <rect x="28" y="34" width="28" height="32" rx="3" fill="#7c3aed" opacity="0.18" stroke="#7c3aed" stroke-width="2.5"/>
@@ -1951,6 +1989,8 @@
         mekanisme: 'Ekosistem dapur MBG menyerap ratusan ribu tenaga kerja operasional lokal, petani, dan UMKM katering di daerah, sementara insentif pajak PPh 21 DTP meringankan beban arus kas industri padat karya agar tetap mempertahankan pekerjanya.',
         tags: ['Makan Bergizi Gratis (MBG)', 'Insentif PPh 21 DTP', 'Vokasi Digital & AI'],
         warna: '#059669',
+        img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80',
+        imgAlt: 'Pelayanan dapur nutrisi Makan Bergizi Gratis dan katering lokal',
         svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
           <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(5, 150, 105, 0.08)"/>
           <circle cx="46" cy="46" r="14" fill="#059669" opacity="0.18" stroke="#059669" stroke-width="2.5"/>
@@ -2049,7 +2089,10 @@
                     </div>
                   </div>
                   <div class="ms-illus" aria-hidden="true">
-                    ${m.svg}
+                    ${m.img ? `
+                      <img class="ms-thumb-img" src="${m.img}" alt="${m.imgAlt || m.judul}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                      <div class="ms-illus-fallback" style="display:none;width:100%;height:100%">${m.svg}</div>
+                    ` : m.svg}
                   </div>
                 </div>
 
