@@ -1581,9 +1581,43 @@ table.tbl tr.klik-baris:hover td {
 /* Metodologi Modern Cards & Grid */
 .metode-kisi {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  grid-template-columns: repeat(6, 1fr) !important;
   gap: 16px !important;
   margin-bottom: 24px;
+}
+.metode-kisi .blok-metode {
+  grid-column: span 2;
+}
+@media (min-width: 901px) {
+  /* Baris kedua (2 kartu terakhir: Peta dan Sasaran RPJMN) terpusat di tengah */
+  .metode-kisi .blok-metode:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+  .metode-kisi .blok-metode:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+}
+@media (max-width: 900px) and (min-width: 601px) {
+  .metode-kisi {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .metode-kisi .blok-metode {
+    grid-column: span 1 !important;
+  }
+  .metode-kisi .blok-metode:nth-child(5) {
+    grid-column: 1 / -1 !important;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .metode-kisi {
+    grid-template-columns: 1fr !important;
+  }
+  .metode-kisi .blok-metode {
+    grid-column: 1 / -1 !important;
+  }
 }
 .blok-metode {
   border-radius: 12px !important;
