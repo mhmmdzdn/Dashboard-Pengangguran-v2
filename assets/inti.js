@@ -385,14 +385,15 @@
     }
     const tahunan = periode.every(p => /^\d{4}$/.test(p));
     const subTahun = !tahunan && n > 10 && periode.every(p => /^\d{4}-(Q\d|\d{2})$/.test(p));
-    if (!tahunan && !subTahun) lebarMin = Math.max(lebarMin, Math.max(...periode.map(p => String(lblPer(p)).length)) * 6.2 + 10);
+    const labelTeks = p => (tahunan || subTahun ? p.slice(0, 4) : lblPer(p));
+    if (!tahunan && !subTahun) lebarMin = Math.max(lebarMin, Math.max(...periode.map(p => String(labelTeks(p)).length)) * 7.0 + 8);
     let akhir = -Infinity;
     periode.forEach((p, i) => {
       const x = X(i);
-      const t = tahunan || subTahun ? p.slice(0, 4) : lblPer(p);
+      const t = labelTeks(p);
       if (subTahun && i > 0 && periode[i - 1].slice(0, 4) === p.slice(0, 4)) return;
       if (x - akhir < lebarMin && i !== n - 1) return;
-      if (i === n - 1 && x - akhir < lebarMin * 0.8) return;
+      if (i === n - 1 && x - akhir < lebarMin * 0.85) return;
       svg.append(s('text', { x, y: H - 6, 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle', text: t }));
       akhir = x;
     });
