@@ -1554,13 +1554,13 @@
     const chapters = [
       {
         id: 'tren-40-tahun',
-        title: '1. Dari Krisis 1998 ke 4,85%: Perjalanan Panjang TPT Indonesia',
+        title: '1. Dari Pandemi 2020 ke 4,85%: Dinamika TPT Indonesia Sejak 2015',
         go: 'tpt|prov|tahunan|2025|00',
         aria: 'Lihat tren TPT nasional di peta',
-        text: `<p>Pada Sakernas ${lastPer}, ${termI('tpt')} nasional berada di level <b>${fmtAngka(natTpt, 2)}%</b>, dengan total <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Angka ini adalah salah satu yang terendah dalam dua dekade terakhir.</p>` +
-          `<p>Dalam catatan sejarah 1986–${lastPer}, TPT pernah melonjak tajam saat Krisis Moneter 1998 dan mencapai puncaknya pada 2005 di angka <b>11,24%</b>. Sempat kembali melonjak saat pandemi Covid-19 (2020) ke <b>7,07%</b> sebelum berangsur turun ke tren perbaikan saat ini.</p>` +
-          `<p class="note"><b>Catatan Resmi BPS.</b> Sejak 2001, BPS menyempurnakan definisi pengangguran terbuka sehingga mencakup empat kelompok: penduduk yang aktif mencari kerja, sedang mempersiapkan usaha baru, merasa tidak mungkin mendapat pekerjaan (<i>hopeless</i>), serta yang sudah punya pekerjaan/usaha tetapi belum mulai bekerja.</p>`,
-        fig: `<div class="fig-t">Tren TPT Nasional 1986–${lastPer} (%)</div><div class="chart" id="chart-ins-tren"></div><div class="fig-c">Garis menunjukkan laju TPT nasional. Titik menandai krisis 2005 (11,24%), pandemi 2020 (7,07%), dan kondisi terkini ${lastPer} (${fmtAngka(natTpt, 2)}%).</div>`
+        text: `<p>Pada Sakernas ${lastPer}, ${termI('tpt')} nasional berada di level <b>${fmtAngka(natTpt, 2)}%</b>, dengan total <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Angka ini menunjukkan pemulihan ketenagakerjaan yang konsisten.</p>` +
+          `<p>Dalam rentang 2015–${lastPer}, TPT Indonesia sempat melonjak signifikan saat pandemi Covid-19 (2020) hingga mencapai puncak <b>7,07%</b> (9,77 juta jiwa). Setelah itu, laju pengangguran berangsur melandai secara konsisten hingga menyentuh <b>${fmtAngka(natTpt, 2)}%</b> pada ${lastPer}.</p>` +
+          `<p class="note"><b>Catatan Resmi BPS.</b> BPS mengukur tingkat pengangguran terbuka mencakup empat kelompok: penduduk yang aktif mencari kerja, sedang mempersiapkan usaha baru, merasa tidak mungkin mendapat pekerjaan (<i>hopeless</i>), serta yang sudah punya pekerjaan/usaha tetapi belum mulai bekerja.</p>`,
+        fig: `<div class="fig-t">Tren TPT Nasional 2015–${lastPer} (%)</div><div class="chart" id="chart-ins-tren"></div><div class="fig-c">Garis menunjukkan laju TPT nasional. Titik menandai awal seri 2015 (${fmtAngka(tptSr.nilai['00'][0], 2)}%), lonjakan pandemi 2020 (7,07%), dan kondisi terkini ${lastPer} (${fmtAngka(natTpt, 2)}%).</div>`
       },
       {
         id: 'konsentrasi-jawa',
@@ -1842,17 +1842,17 @@
       });
     });
 
-    // Inisialisasi SVG chart tren 40 tahun
+    // Inisialisasi SVG chart tren 2015-2025
     const pts = tptSr.periode.map((p, i) => ({ t: +p, y: tptSr.nilai['00'][i] })).filter(p => p.y != null);
     const drawChartTren = () => {
       const cEl = host.querySelector('#chart-ins-tren');
       if (!cEl) return;
       insStoryChart(cEl, {
-        t0: 1986,
+        t0: 2015,
         t1: 2025,
         lo: 0,
-        hi: 12,
-        xs: 5,
+        hi: 9,
+        xs: 2,
         yf: v => v + '%',
         body: ({ X, Y, lo, pad }) => {
           const dStr = pts.map((p, k) => (k ? 'L' : 'M') + X(p.t).toFixed(1) + ' ' + Y(p.y).toFixed(1)).join('');
@@ -1862,11 +1862,11 @@
           return area + line;
         },
         marks: [
-          { t: 2005, y: 11.24, txt: '2005: 11,24%', anc: 'middle', dx: 0, dy: -12 },
+          { t: 2015, y: tptSr.nilai['00'][0], txt: `2015: ${fmtAngka(tptSr.nilai['00'][0], 2)}%`, anc: 'start', dx: 6, dy: -10 },
           { t: 2020, y: 7.07, txt: '2020 (Pandemi): 7,07%', anc: 'middle', dx: 0, dy: -12 },
           { t: 2025, y: natTpt, txt: `2025: ${fmtAngka(natTpt, 2)}%`, anc: 'end', dx: -8, dy: 16 }
         ],
-        label: `Grafik garis tren TPT nasional 1986 sampai 2025`
+        label: `Grafik garis tren TPT nasional 2015 sampai 2025`
       });
     };
 
