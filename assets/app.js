@@ -569,11 +569,46 @@
           kartuAksi('Menurut umur & pengalaman kerja', 'Indonesia · orang', h('label', { class: 'kecil' }, 'Periode ', selU), gU, kakiKartu(rU)))));
       tunda.push(() => {
         const f = rinc(id, S.dpend), tot = f.seri.find(x => x.nama === r.total);
-        I.grafikKolom(g, { periode: f.periode, seri: f.seri.filter(x => x.nama !== r.total), total: tot ? tot.nilai : null, totalLabel: 'Total (angka resmi BPS)', fmt: v => (v == null ? '—' : fmtAngka(v) + ' orang'), tinggi: 320, aktif: S.dpend === 'tahunan' ? per : null, onKlik: S.dpend === 'tahunan' ? pilihPer : null });
+        // Palet warna editorial harmonis, elegan & profesional untuk jenjang pendidikan (dari dasar ke tinggi)
+        const warnaPendidikan = [
+          '#64748b', // Tidak/belum pernah sekolah - slate netral
+          '#94a3b8', // Tidak/belum tamat SD - light slate
+          '#38bdf8', // SD - sky blue
+          '#0284c7', // SLTP - ocean blue
+          '#2563eb', // SLTA Umum/SMU - royal blue
+          '#0d9488', // SLTA Kejuruan/SMK - teal
+          '#f59e0b', // Akademi/Diploma - amber warm
+          '#ea580c'  // Universitas - coral sunset
+        ];
+        I.grafikKolom(g, {
+          periode: f.periode,
+          seri: f.seri.filter(x => x.nama !== r.total),
+          total: tot ? tot.nilai : null,
+          totalLabel: 'Total (angka resmi BPS)',
+          warna: j => warnaPendidikan[j % warnaPendidikan.length],
+          fmt: v => (v == null ? '—' : fmtAngka(v) + ' orang'),
+          tinggi: 320,
+          aktif: S.dpend === 'tahunan' ? per : null,
+          onKlik: S.dpend === 'tahunan' ? pilihPer : null
+        });
+
         const j = fU.periode.indexOf(S.dumur), umur = [...new Set(fU.seri.map(x => x.nama.split(' | ')[0]))].filter(u => u !== 'Total');
         const ambil = (u, kat) => { const x = fU.seri.find(z => z.nama === u + ' | ' + kat); return x ? x.nilai[j] : null; };
-        I.grafikKolom(gU, { periode: umur, seri: [{ nama: 'Pernah bekerja', nilai: umur.map(u => ambil(u, 'Pernah Bekerja')) }, { nama: 'Tidak pernah bekerja', nilai: umur.map(u => ambil(u, 'Tidak Pernah Bekerja')) }],
-          total: umur.map(u => ambil(u, 'Jumlah Pengangguran')), totalLabel: 'Jumlah (angka resmi)', fmt: v => (v == null ? '—' : fmtAngka(v) + ' orang'), tinggi: 320, label: 'Penganggur menurut umur' });
+        // Palet kontras elegan untuk pengalaman kerja: Teal (Pernah Bekerja) & Amber-Gold (Tidak Pernah Bekerja)
+        const warnaPengalaman = ['#0f766e', '#f59e0b'];
+        I.grafikKolom(gU, {
+          periode: umur,
+          seri: [
+            { nama: 'Pernah bekerja', nilai: umur.map(u => ambil(u, 'Pernah Bekerja')) },
+            { nama: 'Tidak pernah bekerja', nilai: umur.map(u => ambil(u, 'Tidak Pernah Bekerja')) }
+          ],
+          total: umur.map(u => ambil(u, 'Jumlah Pengangguran')),
+          totalLabel: 'Jumlah (angka resmi)',
+          warna: j => warnaPengalaman[j % warnaPengalaman.length],
+          fmt: v => (v == null ? '—' : fmtAngka(v) + ' orang'),
+          tinggi: 320,
+          label: 'Penganggur menurut umur'
+        });
       });
     }
 
