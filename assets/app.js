@@ -1483,33 +1483,433 @@
       render();
     }, 'Pilihan Informasi');
 
+    const milestones = [
+      {
+        id: 'ms-2015',
+        tahun: '2015',
+        tahunPer: '2015',
+        tpt: '6,18%',
+        tptVal: 6.18,
+        delta: 'Awal Seri',
+        status: 'waspada',
+        badge: 'Guncangan Komoditas',
+        judul: 'Akhir Boom Komoditas & Paket Kebijakan Ekonomi',
+        pemicuLabel: 'Kejadian Makro (Pemicu Naik)',
+        kejadian: 'Penurunan harga komoditas global (batu bara dan CPO) serta perlambatan ekonomi Tiongkok menekan sektor pertambangan dan perkebunan di luar Jawa, memicu gelombang PHK di sektor primer.',
+        intervensi: 'Peluncuran <b>Paket Kebijakan Ekonomi Jilid I–VIII</b> untuk deregulasi investasi, dimulainya penyaluran <b>Dana Desa</b> (menciptakan lapangan kerja padat karya di perdesaan), dan akselerasi awal <b>Proyek Strategis Nasional (PSN)</b> infrastruktur.',
+        tags: ['Paket Ekonomi I–VIII', 'Dana Desa', 'PSN Infrastruktur'],
+        warna: '#d97706',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <path d="M22 28 L46 52 L64 40 L94 64" stroke="#d97706" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M84 64 H94 V54" stroke="#d97706" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="22" y="56" width="12" height="14" rx="2" fill="#0f766e" opacity="0.8"/>
+          <rect x="40" y="48" width="12" height="22" rx="2" fill="#0f766e" opacity="0.9"/>
+          <rect x="58" y="38" width="12" height="32" rx="2" fill="#0f766e"/>
+          <circle cx="22" cy="28" r="4" fill="#d97706"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2016',
+        tahun: '2016 – 2017',
+        tahunPer: '2017',
+        tpt: '5,61% – 5,50%',
+        tptVal: 5.50,
+        delta: '-0,68 poin',
+        status: 'positif',
+        badge: 'Transformasi Digital',
+        judul: 'Akselerasi Infrastruktur & Ekspansi Gig Economy',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'Ledakan awal <i>ride-hailing</i> (Gojek, Grab) dan <i>e-commerce</i> yang menyerap jutaan tenaga kerja ke sektor informal/kemitraan. Di sisi lain, otomatisasi perbankan dan pergeseran ritel konvensional ke digital mulai mengurangi serapan tenaga kerja formal di perkotaan.',
+        intervensi: 'Perluasan skema <b>Kredit Usaha Rakyat (KUR)</b> dengan bunga rendah untuk UMKM dan program <b>Padat Karya Tunai (PKT)</b> di kementerian teknis guna menahan laju urbanisasi pencari kerja.',
+        tags: ['Gig Economy', 'Kredit Usaha Rakyat (KUR)', 'Padat Karya Tunai'],
+        warna: '#0f766e',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <rect x="42" y="18" width="36" height="54" rx="6" stroke="#0f766e" stroke-width="3" fill="var(--surface)"/>
+          <circle cx="60" cy="64" r="2.5" fill="#0f766e"/>
+          <path d="M50 34 H70 M50 42 H64" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="26" cy="45" r="8" fill="#0f766e" opacity="0.2"/>
+          <circle cx="26" cy="45" r="4" fill="#0f766e"/>
+          <circle cx="94" cy="35" r="8" fill="#0f766e" opacity="0.2"/>
+          <circle cx="94" cy="35" r="4" fill="#0f766e"/>
+          <path d="M34 45 H42 M78 38 L86 35" stroke="#0f766e" stroke-width="2" stroke-dasharray="2 2"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2018',
+        tahun: '2018 – 2019',
+        tahunPer: '2019',
+        tpt: '5,34% – 5,23%',
+        tptVal: 5.23,
+        delta: 'Terendah Pra-Pandemi',
+        status: 'positif',
+        badge: 'Pembangunan SDM',
+        judul: 'Perang Dagang AS-Tiongkok & Fokus Vokasi SDM',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'Ketegangan perang dagang AS-Tiongkok mengganggu rantai pasok global dan menahan ekspansi manufaktur berorientasi ekspor. Namun, TPT berhasil menyentuh titik terendah pra-pandemi pada Agustus 2019 (<b>5,23%</b>).',
+        intervensi: 'Pergeseran fokus anggaran dari infrastruktur fisik ke pembangunan SDM, peluncuran peta jalan <b>Making Indonesia 4.0</b>, serta penerbitan <b>PP No. 45 Tahun 2019</b> tentang <i>Super Deduction Tax</i> (insentif pengurangan pajak hingga 200% bagi industri yang menyelenggarakan vokasi/pemagangan).',
+        tags: ['Making Indonesia 4.0', 'Super Deduction Tax 200%', 'Revitalisasi Vokasi'],
+        warna: '#2563eb',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <path d="M60 22 L88 34 L60 46 L32 34 Z" fill="#2563eb" opacity="0.2" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M42 40 V56 C42 62 78 62 78 56 V40" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M88 34 V52" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="88" cy="54" r="3" fill="#d97706"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2020',
+        tahun: '2020',
+        tahunPer: '2020',
+        tpt: '7,07%',
+        tptVal: 7.07,
+        delta: '+1,84 poin (Puncak)',
+        status: 'kritis',
+        badge: 'Lonjakan Ekstrem Pandemi',
+        judul: 'Guncangan Pandemi COVID-19 & Puncak TPT Nasional',
+        pemicuLabel: 'Kejadian Makro (Pemicu Lonjakan Ekstrem)',
+        kejadian: 'Pembatasan Sosial Berskala Besar (PSBB) melumpuhkan sektor pariwisata, akomodasi, transportasi, dan manufaktur. Terjadi kontraksi ekonomi (<b>-2,07%</b>) yang memicu gelombang PHK massal dan merumahkan jutaan pekerja, melambungkan TPT ke <b>7,07%</b> (sekitar 9,77 juta orang).',
+        intervensi: 'Peluncuran program <b>Pemulihan Ekonomi Nasional (PEN)</b>, <b>Bantuan Subsidi Upah (BSU)</b> bagi pekerja bergaji di bawah Rp5 juta, transformasi <b>Kartu Prakerja</b> menjadi skema semi-bansos untuk <i>reskilling/upskilling</i>, serta pengesahan <b>UU No. 11 Tahun 2020 tentang Cipta Kerja</b>.',
+        tags: ['Program PEN', 'Subsidi Upah (BSU)', 'Kartu Prakerja', 'UU Cipta Kerja'],
+        warna: '#dc2626',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(220, 38, 38, 0.08)"/>
+          <circle cx="60" cy="45" r="18" fill="#dc2626" opacity="0.18" stroke="#dc2626" stroke-width="2.5"/>
+          <path d="M60 20 V27 M60 63 V70 M35 45 H42 M78 45 H85 M42 27 L47 32 M73 58 L78 63 M78 27 L73 32 M47 58 L42 63" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M52 46 L58 52 L70 38" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2021',
+        tahun: '2021',
+        tahunPer: '2021',
+        tpt: '6,49%',
+        tptVal: 6.49,
+        delta: '-0,58 poin',
+        status: 'waspada',
+        badge: 'Jaring Pengaman Kerja',
+        judul: 'Gelombang Varian Delta & Implementasi JKP',
+        pemicuLabel: 'Kejadian Makro (Penahan Pemulihan)',
+        kejadian: 'Munculnya varian Delta pada pertengahan 2021 memaksa penerapan <b>PPKM Darurat</b>, yang kembali menahan laju rekrutmen di sektor jasa dan perdagangan ritel.',
+        intervensi: 'Penerbitan aturan turunan UU Cipta Kerja (<b>PP No. 35, 36, dan 37 Tahun 2021</b>), yang melahirkan program <b>Jaminan Kehilangan Pekerjaan (JKP)</b> (manfaat uang tunai, akses informasi pasar kerja, dan pelatihan bagi korban PHK) serta pelonggaran bertahap mobilitas melalui vaksinasi massal.',
+        tags: ['Jaminan Kehilangan Pekerjaan (JKP)', 'PP 37/2021', 'Vaksinasi Massal'],
+        warna: '#ea580c',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <path d="M60 20 L84 30 V46 C84 60 73 70 60 74 C47 70 36 60 36 46 V30 L60 20 Z" fill="#ea580c" opacity="0.16" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M52 47 L58 53 L70 40" stroke="#0f766e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2022',
+        tahun: '2022',
+        tahunPer: '2022',
+        tpt: '5,86%',
+        tptVal: 5.86,
+        delta: '-0,63 poin',
+        status: 'positif',
+        badge: 'Hilirisasi Industri',
+        judul: 'Tech Winter, Krisis Geopolitik & Hilirisasi Mineral',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'Perang Rusia-Ukraina memicu inflasi energi dan pangan global. Pengetatan suku bunga The Fed memicu fenomena <i>Tech Winter</i> (efisiensi dan PHK besar-besaran di sektor startup teknologi nasional) serta penurunan pesanan ekspor tekstil dan alas kaki dari pasar Eropa/AS.',
+        intervensi: 'Kebijakan <b>Hilirisasi Industri/Mineral</b> (terutama nikel di Sulawesi dan Maluku) yang menyerap puluhan ribu tenaga kerja industri pengolahan, penerbitan <b>Perppu No. 2 Tahun 2022</b> tentang Cipta Kerja untuk menjaga kepastian hukum investasi, serta <b>Perpres No. 68 Tahun 2022</b> tentang Revitalisasi Pendidikan dan Pelatihan Vokasi.',
+        tags: ['Hilirisasi Nikel', 'Perpres 68/2022 Vokasi', 'Perppu Cipta Kerja'],
+        warna: '#0f766e',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <path d="M28 66 V38 L46 48 V38 L64 48 V26 H86 V66 Z" fill="#0f766e" opacity="0.18" stroke="#0f766e" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="75" cy="46" r="7" stroke="#d97706" stroke-width="2.5"/>
+          <path d="M75 36 V39 M75 53 V56 M65 46 H68 M82 46 H85" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2023',
+        tahun: '2023',
+        tahunPer: '2023',
+        tpt: '5,32%',
+        tptVal: 5.32,
+        delta: '-0,54 poin',
+        status: 'positif',
+        badge: 'Pasca-Pandemi & Skema Normal',
+        judul: 'Tekanan Industri Padat Karya & Normalisasi Prakerja',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'Pelemahan permintaan global dan banjir barang impor murah menekan industri padat karya berorientasi ekspor—khususnya Tekstil dan Produk Tekstil (TPT) serta alas kaki di Jawa Barat dan Jawa Tengah—yang memicu gelombang penutupan pabrik.',
+        intervensi: '<b>Pencabutan status PPKM secara penuh</b> (menggerakkan kembali sektor perhotelan, MICE, dan pariwisata), kembalinya <b>Kartu Prakerja ke Skema Normal</b> (fokus murni pada peningkatan kompetensi kerja dengan insentif pelatihan lebih besar), serta insentif <b>PPN DTP</b> untuk sektor properti guna menggerakkan lapangan kerja konstruksi.',
+        tags: ['Pencabutan PPKM', 'Prakerja Skema Normal', 'PPN DTP Properti'],
+        warna: '#0d9488',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <path d="M26 58 C38 58 44 34 60 34 C76 34 82 26 96 26" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="60" cy="34" r="5" fill="#0f766e"/>
+          <circle cx="96" cy="26" r="5" fill="#2dd4bf" stroke="#0f766e" stroke-width="2"/>
+          <rect x="30" y="54" width="60" height="12" rx="6" fill="#0f766e" opacity="0.15"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2024',
+        tahun: '2024',
+        tahunPer: '2024',
+        tpt: '4,91%',
+        tptVal: 4.91,
+        delta: 'Di Bawah Pra-Pandemi',
+        status: 'positif',
+        badge: 'Transisi Generasi & Struktural',
+        judul: 'Deindustrialisasi Dini & Isu Pengangguran Muda / Gen-Z',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'Walaupun TPT secara agregat turun di bawah level pra-pandemi (<b>4,91%</b> pada Agustus 2024), muncul fenomena struktural: proporsi pekerja informal tetap tinggi (sekitar 58–59%), maraknya PHK di manufaktur tekstil, dan sorotan tajam terhadap tingginya TPT usia muda (15–24 tahun) akibat <i>skill mismatch</i> serta syarat rekrutmen yang ketat.',
+        intervensi: 'Pembentukan <b>Satgas Penanganan Impor Ilegal</b> untuk melindungi industri padat karya domestik, perluasan perlindungan jaminan sosial bagi pekerja rentan/informal, serta penyelarasan kurikulum <b>SMK Pusat Keunggulan</b> dengan industri.',
+        tags: ['Satgas Impor Ilegal', 'SMK Pusat Keunggulan', 'Perlindungan Pekerja Informal'],
+        warna: '#7c3aed',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="var(--surface-2)"/>
+          <circle cx="46" cy="38" r="10" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="2.5"/>
+          <path d="M30 64 C30 53 62 53 62 64" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="76" cy="34" r="8" fill="#0f766e" opacity="0.2" stroke="#0f766e" stroke-width="2.5"/>
+          <path d="M64 58 C64 49 88 49 88 58" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'ms-2025',
+        tahun: '2025 – 2026',
+        tahunPer: '2025',
+        tpt: '4,85% – 4,68%',
+        tptVal: 4.85,
+        delta: 'Rekor Terendah Dekade',
+        status: 'unggulan',
+        badge: 'Era AI & Ekonomi Hijau',
+        judul: 'Disrupsi Otomasi/AI & Paket Stimulus Penyerapan Kerja',
+        pemicuLabel: 'Kejadian Makro',
+        kejadian: 'TPT terus melandai ke <b>4,85%</b> (Agustus 2025), <b>4,74%</b> (November 2025), hingga <b>4,68%</b> (Februari 2026). Namun, pasar kerja menghadapi tantangan adopsi kecerdasan buatan (AI) dan otomasi yang mengurangi lowongan <i>entry-level</i> administratif (memicu tingginya pengangguran lulusan sarjana di bidang manajemen, ekonomi, dan hukum) serta dinamika tarif perdagangan global.',
+        intervensi: 'Implementasi <b>Program Makan Bergizi Gratis (MBG)</b> yang menciptakan rantai pasok dan serapan tenaga kerja baru di tingkat lokal/UMKM pangan, peluncuran paket stimulus penyerapan tenaga kerja (<b>insentif PPh Pasal 21 DTP</b> untuk industri padat karya), dan penguatan program hilirisasi pangan serta energi hijau.',
+        tags: ['Makan Bergizi Gratis (MBG)', 'Insentif PPh 21 DTP', 'Adaptasi AI & Ekonomi Hijau'],
+        warna: '#059669',
+        svg: `<svg viewBox="0 0 120 90" fill="none" class="ms-illus-svg">
+          <rect x="8" y="10" width="104" height="70" rx="10" fill="rgba(5, 150, 105, 0.08)"/>
+          <rect x="42" y="27" width="36" height="36" rx="8" fill="#059669" opacity="0.18" stroke="#059669" stroke-width="2.5"/>
+          <circle cx="60" cy="45" r="7" fill="#059669"/>
+          <path d="M50 20 V27 M70 20 V27 M50 63 V70 M70 63 V70 M35 35 H42 M35 55 H42 M78 35 H85 M78 55 H85" stroke="#059669" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`
+      }
+    ];
+
     host.innerHTML = `
       <div class="hero">
         <div class="hero-lingkup-bar"></div>
         <div class="dalam hero-kisi">
           <div>
-            <div class="alis"><span class="titik"></span>Milestone &amp; Capaian Strategis</div>
-            <h1>Milestone Transformasi &amp; Agenda Ketenagakerjaan Nasional.</h1>
-            <p>Ruang pelacakan tahapan capaian, rekam jejak kebijakan, dan linimasa indikator ketenagakerjaan Indonesia.</p>
+            <div class="alis"><span class="titik"></span>Rekam Jejak Makro &amp; Kebijakan · 2015–2026</div>
+            <h1>Linimasa Milestone &amp; Kejadian Makro <em>Ketenagakerjaan</em> Indonesia.</h1>
+            <p>Menelusuri satu dekade dinamika pasar kerja nasional—mulai dari akhir <i>commodity boom</i> 2015, guncangan pandemi COVID-19 (7,07%), hingga pemulihan struktural dan adaptasi kecerdasan buatan pada 2025–2026 (4,68%).</p>
           </div>
           <div class="hero-angka">
-            <div class="lbl">Status Linimasa</div>
-            <div class="val">Segera</div>
-            <div class="per">Modul pencatatan milestone dalam persiapan</div>
+            <div class="lbl">Rentang Linimasa</div>
+            <div class="val">9 Fase</div>
+            <div class="per">2015–2026 · Kejadian Makro &amp; Intervensi Kebijakan</div>
           </div>
         </div>
       </div>
-      <div class="story-in" style="min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 48px 16px;">
-        <div style="width: 64px; height: 64px; border-radius: 16px; background: var(--accent-soft, rgba(15, 118, 110, 0.12)); color: var(--accent); display: grid; place-items: center; margin-bottom: 16px;">
-          <svg class="ikon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+
+      <div class="story-in ms-container">
+        <!-- Ringkasan Eksekutif 4 Metrik Kunci Linimasa -->
+        <div class="ms-summary-grid">
+          <div class="ms-stat-card">
+            <span class="ms-stat-lbl">Awal Dekade (Agu 2015)</span>
+            <strong class="ms-stat-val" style="color:#d97706">6,18%</strong>
+            <span class="ms-stat-sub">Akhir Boom Komoditas &amp; Paket Ekonomi</span>
+          </div>
+          <div class="ms-stat-card">
+            <span class="ms-stat-lbl">Titik Pra-Pandemi (Agu 2019)</span>
+            <strong class="ms-stat-val" style="color:#2563eb">5,23%</strong>
+            <span class="ms-stat-sub">Fokus SDM &amp; Super Deduction Vokasi</span>
+          </div>
+          <div class="ms-stat-card ms-stat-danger">
+            <span class="ms-stat-lbl">Puncak Krisis (Agu 2020)</span>
+            <strong class="ms-stat-val" style="color:#dc2626">7,07%</strong>
+            <span class="ms-stat-sub">Guncangan Pandemi COVID-19 (9,77 Juta)</span>
+          </div>
+          <div class="ms-stat-card ms-stat-success">
+            <span class="ms-stat-lbl">Capaian Terkini (2025–2026)</span>
+            <strong class="ms-stat-val" style="color:#059669">4,85% → 4,68%</strong>
+            <span class="ms-stat-sub">Stimulus Padat Karya, MBG &amp; Era AI</span>
+          </div>
         </div>
-        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Halaman Milestone</h2>
-        <p style="max-width: 500px; color: var(--muted); font-size: 14px; line-height: 1.5;">Halaman milestone ketenagakerjaan dan target capaian program saat ini masih kosong dan disiapkan untuk penambahan data mendatang.</p>
+
+        <!-- Grafik Interaktif Trajektori TPT dengan Titik Milestone -->
+        <div class="card ms-chart-card">
+          <div class="card-head">
+            <div>
+              <h2>Peta Trajektori TPT &amp; Penanda Kejadian Makro (2015–2026)</h2>
+              <p class="sub">Klik pada titik tahun atau pil navigasi di bawah untuk melompat langsung ke kartu rincian kejadian makro dan kebijakan pemerintah.</p>
+            </div>
+          </div>
+          <div id="ms-Interactive-Chart" class="ms-chart-box"></div>
+          <div class="ms-Quick-Nav" role="navigation" aria-label="Lompat cepat ke periode milestone">
+            ${milestones.map((m, idx) => `
+              <a href="#${m.id}" data-ms-jump="${m.id}" class="ms-pill ${idx === 0 ? 'aktif' : ''}" style="--ms-c:${m.warna}">
+                <span class="ms-pill-yr">${m.tahun}</span>
+                <span class="ms-pill-tpt">${m.tpt}</span>
+              </a>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Daftar Kartu Linimasa Kronologis -->
+        <div class="ms-timeline">
+          ${milestones.map((m, idx) => `
+            <article class="ms-item status-${m.status}" id="${m.id}" style="--ms-accent:${m.warna}">
+              <div class="ms-marker">
+                <div class="ms-dot"><span>${idx + 1}</span></div>
+                <div class="ms-line"></div>
+              </div>
+              <div class="ms-card">
+                <div class="ms-card-top">
+                  <div class="ms-card-meta">
+                    <span class="ms-year-badge">${m.tahun}</span>
+                    <span class="ms-cat-badge">${m.badge}</span>
+                    <span class="ms-tpt-pill">TPT: <b>${m.tpt}</b> <small>(${m.delta})</small></span>
+                  </div>
+                  <button type="button" class="ms-map-btn" data-ms-per="${m.tahunPer}" title="Lihat kondisi peta pada tahun ${m.tahunPer}">
+                    Lihat Peta ${m.tahunPer} <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+
+                <div class="ms-card-head-row">
+                  <div class="ms-card-title-wrap">
+                    <h3>${m.judul}</h3>
+                    <div class="ms-tags">
+                      ${m.tags.map(t => `<span class="ms-tag"># ${t}</span>`).join('')}
+                    </div>
+                  </div>
+                  <div class="ms-illus" aria-hidden="true">
+                    ${m.svg}
+                  </div>
+                </div>
+
+                <div class="ms-dual-box">
+                  <div class="ms-box ms-box-makro">
+                    <div class="ms-box-hdr">
+                      <svg viewBox="0 0 24 24" class="ms-box-ico"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      <span>${m.pemicuLabel}</span>
+                    </div>
+                    <p>${m.kejadian}</p>
+                  </div>
+
+                  <div class="ms-box ms-box-kebijakan">
+                    <div class="ms-box-hdr">
+                      <svg viewBox="0 0 24 24" class="ms-box-ico"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                      <span>Intervensi &amp; Respons Pemerintah</span>
+                    </div>
+                    <p>${m.intervensi}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `).join('')}
+        </div>
       </div>
     `;
 
     const bar = host.querySelector('.hero-lingkup-bar');
     if (bar) bar.append(segInfo);
+
+    // Render SVG Chart Trajektori Milestone
+    const chartBox = host.querySelector('#ms-Interactive-Chart');
+    if (chartBox) {
+      const pts = [
+        { yr: '2015', v: 6.18, id: 'ms-2015', lbl: 'Akhir Boom Komoditas', c: '#d97706' },
+        { yr: '2016', v: 5.61, id: 'ms-2016', lbl: 'Gig Economy', c: '#0f766e' },
+        { yr: '2017', v: 5.50, id: 'ms-2016', lbl: 'PKT & KUR', c: '#0f766e' },
+        { yr: '2018', v: 5.34, id: 'ms-2018', lbl: 'Making ID 4.0', c: '#2563eb' },
+        { yr: '2019', v: 5.23, id: 'ms-2018', lbl: 'Vokasi SDM (5,23%)', c: '#2563eb' },
+        { yr: '2020', v: 7.07, id: 'ms-2020', lbl: 'Puncak COVID-19 (7,07%)', c: '#dc2626' },
+        { yr: '2021', v: 6.49, id: 'ms-2021', lbl: 'Delta & JKP', c: '#ea580c' },
+        { yr: '2022', v: 5.86, id: 'ms-2022', lbl: 'Hilirisasi', c: '#0f766e' },
+        { yr: '2023', v: 5.32, id: 'ms-2023', lbl: 'Prakerja Normal', c: '#0d9488' },
+        { yr: '2024', v: 4.91, id: 'ms-2024', lbl: 'Gen-Z & Satgas', c: '#7c3aed' },
+        { yr: '2025', v: 4.85, id: 'ms-2025', lbl: 'Agu 2025 (4,85%)', c: '#059669' },
+        { yr: '2026*', v: 4.68, id: 'ms-2025', lbl: 'Feb 2026 (4,68%)', c: '#059669' }
+      ];
+      const W = 880, H = 250, padL = 48, padR = 36, padT = 34, padB = 38;
+      const minY = 4.0, maxY = 7.6;
+      const X = i => padL + (i * (W - padL - padR) / (pts.length - 1));
+      const Y = v => padT + (maxY - v) / (maxY - minY) * (H - padT - padB);
+
+      const dLine = pts.map((p, i) => (i === 0 ? 'M' : 'L') + X(i).toFixed(1) + ',' + Y(p.v).toFixed(1)).join(' ');
+      const dArea = dLine + ` L${X(pts.length - 1).toFixed(1)},${(H - padB).toFixed(1)} L${X(0).toFixed(1)},${(H - padB).toFixed(1)} Z`;
+
+      let gridSvg = '';
+      [4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5].forEach(gv => {
+        const gy = Y(gv).toFixed(1);
+        gridSvg += `<line x1="${padL}" x2="${W - padR}" y1="${gy}" y2="${gy}" stroke="var(--grid)" stroke-dasharray="3 3" stroke-width="1"/>`;
+        gridSvg += `<text x="${padL - 8}" y="${Number(gy) + 4}" text-anchor="end" fill="var(--muted)" font-size="11" font-weight="600">${gv.toFixed(1).replace('.', ',')}%</text>`;
+      });
+
+      // Zona highlight pandemi 2020-2021
+      const x2020 = X(5), x2021 = X(6);
+      const zoneSvg = `<rect x="${(x2020 - 18).toFixed(1)}" y="${padT - 8}" width="${(x2021 - x2020 + 36).toFixed(1)}" height="${H - padT - padB + 8}" rx="6" fill="rgba(220, 38, 38, 0.06)" stroke="rgba(220, 38, 38, 0.2)" stroke-dasharray="3 3"/>
+      <text x="${((x2020 + x2021) / 2).toFixed(1)}" y="${padT + 6}" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="700">GUNCANGAN PANDEMI</text>`;
+
+      let nodesSvg = '';
+      pts.forEach((p, i) => {
+        const cx = X(i).toFixed(1), cy = Y(p.v).toFixed(1);
+        const isPeak = p.yr === '2020';
+        const isLow = p.yr === '2019' || p.yr === '2025' || p.yr === '2026*';
+        const dyVal = isPeak ? -14 : (i % 2 === 0 ? -12 : 18);
+        nodesSvg += `
+          <g class="ms-chart-node" data-ms-jump="${p.id}" style="cursor:pointer">
+            <line x1="${cx}" x2="${cx}" y1="${cy}" y2="${H - padB}" stroke="${p.c}" stroke-width="1" stroke-dasharray="2 3" opacity="0.45"/>
+            <circle cx="${cx}" cy="${cy}" r="${isPeak || isLow ? 6.5 : 5}" fill="${p.c}" stroke="var(--surface)" stroke-width="2"/>
+            <text x="${cx}" y="${Number(cy) + dyVal}" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="800">${p.v.toFixed(2).replace('.', ',')}%</text>
+            <text x="${cx}" y="${H - 12}" text-anchor="middle" fill="var(--ink-2)" font-size="11.5" font-weight="700">${p.yr}</text>
+          </g>
+        `;
+      });
+
+      chartBox.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="Grafik linimasa TPT 2015 hingga 2026">
+          <defs>
+            <linearGradient id="msGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          ${gridSvg}
+          ${zoneSvg}
+          <path d="${dArea}" fill="url(#msGrad)"/>
+          <path d="${dLine}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          ${nodesSvg}
+        </svg>
+      `;
+    }
+
+    // Interaktivitas klik ke bagian milestone
+    host.querySelectorAll('[data-ms-jump]').forEach(el => {
+      el.addEventListener('click', ev => {
+        ev.preventDefault();
+        const targetId = el.getAttribute('data-ms-jump');
+        const targetEl = host.querySelector('#' + targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          host.querySelectorAll('.ms-pill').forEach(p => p.classList.toggle('aktif', p.getAttribute('data-ms-jump') === targetId));
+          targetEl.classList.add('ms-sorot-klik');
+          setTimeout(() => targetEl.classList.remove('ms-sorot-klik'), 1400);
+        }
+      });
+    });
+
+    // Tombol lihat peta tahun terkait
+    host.querySelectorAll('.ms-map-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const th = btn.getAttribute('data-ms-per');
+        S.lap = 'tpt';
+        S.lv = 'prov';
+        S.frek = 'tahunan';
+        S.per = th;
+        gantiHalaman('peta');
+      });
+    });
   }
 
   function renderInsightContent(host) {

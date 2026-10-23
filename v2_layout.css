@@ -3029,3 +3029,454 @@ table.tbl thead th:hover {
 .kisi-2 > .card > div:has(> svg.chart) > svg.chart {
   margin-top: auto !important;
 }
+
+
+/* =====================================================================
+   DESAIN VISUAL HALAMAN MILESTONE & KEJADIAN MAKRO (2015–2026)
+   ===================================================================== */
+
+.ms-container {
+  max-width: 1180px !important;
+  margin: 0 auto !important;
+  padding: 28px 20px 64px !important;
+}
+
+/* 1. Kartu Ringkasan 4 Fase Kunci */
+.ms-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.ms-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-1);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.ms-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-2);
+}
+
+.ms-stat-lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.ms-stat-val {
+  font-family: var(--font-d);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.ms-stat-sub {
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+
+/* 2. Kartu Grafik Interaktif Trajektori Milestone */
+.ms-chart-card {
+  padding: 20px 22px !important;
+  margin-bottom: 32px !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--border-2) !important;
+  background: var(--surface) !important;
+}
+
+.ms-chart-card .card-head h2 {
+  font-size: 16.5px !important;
+  font-weight: 800 !important;
+  color: var(--ink);
+  margin: 0 0 4px 0;
+}
+
+.ms-chart-card .card-head .sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.ms-chart-box {
+  width: 100%;
+  height: 245px;
+  margin: 12px 0 14px;
+}
+
+.ms-chart-node circle {
+  transition: r 0.18s ease, stroke-width 0.18s ease;
+}
+
+.ms-chart-node:hover circle {
+  r: 8px;
+  stroke-width: 3px;
+}
+
+.ms-Quick-Nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--grid);
+}
+
+.ms-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  text-decoration: none !important;
+  font-size: 12px;
+  color: var(--ink-2);
+  transition: all 0.16s ease;
+}
+
+.ms-pill:hover,
+.ms-pill.aktif {
+  background: var(--accent-soft);
+  border-color: var(--ms-c, var(--accent));
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.ms-pill-yr {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.ms-pill-tpt {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--ms-c, var(--accent));
+}
+
+/* 3. Linimasa Kronologis Vertikal */
+.ms-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+}
+
+.ms-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 16px;
+  scroll-margin-top: 84px;
+}
+
+.ms-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ms-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--ms-accent, var(--accent));
+  color: var(--ms-accent, var(--accent));
+  display: grid;
+  place-items: center;
+  font-family: var(--font-d);
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 0 0 4px var(--surface-2);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.ms-line {
+  width: 2.5px;
+  flex: 1 1 auto;
+  background: linear-gradient(to bottom, var(--ms-accent, var(--accent)), var(--border));
+  margin-top: 6px;
+  border-radius: 2px;
+  opacity: 0.45;
+}
+
+.ms-item:last-child .ms-line {
+  display: none;
+}
+
+.ms-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--ms-accent, var(--accent));
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ms-card:hover {
+  box-shadow: var(--shadow-2);
+  border-color: var(--ms-accent, var(--accent));
+}
+
+.ms-item.ms-sorot-klik .ms-card {
+  box-shadow: 0 0 0 3px var(--ms-accent, var(--accent)), var(--shadow-2);
+}
+
+.ms-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.ms-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ms-year-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ms-accent, var(--accent));
+  color: #ffffff;
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ms-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--ink-2);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.ms-tpt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ms-tpt-pill b {
+  color: var(--ms-accent, var(--accent));
+  font-weight: 800;
+}
+
+.ms-tpt-pill small {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ms-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ms-map-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.ms-card-head-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 124px;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.ms-card-title-wrap h3 {
+  font-family: var(--font-d);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.ms-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ms-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface-2);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.ms-illus {
+  width: 120px;
+  height: 90px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.ms-illus-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 4. Dual Panel: Kejadian Makro vs Intervensi Pemerintah */
+.ms-dual-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ms-box {
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ms-box-makro {
+  background: rgba(217, 119, 6, 0.05);
+  border-left: 3.5px solid #d97706;
+}
+
+.ms-item.status-kritis .ms-box-makro {
+  background: rgba(220, 38, 38, 0.06);
+  border-left-color: #dc2626;
+}
+
+.ms-box-kebijakan {
+  background: rgba(15, 118, 110, 0.05);
+  border-left: 3.5px solid #0f766e;
+}
+
+.ms-box-hdr {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ms-box-makro .ms-box-hdr {
+  color: #b45309;
+}
+
+.ms-item.status-kritis .ms-box-makro .ms-box-hdr {
+  color: #dc2626;
+}
+
+:root[data-theme="dark"] .ms-box-makro .ms-box-hdr {
+  color: #fbbf24;
+}
+
+:root[data-theme="dark"] .ms-item.status-kritis .ms-box-makro .ms-box-hdr {
+  color: #f87171;
+}
+
+.ms-box-kebijakan .ms-box-hdr {
+  color: var(--accent);
+}
+
+.ms-box-ico {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.ms-box p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.ms-box p b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .ms-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ms-dual-box {
+    grid-template-columns: 1fr;
+  }
+  .ms-card-head-row {
+    grid-template-columns: 1fr;
+  }
+  .ms-illus {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .ms-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .ms-item {
+    grid-template-columns: 1fr;
+  }
+  .ms-marker {
+    display: none;
+  }
+}
