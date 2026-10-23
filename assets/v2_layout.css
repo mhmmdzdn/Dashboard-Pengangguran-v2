@@ -2885,3 +2885,91 @@ table.tbl thead th:hover {
 
 
 
+
+
+/* =====================================================================
+   PENYESUAIAN TAMPILAN RESPONSIVE & PRESISI TINGGI (5 PERMINTAAN USER)
+   ===================================================================== */
+
+/* 1. Gambar 1: Tingkat (persen) di Section 5 kegiatan penduduk dibuat 3 baris bertumpuk (3 rows) */
+.kisi-5-7 > .card:first-child .kecil-banyak {
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+}
+.kisi-5-7 > .card:first-child .kecil-banyak > div {
+  padding: 8px 12px 6px !important;
+}
+
+/* 2. Gambar 2: Maksimalkan peta provinsi di tren & sebaran agar minim whitespace */
+.kisi-tren-sebaran .peta-mini {
+  height: 300px !important;
+  flex: 1 1 300px !important;
+}
+.kisi-tren-sebaran > .card:last-child {
+  justify-content: space-between !important;
+}
+
+/* 3. Gambar 3: Perbesar font legenda peta spasial */
+.legenda-apung,
+.legenda-mini {
+  font-size: 13.5px !important;
+}
+.legenda-apung .jdl,
+.legenda-mini .jdl {
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  margin-bottom: 8px !important;
+}
+.legenda-apung .skala i,
+.legenda-mini .skala i {
+  height: 14px !important;
+}
+.legenda-apung .skala small,
+.legenda-mini .skala small {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--ink-2) !important;
+}
+.legenda-apung .ket,
+.legenda-mini .ket {
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  color: var(--ink-2) !important;
+}
+
+/* 4. Gambar 4: Panjangkan batang horizontal dengan alokasi kolom nama lebih ringkas */
+.bars {
+  grid-template-columns: minmax(110px, 160px) minmax(0, 1fr) max-content !important;
+  gap: 8px 16px !important;
+}
+.kisi-kabkota .bars {
+  grid-template-columns: minmax(130px, 175px) minmax(0, 1fr) max-content !important;
+  gap: 10px 18px !important;
+}
+.kisi-kabkota .bars .nm {
+  font-size: 13px !important;
+}
+
+/* 5. Gambar 5: Buatkan kontras agar garis acuan/realisasi titik-titik terlihat jelas */
+.bars .ref {
+  border-left: 2.5px dotted #0f172a !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85) !important;
+  z-index: 5 !important;
+  opacity: 1 !important;
+}
+:root[data-theme="dark"] .bars .ref {
+  border-left: 2.5px dotted #ffffff !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.85) !important;
+}
+.legend-ref {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+}
+.legend-ref i {
+  border-left: 2.5px dotted #0f172a !important;
+  height: 14px !important;
+}
+:root[data-theme="dark"] .legend-ref i {
+  border-left-color: #ffffff !important;
+}
