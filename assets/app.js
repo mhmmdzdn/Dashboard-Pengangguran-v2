@@ -485,7 +485,7 @@
       )
     );
 
-    host.append(h('div', { class: 'kpi-kisi' },
+    host.append(h('div', { class: 'kpi-kisi kpi-nasional-kisi' },
       kpi({ ik: 'orang', label: 'Jumlah penganggur', val: pg != null ? nfKompak.format(pg) : '—', per: pg != null ? fmtAngka(pg) + ' orang' : 'tidak tersedia', spark: sparkN('penganggur') }),
       kpiEkstremGabung,
       kpi({ ik: 'neet', label: 'NEET usia 15–24', val: fmtL(BY.neet, neet), per: neet != null ? lblTahunan(per) : 'tersedia 2015–2025', spark: sparkN('neet') }),

@@ -300,6 +300,82 @@ body:not(.mode-peta) {
   margin: 16px auto 16px !important;
 }
 
+/* Penataan Kartu KPI Nasional: 1 Baris (1 Row) & Compact */
+.kpi-nasional-kisi {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  max-width: 1200px !important;
+  margin: 16px auto 18px !important;
+  align-items: stretch !important;
+}
+
+.kpi-nasional-kisi > .kpi {
+  padding: 10px 12px 8px !important;
+  min-width: 0 !important;
+}
+
+.kpi-nasional-kisi > .kpi .atas {
+  font-size: 11px !important;
+}
+
+.kpi-nasional-kisi > .kpi .atas .bulat {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.kpi-nasional-kisi > .kpi .atas .bulat .ikon {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.kpi-nasional-kisi > .kpi .val {
+  font-size: 18px !important;
+  margin: 3px 0 1px !important;
+}
+
+.kpi-nasional-kisi > .kpi .per {
+  font-size: 10px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.kpi-nasional-kisi > .kpi-rentang-gabung {
+  padding: 8px 10px !important;
+  gap: 6px !important;
+}
+
+.kpi-nasional-kisi > .kpi-rentang-gabung .val {
+  font-size: 15.5px !important;
+}
+
+.kpi-nasional-kisi > .kpi svg {
+  margin-top: 3px !important;
+  height: 22px !important;
+}
+
+.kpi-nasional-kisi .kpi-delta-pill {
+  font-size: 9.5px !important;
+  padding: 1px 6px !important;
+  margin-top: 3px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 1050px) {
+  .kpi-nasional-kisi {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 680px) {
+  .kpi-nasional-kisi {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
 .kpi-profil-kisi > .kpi {
   flex: 1 1 0 !important;
   max-width: 310px !important;
