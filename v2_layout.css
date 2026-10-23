@@ -1964,15 +1964,101 @@ body.panel-terlipat .zoom-alat {
   transform: translateY(-1px);
 }
 
-/* 5. Penyempurnaan Bullet Chart Sasaran RPJMN */
+/* 5. Penyempurnaan Bullet Chart Sasaran RPJMN (Target Provinsi & Target Wilayah) */
+.bullet {
+  grid-template-columns: minmax(150px, max-content) minmax(0, 1fr) 56px !important;
+  gap: 8px 12px !important;
+}
+.bullet .nm {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.bullet .nm .nm-prov {
+  font-weight: 700;
+  color: var(--ink);
+}
+.bullet .nm:hover .nm-prov {
+  color: var(--accent);
+}
+.bullet .nm .sub-target-prov {
+  font-size: 10.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.bullet .trk {
+  height: 24px !important;
+  border-radius: 7px !important;
+  overflow: visible;
+}
+/* Pita Target Wilayah (Latar koridor penuh tinggi trek) */
+.bullet .wil-pita25,
+.bullet-leg .lw25 {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  background: rgba(59, 130, 246, 0.14);
+  border-left: 1.5px dotted #2563eb;
+  border-right: 1.5px dotted #2563eb;
+  border-radius: 3px;
+}
+.bullet .wil-pita29,
+.bullet-leg .lw29 {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  background: rgba(139, 92, 246, 0.12);
+  border-left: 1.5px dotted #7c3aed;
+  border-right: 1.5px dotted #7c3aed;
+  border-radius: 3px;
+}
+.bullet-leg .lw25,
+.bullet-leg .lw29 {
+  position: static !important;
+  display: inline-block;
+  width: 18px;
+  height: 10px;
+}
+/* Pita Target Provinsi (Pita utama di tengah trek) */
 .bullet .pita25,
 .bullet-leg .l25 {
-  background: rgba(15, 118, 110, 0.22) !important;
+  top: 3px !important;
+  bottom: 3px !important;
+  background: rgba(15, 118, 110, 0.28) !important;
   border-color: var(--accent) !important;
+  border-radius: 3px;
+}
+.bullet .pita29 {
+  top: 3px !important;
+  bottom: 3px !important;
+  border-radius: 3px;
 }
 :root[data-theme="dark"] .bullet .pita25,
 :root[data-theme="dark"] .bullet-leg .l25 {
-  background: rgba(45, 212, 191, 0.25) !important;
+  background: rgba(45, 212, 191, 0.3) !important;
+}
+/* Pita Target Provinsi & Wilayah pada Grafik Garis Tren (Profil Wilayah) */
+.chart .pita.pita-prov,
+.leg i.pita.pita-prov {
+  fill: rgba(15, 118, 110, 0.25) !important;
+  background: rgba(15, 118, 110, 0.25) !important;
+  border-color: var(--accent) !important;
+}
+.chart .pita-tepi.pita-prov {
+  stroke: var(--accent) !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+.chart .pita.pita-wil,
+.leg i.pita.pita-wil {
+  fill: rgba(234, 88, 12, 0.2) !important;
+  background: rgba(234, 88, 12, 0.2) !important;
+  border-color: var(--accent-2) !important;
+}
+.chart .pita-tepi.pita-wil {
+  stroke: var(--accent-2) !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: 3 2 !important;
 }
 .bullet .titik {
   width: 12px !important;
@@ -1981,6 +2067,7 @@ body.panel-terlipat .zoom-alat {
   border: 2px solid var(--surface) !important;
   box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.28), 0 2px 4px rgba(0, 0, 0, 0.25) !important;
   transition: transform 0.15s ease;
+  z-index: 3;
 }
 .bullet .trk:hover .titik {
   transform: translate(-50%, -50%) scale(1.25);

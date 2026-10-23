@@ -525,11 +525,33 @@
     // 04 sebaran wilayah
     {
       const grid = h('div', { class: 'wil-kisi' });
-      host.append(h('section', { class: 'bagian' }, bagian(4, 'Sebaran menurut wilayah', `TPT provinsi ${lblTahunan(per)}, dikelompokkan menurut wilayah RPJMN · garis vertikal = Indonesia ${fmtL(L_, tpt)} · klik nama untuk membuka profil.`), grid));
+      const sasWilMap = Object.fromEntries(D.sasaran.filter(x => x.level === 'wilayah').map(x => [x.wilayah, x]));
+      const sasProvMap = Object.fromEntries(D.sasaran.filter(x => x.level === 'provinsi').map(x => [x.kode, x]));
+      const rgT = r => (r ? fmtAngka(r[0], 2) + '–' + fmtAngka(r[1], 2) + '%' : '—');
+      host.append(h('section', { class: 'bagian' }, bagian(4, 'Sebaran menurut wilayah & sasaran RPJMN', `TPT provinsi ${lblTahunan(per)}, dikelompokkan menurut koridor wilayah RPJMN · pita pada batang = sasaran provinsi 2025 · garis vertikal = Indonesia ${fmtL(L_, tpt)} · klik nama untuk membuka profil.`), grid));
       URUT_WIL.forEach(w => {
         const b = h('div'), prov = WIL.provinsi.filter(p => p.wilayah === w);
-        grid.append(h('div', { class: 'card wil-kartu' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: w }), h('div', { class: 'sub', text: prov.length + ' provinsi' }))), b));
-        tunda.push(() => I.daftarBatang(b, { baris: prov.map(p => ({ kode: p.kode, nama: p.nama, v: pot[p.kode] != null ? pot[p.kode] : null })).sort((a, c) => (a.v == null) - (c.v == null) || c.v - a.v), fmt: v => fmtL(L_, v), ref: tpt, onPilih: k => { S.wil = k; renderProfil(); tulis(); } }));
+        const sw = sasWilMap[w];
+        const subWil = prov.length + ' provinsi' + (sw && sw.target2025 ? ` · Target Wilayah 2025: ${rgT(sw.target2025)} | 2029: ${rgT(sw.target2029)}` : '');
+        grid.append(h('div', { class: 'card wil-kartu' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: w }), h('div', { class: 'sub', text: subWil }))), b));
+        tunda.push(() => I.daftarBatang(b, {
+          baris: prov.map(p => {
+            const sp = sasProvMap[p.kode];
+            const tipParts = [];
+            if (sp && sp.target2025) tipParts.push(`Target Provinsi 2025: ${rgT(sp.target2025)} | 2029: ${rgT(sp.target2029)}`);
+            if (sw && sw.target2025) tipParts.push(`Target Wilayah ${w} 2025: ${rgT(sw.target2025)}`);
+            return {
+              kode: p.kode,
+              nama: p.nama,
+              v: pot[p.kode] != null ? pot[p.kode] : null,
+              pita: sp ? sp.target2025 : (sw ? sw.target2025 : null),
+              tip: tipParts.join(' · ')
+            };
+          }).sort((a, c) => (a.v == null) - (c.v == null) || c.v - a.v),
+          fmt: v => fmtL(L_, v),
+          ref: tpt,
+          onPilih: k => { S.wil = k; renderProfil(); tulis(); }
+        }));
       });
     }
 
@@ -789,7 +811,9 @@
       const vNas = nilai('tpt', 'tahunan', '00', th);
       const vProv = isKab ? nilai('tpt', 'tahunan', pk, th) : null;
       const tPeng = terakhir('penganggur', 'tahunan', k);
-      const sas = D.sasaran.find(x => x.wilayah === (PROV[pk] ? PROV[pk].wilayah : ''));
+      const sas = D.sasaran.find(x => x.level === 'wilayah' && x.wilayah === (PROV[pk] ? PROV[pk].wilayah : ''));
+      const sasProv = D.sasaran.find(x => x.level === 'provinsi' && x.kode === pk);
+      const rgSas = r => (r ? `${fmtAngka(r[0], 2)}%–${fmtAngka(r[1], 2)}%` : '—');
       const kabs = WIL.kabkota.filter(x => x.prov === pk);
 
       if (isKab) {
@@ -809,6 +833,9 @@
           if (vNas != null) comp.push(`${vTpt > vNas ? 'di atas' : 'di bawah'} nasional (${fmtAngka(vNas, 2)}%)`);
           faktaParts.push(`Posisi ${comp.join(' & ')}.`);
         }
+        if (sasProv && sasProv.target2025) {
+          faktaParts.push(`Target RPJMN Provinsi ${namaW(pk)}: ${rgSas(sasProv.target2025)} (2025) & ${rgSas(sasProv.target2029)} (2029).`);
+        }
       } else {
         let s = `TPT ${fmtAngka(vTpt, 2)}% (${lblTahunan(th)})`;
         if (dSeb) {
@@ -823,8 +850,15 @@
         }
         faktaParts.push(s);
 
+        const targetParts = [];
+        if (sasProv && sasProv.target2025) {
+          targetParts.push(`Target Provinsi: ${rgSas(sasProv.target2025)} (2025) · ${rgSas(sasProv.target2029)} (2029)`);
+        }
         if (sas && sas.target2025) {
-          faktaParts.push(`Sasaran RPJMN: ${sas.target2025[0]}%–${sas.target2025[1]}%.`);
+          targetParts.push(`Target Wilayah ${sas.wilayah}: ${rgSas(sas.target2025)} (2025) · ${rgSas(sas.target2029)} (2029)`);
+        }
+        if (targetParts.length) {
+          faktaParts.push(`Sasaran RPJMN — ${targetParts.join(' | ')}.`);
         }
       }
     }
@@ -962,9 +996,14 @@
       const fr = frekTersedia('tpt', lvDari(k)); if (!fr.includes(S.pfrek)) S.pfrek = 'tahunan';
       const seg = h('div', { class: 'seg' }); I.segmen(seg, fr.map(f => [f, FREK[f]]), S.pfrek, f => { S.pfrek = f; renderProfil(); tulis(); }, 'Frekuensi');
       const g = h('div'), gLP = h('div'), am = asalMap('tpt', S.pfrek, k);
-      host.append(h('section', { class: 'bagian' }, bagian(1, 'Tingkat pengangguran terbuka', `${namaW(k)}${isKab ? ' dibandingkan ' + namaW(pk) : ''} dan Indonesia, serta TPT laki-laki dan perempuan.`),
+      const sasWil = D.sasaran.find(x => x.level === 'wilayah' && x.wilayah === (PROV[pk] ? PROV[pk].wilayah : ''));
+      const sasPrv = D.sasaran.find(x => x.level === 'provinsi' && x.kode === pk);
+      const subTren = S.pfrek === 'tahunan'
+        ? `2015–2025 · pita = rentang Target Provinsi (${namaW(pk)}) & Target Wilayah (${PROV[pk] ? PROV[pk].wilayah : ''}) RPJMN 2025–2029`
+        : FREK[S.pfrek];
+      host.append(h('section', { class: 'bagian' }, bagian(1, 'Tingkat pengangguran terbuka', `${namaW(k)}${isKab ? ' dibandingkan ' + namaW(pk) : ''} dan Indonesia, beserta sasaran RPJMN 2025–2029 serta TPT laki-laki dan perempuan.`),
         h('div', { class: 'kisi kisi-2' },
-          kartuAksi('Tren TPT', FREK[S.pfrek], fr.length > 1 ? seg : null, g, am ? h('div', { class: 'catatan-kecil', text: 'Titik berongga = angka tabel BPS provinsi (' + Object.keys(am).join(', ') + '). Garis putus-putus = pergantian sumber/patahan seri.' }) : null),
+          kartuAksi('Tren TPT & Sasaran RPJMN', subTren, fr.length > 1 ? seg : null, g, am ? h('div', { class: 'catatan-kecil', text: 'Titik berongga = angka tabel BPS provinsi (' + Object.keys(am).join(', ') + '). Garis putus-putus = pergantian sumber/patahan seri.' }) : null),
           kartu('Laki-laki & perempuan', 'Tahunan (Agustus) 2017–2025', gLP))));
       tunda.push(() => {
         let dWil = deret('tpt', S.pfrek, k) || [];
@@ -980,7 +1019,30 @@
           if (S.pfrek === 'tahunan') dNat = dNat.filter(x => x[0] >= '2015');
           ser.push({ nama: 'Indonesia', warna: 'var(--context)', data: dNat });
         }
-        I.grafikGaris(g, { seri: potongAwal(ser), tinggi: 300, fmt: v => fmtL(BY.tpt, v), patahan: (BY.tpt.patahan || {})[S.pfrek], asalLabel: 'tabel BPS provinsi' });
+        const pitaProfil = [];
+        if (S.pfrek === 'tahunan') {
+          if (sasWil && sasWil.target2025) {
+            pitaProfil.push(
+              { dari: '2025', sampai: '2025', lo: sasWil.target2025[0], hi: sasWil.target2025[1], cls: 'pita-wil', dx: 6, lebar: 5, legenda: `Target Wilayah ${sasWil.wilayah} (2025–2029)` },
+              { dari: '2029', sampai: '2029', lo: sasWil.target2029[0], hi: sasWil.target2029[1], cls: 'pita-wil', dx: 6, lebar: 5, label: 'Wil 2029', dyLabel: -12, legenda: `Target Wilayah ${sasWil.wilayah} (2025–2029)` }
+            );
+          }
+          if (sasPrv && sasPrv.target2025) {
+            pitaProfil.push(
+              { dari: '2025', sampai: '2025', lo: sasPrv.target2025[0], hi: sasPrv.target2025[1], cls: 'pita-prov', dx: -4, lebar: 5, label: 'Prov 2025', legenda: `Target Provinsi ${namaW(pk)} (2025–2029)` },
+              { dari: '2029', sampai: '2029', lo: sasPrv.target2029[0], hi: sasPrv.target2029[1], cls: 'pita-prov', dx: -4, lebar: 5, label: 'Prov 2029', legenda: `Target Provinsi ${namaW(pk)} (2025–2029)` }
+            );
+          }
+        }
+        I.grafikGaris(g, {
+          seri: potongAwal(ser),
+          tinggi: 300,
+          fmt: v => fmtL(BY.tpt, v),
+          patahan: (BY.tpt.patahan || {})[S.pfrek],
+          pita: pitaProfil,
+          periodeTambahan: S.pfrek === 'tahunan' ? ['2026', '2027', '2028', '2029'] : [],
+          asalLabel: 'tabel BPS provinsi'
+        });
         I.grafikGaris(gLP, { seri: [{ nama: 'Laki-laki', warna: 'var(--cat-1)', data: deret('tpt_l', 'tahunan', k) || [], utama: true }, { nama: 'Perempuan', warna: 'var(--cat-2)', data: deret('tpt_p', 'tahunan', k) || [], utama: true }], tinggi: 300, fmt: v => fmtL(BY.tpt, v) });
       });
     }
@@ -1126,31 +1188,129 @@
     const tunda = [() => I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: (deret('tpt', 'tahunan', '00') || []).filter(d => d[0] >= '2015'), utama: true }], tinggi: 300, fmt, area: true,
       pita: [{ dari: '2025', sampai: '2025', lo: sn.target2025[0], hi: sn.target2025[1], label: 'Sasaran 2025', legenda: 'Rentang sasaran RPJMN' }, { dari: '2029', sampai: '2029', lo: sn.target2029[0], hi: sn.target2029[1], label: 'Sasaran 2029', legenda: 'Rentang sasaran RPJMN' }],
       periodeTambahan: ['2026', '2027', '2028', '2029'] })];
-    // bullet chart per wilayah, skala bersama
+    // bullet chart per wilayah & provinsi, skala bersama
     const wil = D.sasaran.filter(x => x.level === 'wilayah');
-    const semuaV = WIL.provinsi.map(p => nilai('tpt', 'tahunan', p.kode, pT)).filter(v => v != null).concat(wil.flatMap(x => [...(x.target2025 || []), ...(x.target2029 || [])]));
+    const provSas = Object.fromEntries(D.sasaran.filter(x => x.level === 'provinsi').map(x => [x.kode, x]));
+    const semuaV = WIL.provinsi.map(p => nilai('tpt', 'tahunan', p.kode, pT)).filter(v => v != null)
+      .concat(D.sasaran.flatMap(x => [...(x.target2025 || []), ...(x.target2029 || [])]));
     const maks = Math.ceil(Math.max(...semuaV) + 0.5), pos = v => Math.max(0, Math.min(100, v / maks * 100));
     const grid = h('div', { class: 'wil-kisi lebar' });
-    host.append(h('section', { class: 'bagian' }, bagian(2, 'Provinsi dan sasaran wilayah', `TPT provinsi ${lblTahunan(pT)} (titik) dengan rentang sasaran wilayahnya. Skala 0–${maks}% sama untuk semua kartu.`),
-      h('div', { class: 'bullet-leg' }, h('span', {}, h('i', { class: 'lt' }), 'TPT provinsi'), h('span', {}, h('i', { class: 'l25' }), 'Sasaran wilayah 2025'), h('span', {}, h('i', { class: 'l29' }), 'Sasaran wilayah 2029')), grid,
+    const tbSasaran = h('div');
+    const tombolCsvSasaran = h('button', {
+      class: 'btn',
+      type: 'button',
+      onclick: () => {
+        const rows = [];
+        URUT_WIL.forEach(w => {
+          const sw = wil.find(z => z.wilayah === w);
+          WIL.provinsi.filter(p => p.wilayah === w).forEach(p => {
+            const sp = provSas[p.kode];
+            const vNow = nilai('tpt', 'tahunan', p.kode, pT);
+            rows.push([
+              p.kode,
+              p.nama,
+              w,
+              vNow != null ? vNow : '',
+              sp && sp.target2025 ? sp.target2025[0] : '',
+              sp && sp.target2025 ? sp.target2025[1] : '',
+              sp && sp.target2029 ? sp.target2029[0] : '',
+              sp && sp.target2029 ? sp.target2029[1] : '',
+              sw && sw.target2025 ? sw.target2025[0] : '',
+              sw && sw.target2025 ? sw.target2025[1] : '',
+              sw && sw.target2029 ? sw.target2029[0] : '',
+              sw && sw.target2029 ? sw.target2029[1] : ''
+            ]);
+          });
+        });
+        I.unduhCsv('sasaran_rpjmn_provinsi_dan_wilayah.csv', [
+          'kode_bps', 'provinsi', 'wilayah_rpjmn', `tpt_${pT}`,
+          'target_prov_2025_min', 'target_prov_2025_max', 'target_prov_2029_min', 'target_prov_2029_max',
+          'target_wil_2025_min', 'target_wil_2025_max', 'target_wil_2029_min', 'target_wil_2029_max'
+        ], rows);
+      }
+    }, ikon('unduh'), 'Unduh CSV Target Provinsi & Wilayah');
+
+    host.append(h('section', { class: 'bagian' }, bagian(2, 'Provinsi, sasaran provinsi, dan sasaran wilayah', `TPT provinsi ${lblTahunan(pT)} (titik) disandingkan langsung dengan rentang Target Provinsi (2025 & 2029) dan Target Koridor Wilayah (2025 & 2029). Skala 0–${maks}% sama untuk semua kartu.`),
+      h('div', { class: 'bullet-leg' },
+        h('span', {}, h('i', { class: 'lt' }), 'TPT Provinsi (' + lblTahunan(pT) + ')'),
+        h('span', {}, h('i', { class: 'l25' }), 'Target Provinsi 2025'),
+        h('span', {}, h('i', { class: 'l29' }), 'Target Provinsi 2029'),
+        h('span', {}, h('i', { class: 'lw25' }), 'Target Wilayah 2025'),
+        h('span', {}, h('i', { class: 'lw29' }), 'Target Wilayah 2029')
+      ),
+      grid,
+      h('section', { class: 'bagian' }, bagian(3, 'Tabel rincian sasaran TPT 38 provinsi & 7 wilayah', 'Perbandingan lengkap realisasi TPT terkini dengan rentang sasaran RPJMN 2025 dan 2029 tingkat provinsi maupun wilayah. Klik baris untuk membuka profil provinsi.'),
+        kartuAksi('Matriks Sasaran RPJMN 2025–2029 per Provinsi & Wilayah', 'Angka resmi Bappenas (RPJMN 2025–2029) & BPS (' + lblTahunan(pT) + ')', tombolCsvSasaran, tbSasaran)),
       h('div', { class: 'card jarak' }, h('ul', { class: 'catatan', style: 'margin:0' },
-        h('li', { text: 'Sasaran wilayah berlaku untuk wilayah sebagai satu kesatuan, bukan untuk setiap provinsi; provinsi ditampilkan sebagai rincian, bukan penilaian capaian.' }),
-        h('li', { text: 'Sasaran wilayah dibaca dari infografis lampiran RPJMN (halaman 70–71); urutan 2025/2029 perlu dicek visual pada dokumen sumber.' }),
-        h('li', {}, 'Sumber sasaran: ', h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', text: D.sumberRpjmn.label }), '. Sumber TPT: BPS.')))));
+        h('li', { text: 'Setiap baris grafik menampilkan pita Target Provinsi (2025 & 2029) sekaligus penanda Target Wilayah koridor pembangunannya (2025 & 2029).' }),
+        h('li', { text: 'Arahkan kursor atau sentuh grafik batang provinsi untuk melihat rincian angka Target Provinsi dan Target Wilayah secara berdampingan.' }),
+        h('li', {}, 'Sumber sasaran: ', h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', text: D.sumberRpjmn.label }), ' (Lampiran Target Capaian Provinsi & Wilayah RPJMN 2025–2029). Sumber TPT: BPS.')))));
+
+    const barisTabelSas = [];
     URUT_WIL.forEach(w => {
       const x = wil.find(z => z.wilayah === w); if (!x) return;
       const b = h('div', { class: 'bullet' });
       WIL.provinsi.filter(p => p.wilayah === w).map(p => [p, nilai('tpt', 'tahunan', p.kode, pT)]).sort((a, c) => (c[1] || 0) - (a[1] || 0)).forEach(([p, v]) => {
+        const sp = provSas[p.kode];
+        const tProv25 = sp && sp.target2025 ? sp.target2025 : null;
+        const tProv29 = sp && sp.target2029 ? sp.target2029 : null;
         const trk = h('div', { class: 'trk' },
-          x.target2029 ? h('div', { class: 'pita29', style: `left:${pos(x.target2029[0])}%;width:${pos(x.target2029[1]) - pos(x.target2029[0])}%` }) : null,
-          x.target2025 ? h('div', { class: 'pita25', style: `left:${pos(x.target2025[0])}%;width:${pos(x.target2025[1]) - pos(x.target2025[0])}%` }) : null,
+          x.target2029 ? h('div', { class: 'wil-pita29', style: `left:${pos(x.target2029[0])}%;width:${Math.max(0.6, pos(x.target2029[1]) - pos(x.target2029[0]))}%` }) : null,
+          x.target2025 ? h('div', { class: 'wil-pita25', style: `left:${pos(x.target2025[0])}%;width:${Math.max(0.6, pos(x.target2025[1]) - pos(x.target2025[0]))}%` }) : null,
+          tProv29 ? h('div', { class: 'pita29', style: `left:${pos(tProv29[0])}%;width:${Math.max(0.8, pos(tProv29[1]) - pos(tProv29[0]))}%` }) : null,
+          tProv25 ? h('div', { class: 'pita25', style: `left:${pos(tProv25[0])}%;width:${Math.max(0.8, pos(tProv25[1]) - pos(tProv25[0]))}%` }) : null,
           v != null ? h('div', { class: 'titik', style: `left:${pos(v)}%` }) : null);
-        trk.addEventListener('pointermove', ev => I.tampilTip(ev, [I.tipNama(p.nama), I.tipBaris(fmt(v), 'TPT ' + lblTahunan(pT)), I.tipSub('Sasaran wilayah 2025: ' + rg(x.target2025)), I.tipSub('Sasaran wilayah 2029: ' + rg(x.target2029))]));
+        trk.addEventListener('pointermove', ev => I.tampilTip(ev, [
+          I.tipNama(`${p.nama} (Wilayah ${w})`),
+          I.tipBaris(fmt(v), 'TPT ' + lblTahunan(pT)),
+          tProv25 ? I.tipBaris(rg(tProv25), 'Target Provinsi 2025', '#0f766e', true) : null,
+          tProv29 ? I.tipBaris(rg(tProv29), 'Target Provinsi 2029', '#ea580c', true) : null,
+          I.tipSub(`Target Wilayah ${w} 2025: ${rg(x.target2025)} · 2029: ${rg(x.target2029)}`)
+        ]));
         trk.addEventListener('pointerleave', I.sembunyiTip);
-        b.append(h('div', { class: 'nm', title: p.nama, text: p.nama, onclick: () => { S.wil = p.kode; gantiHalaman('profil'); } }), trk, h('div', { class: 'v', text: fmt(v) }));
+        b.append(
+          h('div', { class: 'nm', title: `${p.nama} — Target Prov 2025: ${rg(tProv25)} | 2029: ${rg(tProv29)}`, onclick: () => { S.wil = p.kode; gantiHalaman('profil'); } },
+            h('span', { class: 'nm-prov', text: p.nama }),
+            tProv25 ? h('small', { class: 'sub-target-prov', text: `2025: ${rg(tProv25)} · 2029: ${rg(tProv29)}` }) : null
+          ),
+          trk,
+          h('div', { class: 'v', text: fmt(v) })
+        );
+
+        const rBaris = [
+          { teks: p.nama, sort: p.nama },
+          { teks: w, sort: w },
+          { teks: fmt(v), sort: v },
+          { teks: rg(tProv25), sort: tProv25 ? tProv25[0] : null },
+          { teks: rg(tProv29), sort: tProv29 ? tProv29[0] : null },
+          { teks: rg(x.target2025), sort: x.target2025 ? x.target2025[0] : null },
+          { teks: rg(x.target2029), sort: x.target2029 ? x.target2029[0] : null }
+        ];
+        rBaris.kode = p.kode;
+        barisTabelSas.push(rBaris);
       });
       grid.append(h('div', { class: 'card wil-kartu' }, h('div', { class: 'card-head' }, h('div', {}, h('h3', { text: 'Wilayah ' + w }))),
-        h('div', { class: 'rentang' }, h('span', {}, h('span', { class: 'lencana biru', text: '2025' }), ' ', h('b', { text: rg(x.target2025) })), h('span', {}, h('span', { class: 'lencana oranye', text: '2029' }), ' ', h('b', { text: rg(x.target2029) }))), b));
+        h('div', { class: 'rentang' },
+          h('span', {}, h('span', { class: 'lencana biru', text: 'Target Wilayah 2025' }), ' ', h('b', { text: rg(x.target2025) })),
+          h('span', {}, h('span', { class: 'lencana oranye', text: 'Target Wilayah 2029' }), ' ', h('b', { text: rg(x.target2029) }))
+        ), b));
+    });
+
+    tunda.push(() => {
+      I.tabel(tbSasaran, {
+        kolom: [
+          { label: 'Provinsi' },
+          { label: 'Koridor Wilayah' },
+          { label: 'TPT ' + pT, num: true },
+          { label: 'Target Provinsi 2025', num: true },
+          { label: 'Target Provinsi 2029', num: true },
+          { label: 'Target Wilayah 2025', num: true },
+          { label: 'Target Wilayah 2029', num: true }
+        ],
+        baris: barisTabelSas,
+        maks: 480,
+        onPilih: kk => { S.wil = kk; gantiHalaman('profil'); }
+      });
     });
     requestAnimationFrame(() => tunda.forEach(f => f()));
   }

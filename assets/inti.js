@@ -433,9 +433,17 @@
       const ada = daftar.some(x => x.data.some(d => d[1] != null));
       if (!periode.length || !ada) { host.append(h('div', { class: 'kecil', text: 'Tidak ada angka resmi.' })); return; }
       if ((o.legenda !== false) && (daftar.length >= 2 || (o.pita && o.pita.length) || (o.patahan && o.patahan.length)) && !o.kecil) {
+        const legPita = [];
+        const seenLeg = new Set();
+        (o.pita || []).forEach(p => {
+          const lbl = p.legenda || 'Rentang sasaran';
+          if (seenLeg.has(lbl)) return;
+          seenLeg.add(lbl);
+          legPita.push(h('span', {}, h('i', { class: 'pita' + (p.cls ? ' ' + p.cls : '') }), lbl));
+        });
         host.append(h('div', { class: 'leg' },
           daftar.length >= 2 ? daftar.map(x => h('span', {}, h('i', { class: x.putus ? 'putus' : null, style: 'border-color:' + x.warna }), x.nama)) : null,
-          (o.pita || []).length ? h('span', {}, h('i', { class: 'pita' }), o.pita[0].legenda || 'Rentang sasaran') : null,
+          ...legPita,
           (o.patahan || []).some(p => periode.includes(p.antara[0]) && periode.includes(p.antara[1])) ? h('span', {}, h('i', { class: 'putus', style: 'border-color:var(--context)' }), 'Patahan seri (tidak sepenuhnya sebanding)') : null,
           daftar.some(x => x.asal && Object.keys(x.asal).length) ? h('span', {}, h('i', { class: 'kotak', style: 'border:1.6px solid var(--accent);border-radius:50%;background:var(--surface)' }), o.asalLabel || 'Sumber lain') : null));
       }
@@ -463,10 +471,14 @@
       (o.pita || []).forEach(p => {
         const i0 = periode.indexOf(p.dari), i1 = periode.indexOf(p.sampai);
         if (i0 < 0 || i1 < 0) return;
-        const x0 = X(i0) - (i0 === i1 ? 6 : 0), x1 = X(i1) + (i0 === i1 ? 6 : 0);
-        svg.append(s('rect', { class: 'pita', x: x0, y: Y(p.hi), width: Math.max(2, x1 - x0), height: Math.max(1, Y(p.lo) - Y(p.hi)) }));
-        svg.append(s('rect', { class: 'pita-tepi', x: x0, y: Y(p.hi), width: Math.max(2, x1 - x0), height: Math.max(1, Y(p.lo) - Y(p.hi)) }));
-        if (p.label && !o.kecil && !isSempit) svg.append(s('text', { class: 'anot', x: (x0 + x1) / 2, y: Y(p.hi) - 5, 'text-anchor': x1 > W - m.r - 30 ? 'end' : 'middle', text: p.label }));
+        const dx = p.dx || 0;
+        const hw = p.lebar || 6;
+        const x0 = X(i0) - (i0 === i1 ? hw : 0) + dx, x1 = X(i1) + (i0 === i1 ? hw : 0) + dx;
+        const clsPita = 'pita' + (p.cls ? ' ' + p.cls : '');
+        const clsTepi = 'pita-tepi' + (p.cls ? ' ' + p.cls : '');
+        svg.append(s('rect', { class: clsPita, x: x0, y: Y(p.hi), width: Math.max(2, x1 - x0), height: Math.max(2, Y(p.lo) - Y(p.hi)) }));
+        svg.append(s('rect', { class: clsTepi, x: x0, y: Y(p.hi), width: Math.max(2, x1 - x0), height: Math.max(2, Y(p.lo) - Y(p.hi)) }));
+        if (p.label && !o.kecil && !isSempit) svg.append(s('text', { class: 'anot', x: (x0 + x1) / 2, y: Y(p.hi) - (p.dyLabel || 5), 'text-anchor': x1 > W - m.r - 30 ? 'end' : 'middle', text: p.label }));
       });
       // patahan seri: garis vertikal tipis di antara dua periode
       const patah = new Set();
