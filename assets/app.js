@@ -2755,6 +2755,11 @@
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
   document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); S.wil = '00'; gantiHalaman('profil'); });
   $('kaki').replaceChildren(
+    h('img', {
+      src: 'assets/logo-bappenas.png',
+      alt: 'Logo Bappenas',
+      style: 'width:42px;height:42px;object-fit:contain;margin-bottom:10px;'
+    }),
     h('div', {
       style: 'font-weight:700;font-size:13.5px;color:var(--ink);line-height:1.5',
       text: 'Disusun oleh Pusat Sistem, Data, dan Informasi Perencanaan Pembangunan'
