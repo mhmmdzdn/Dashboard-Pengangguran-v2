@@ -1239,11 +1239,11 @@
       h('div', {}, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Bappenas · RPJMN 2025–2029'), h('h1', {}, 'Sasaran TPT nasional ', h('em', { text: rg(sn.target2025) }), ' pada 2025 dan ', h('em', { text: rg(sn.target2029) }), ' pada 2029.'),
         h('p', {}, `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran sesuai `, h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', style: 'color:#5eead4;font-weight:700;text-decoration:underline', text: 'Perpres No. 12 Tahun 2025 (RPJMN 2025–2029)' }), ' — tanpa menghitung jarak atau selisih.')),
       h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) })))));
-    host.append(h('div', { class: 'kpi-kisi auto' },
+    host.append(h('div', { class: 'kpi-kisi auto kpi-sasaran-kisi' },
       kpi({ ik: 'info', label: 'Baseline 2024', val: fmtAngka(sn.baseline2024, 2) + '%', per: 'RPJMN (Bappenas)' }),
-      kpi({ ik: 'target', label: 'Sasaran 2025', val: rg(sn.target2025), per: 'rentang' }),
-      kpi({ ik: 'target', oranye: true, label: 'Sasaran 2029', val: rg(sn.target2029), per: 'rentang' }),
-      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'BPS', spark: (deret('tpt', 'tahunan', '00') || []).slice(-11) })));
+      kpi({ ik: 'target', label: 'Sasaran 2025', val: rg(sn.target2025), per: 'Rentang Perpres No. 12/2025' }),
+      kpi({ ik: 'target', oranye: true, label: 'Sasaran 2029', val: rg(sn.target2029), per: 'Rentang Perpres No. 12/2025' }),
+      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'Realisasi resmi BPS' })));
     const g = h('div');
     host.append(h('section', { class: 'bagian' }, bagian(1, 'TPT Indonesia dan rentang sasaran', 'Tahunan (Agustus) 2015–2025 · pita = rentang sasaran RPJMN 2025 dan 2029.'), h('div', { class: 'card' }, g)));
     const tunda = [() => I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: (deret('tpt', 'tahunan', '00') || []).filter(d => d[0] >= '2015'), utama: true }], tinggi: 300, fmt, area: true,
