@@ -1475,7 +1475,12 @@
     renderInsightContent(host);
   }
 
+  let obsMilestone = null;
   function renderMilestone(host) {
+    if (obsMilestone) {
+      obsMilestone.disconnect();
+      obsMilestone = null;
+    }
     insightDibuat = false;
     if (S.mskategori !== 'makro' && S.mskategori !== 'pemerintah') S.mskategori = 'makro';
     const isGov = S.mskategori === 'pemerintah';
@@ -2004,6 +2009,25 @@
 
     const dataAktif = isGov ? milestonesGov : milestonesMakro;
 
+    const stickyBarMs = h('div', { class: 'sticky-ms-bar', 'aria-hidden': 'true' },
+      h('div', { class: 'dalam' },
+        h('div', { class: 'sticky-ms-kiri' },
+          h('div', { class: 'sticky-ms-remah' }, 'Informasi › Milestone'),
+          h('div', { class: 'sticky-ms-judul', text: isGov ? 'Langkah & Kebijakan Pemerintah' : 'Dinamika Makro & Global' })
+        ),
+        h('div', { class: 'sticky-ms-kanan' },
+          (() => {
+            const segSticky = h('div', { class: 'seg seg-level-profil' });
+            I.segmen(segSticky, [['makro', 'Dinamika Makro & Global'], ['pemerintah', 'Langkah & Kebijakan Pemerintah']], S.mskategori, katBaru => {
+              S.mskategori = katBaru;
+              render();
+            }, 'Kategori Milestone');
+            return segSticky;
+          })()
+        )
+      )
+    );
+
     host.innerHTML = `
       <div class="hero">
         <div class="hero-lingkup-bar" style="flex-direction:column;gap:12px">
@@ -2144,6 +2168,15 @@
     const barSub = host.querySelector('#ms-bar-sub');
     if (barUtama) barUtama.append(segInfo);
     if (barSub) barSub.append(segKat);
+
+    host.prepend(stickyBarMs);
+    const heroEl = host.querySelector('.hero');
+    if (heroEl && 'IntersectionObserver' in window) {
+      obsMilestone = new IntersectionObserver(([entry]) => {
+        stickyBarMs.classList.toggle('tampil', !entry.isIntersecting);
+      }, { rootMargin: '-52px 0px 0px 0px', threshold: 0 });
+      obsMilestone.observe(heroEl);
+    }
 
     // Render SVG Chart Trajektori Milestone
     const chartBox = host.querySelector('#ms-Interactive-Chart');
