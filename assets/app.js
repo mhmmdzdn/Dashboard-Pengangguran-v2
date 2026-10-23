@@ -1234,7 +1234,12 @@
     const vT = nilai('tpt', 'tahunan', '00', pT);
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-kisi' },
       h('div', {}, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Bappenas · RPJMN 2025–2029'), h('h1', {}, 'Sasaran TPT nasional ', h('em', { text: rg(sn.target2025) }), ' pada 2025 dan ', h('em', { text: rg(sn.target2029) }), ' pada 2029.'),
-        h('p', {}, `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran sesuai `, h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', style: 'color:#5eead4;font-weight:700;text-decoration:underline', text: 'Perpres No. 12 Tahun 2025 (RPJMN 2025–2029)' }), ' — tanpa menghitung jarak atau selisih.')),
+        h('p', {},
+          `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran sesuai:`,
+          h('br'),
+          h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', style: 'display:inline-block;margin-top:4px;color:#5eead4;font-weight:700;text-decoration:underline', text: 'Perpres No. 12 Tahun 2025 (RPJMN 2025–2029)' }),
+          ' — tanpa menghitung jarak atau selisih.'
+        )),
       h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) })))));
     host.append(h('div', { class: 'kpi-kisi auto kpi-sasaran-kisi' },
       kpi({ ik: 'info', label: 'Baseline 2024', val: fmtAngka(sn.baseline2024, 2) + '%', per: 'RPJMN (Bappenas)' }),
