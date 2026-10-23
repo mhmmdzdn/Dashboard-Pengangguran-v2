@@ -2015,18 +2015,10 @@
           <div class="card-head">
             <div>
               <h2>${isGov ? 'Peta Trajektori TPT &amp; Tonggak Intervensi Pemerintah (2015–2026)' : 'Peta Trajektori TPT &amp; Penanda Kejadian Makro (2015–2026)'}</h2>
-              <p class="sub">Klik pada titik tahun atau pil navigasi di bawah untuk melompat langsung ke kartu rincian periode terkait.</p>
+              <p class="sub">Klik pada titik tahun pada grafik linimasa di bawah untuk melompat langsung ke kartu rincian periode terkait.</p>
             </div>
           </div>
           <div id="ms-Interactive-Chart" class="ms-chart-box"></div>
-          <div class="ms-Quick-Nav" role="navigation" aria-label="Lompat cepat ke periode milestone">
-            ${dataAktif.map((m, idx) => `
-              <a href="#${m.id}" data-ms-jump="${m.id}" class="ms-pill ${idx === 0 ? 'aktif' : ''}" style="--ms-c:${m.warna}">
-                <span class="ms-pill-yr">${m.tahun}</span>
-                <span class="ms-pill-tpt">${m.tpt}</span>
-              </a>
-            `).join('')}
-          </div>
         </div>
 
         <!-- Daftar Kartu Linimasa Kronologis -->
@@ -2129,8 +2121,8 @@
         { yr: '2025', v: 4.85, id: isGov ? 'ms-gov-2025' : 'ms-makro-2025', c: '#059669' },
         { yr: '2026*', v: 4.68, id: isGov ? 'ms-gov-2025' : 'ms-makro-2025', c: '#059669' }
       ];
-      const W = 880, H = 250, padL = 48, padR = 36, padT = 34, padB = 38;
-      const minY = 4.0, maxY = 7.6;
+      const W = 880, H = 290, padL = 48, padR = 36, padT = 52, padB = 40;
+      const minY = 4.0, maxY = 7.7;
       const X = i => padL + (i * (W - padL - padR) / (pts.length - 1));
       const Y = v => padT + (maxY - v) / (maxY - minY) * (H - padT - padB);
 
@@ -2145,15 +2137,16 @@
       });
 
       const x2020 = X(5), x2021 = X(6);
-      const zoneSvg = `<rect x="${(x2020 - 18).toFixed(1)}" y="${padT - 8}" width="${(x2021 - x2020 + 36).toFixed(1)}" height="${H - padT - padB + 8}" rx="6" fill="rgba(220, 38, 38, 0.06)" stroke="rgba(220, 38, 38, 0.2)" stroke-dasharray="3 3"/>
-      <text x="${((x2020 + x2021) / 2).toFixed(1)}" y="${padT + 6}" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="700">${isGov ? 'INTERVENSI DARURAT PEN & JKP' : 'GUNCANGAN PANDEMI'}</text>`;
+      const zoneSvg = `<rect x="${(x2020 - 20).toFixed(1)}" y="${padT - 28}" width="${(x2021 - x2020 + 40).toFixed(1)}" height="${H - padT - padB + 28}" rx="8" fill="rgba(220, 38, 38, 0.06)" stroke="rgba(220, 38, 38, 0.22)" stroke-dasharray="3 3"/>
+      <rect x="${((x2020 + x2021) / 2 - 85).toFixed(1)}" y="${padT - 40}" width="170" height="20" rx="10" fill="rgba(220, 38, 38, 0.12)"/>
+      <text x="${((x2020 + x2021) / 2).toFixed(1)}" y="${padT - 26}" text-anchor="middle" fill="#dc2626" font-size="9.5" font-weight="800" letter-spacing="0.4">${isGov ? 'INTERVENSI DARURAT PEN & JKP' : 'GUNCANGAN PANDEMI'}</text>`;
 
       let nodesSvg = '';
       pts.forEach((p, i) => {
         const cx = X(i).toFixed(1), cy = Y(p.v).toFixed(1);
         const isPeak = p.yr === '2020';
         const isLow = p.yr === '2019' || p.yr === '2025' || p.yr === '2026*';
-        const dyVal = isPeak ? -14 : (i % 2 === 0 ? -12 : 18);
+        const dyVal = isPeak ? -13 : (i % 2 === 0 ? -12 : 18);
         nodesSvg += `
           <g class="ms-chart-node" data-ms-jump="${p.id}" style="cursor:pointer">
             <line x1="${cx}" x2="${cx}" y1="${cy}" y2="${H - padB}" stroke="${p.c}" stroke-width="1" stroke-dasharray="2 3" opacity="0.45"/>

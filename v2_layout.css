@@ -3112,8 +3112,8 @@ table.tbl thead th:hover {
 
 .ms-chart-box {
   width: 100%;
-  height: 245px;
-  margin: 12px 0 14px;
+  height: 290px;
+  margin: 12px 0 10px;
 }
 
 .ms-chart-node circle {
