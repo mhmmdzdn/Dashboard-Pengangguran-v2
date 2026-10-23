@@ -1578,21 +1578,72 @@ table.tbl tr.klik-baris:hover td {
   line-height: 1.6;
 }
 
-/* Metodologi Clean Accordion */
+/* Metodologi Modern Cards & Grid */
+.metode-kisi {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 16px !important;
+  margin-bottom: 24px;
+}
 .blok-metode {
-  border-radius: 8px !important;
-  box-shadow: none !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-1) !important;
   border: 1px solid var(--border) !important;
-  padding: 14px 16px !important;
+  background: var(--surface) !important;
+  padding: 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+.blok-metode:hover {
+  border-color: var(--border-2) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  transform: translateY(-2px);
 }
 .blok-metode h3 {
-  font-size: 13px !important;
-  font-weight: 700;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.01em;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 0 0 12px 0 !important;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--grid);
+}
+.blok-metode h3 .ikon {
+  color: var(--accent) !important;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.blok-metode .catatan {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
 }
 .blok-metode .catatan li {
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--muted);
+  position: relative !important;
+  padding-left: 14px !important;
+  font-size: 12.5px !important;
+  line-height: 1.55 !important;
+  color: var(--ink-2) !important;
+}
+.blok-metode .catatan li::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 7px !important;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  opacity: 0.7;
 }
 
 
@@ -2402,7 +2453,10 @@ body.panel-terlipat .zoom-alat {
 details.lapisan-det {
   border: 1px solid var(--border) !important;
   border-radius: 12px !important;
+  background: var(--surface) !important;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  margin-bottom: 10px;
+  overflow: hidden;
 }
 details.lapisan-det:hover {
   border-color: var(--border-2) !important;
@@ -2411,9 +2465,63 @@ details.lapisan-det[open] {
   border-left: 3.5px solid var(--accent) !important;
   box-shadow: var(--shadow-1) !important;
 }
+details.lapisan-det > summary {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 1fr 200px 32px !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 14px 18px !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+details.lapisan-det > summary::-webkit-details-marker {
+  display: none !important;
+}
+.lap-summary-kiri {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.lap-summary-kiri .lencana.biru {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  flex: none;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.lap-summary-kiri .lap-judul {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  white-space: normal;
+  line-height: 1.35;
+}
+.lap-summary-kanan {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+  width: 100%;
+}
+.lap-frek-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  text-align: right;
+}
 details.lapisan-det > summary::after {
-  width: 24px;
-  height: 24px;
+  content: "+" !important;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--surface-2);
   display: inline-grid;
@@ -2421,6 +2529,8 @@ details.lapisan-det > summary::after {
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
+  color: var(--muted);
+  justify-self: end;
   transition: background-color 0.15s ease, color 0.15s ease, transform 0.2s ease;
 }
 details.lapisan-det:hover > summary::after {
@@ -2428,8 +2538,28 @@ details.lapisan-det:hover > summary::after {
   color: var(--accent);
 }
 details.lapisan-det[open] > summary::after {
+  content: "−" !important;
   background: var(--accent);
   color: #ffffff;
+}
+details.lapisan-det .isi-det {
+  padding: 0 18px 18px 18px !important;
+  border-top: 1px solid var(--grid);
+  margin-top: 4px;
+  padding-top: 14px !important;
+}
+
+@media (max-width: 768px) {
+  details.lapisan-det > summary {
+    grid-template-columns: 1fr auto !important;
+    gap: 10px !important;
+  }
+  .lap-summary-kanan {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    padding-left: 44px;
+    margin-top: -4px;
+  }
 }
 
 /* =====================================================================

@@ -1411,12 +1411,29 @@
       rpjmnCard.innerHTML = `Dokumen regulasi resmi: <a href="${D.sumberRpjmn.url}" target="_blank" rel="noopener">${D.sumberRpjmn.label}</a>.`;
     }
     host.append(h('section', { class: 'bagian' }, bagian(1, 'Lapisan peta', 'Definisi, catatan, sumber dengan tautan, dan unduhan CSV lengkap per lapisan.'),
-      ...LAP.map(l => h('details', { class: 'lapisan-det' }, h('summary', {}, h('span', { style: 'display:flex;align-items:center;gap:10px' }, h('span', { class: 'lencana biru' }, ikon(IKON_LAP[l.id])), h('b', { text: l.nama })), h('span', { class: 'kecil', text: Object.keys(l.frek).map(f => FREK[f]).join(' · ') })),
-        h('div', { class: 'isi-det' }, h('div', { style: 'display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap' }, h('p', { class: 'kecil', style: 'color:var(--ink-2);margin:0;max-width:820px', text: l.uraian + ' Satuan: ' + satuanTeks(l) + '.' }), h('button', { class: 'btn', type: 'button', onclick: csvLapisan(l) }, ikon('unduh'), 'CSV lengkap')),
+      ...LAP.map(l => h('details', { class: 'lapisan-det' },
+        h('summary', {},
+          h('span', { class: 'lap-summary-kiri' },
+            h('span', { class: 'lencana biru' }, ikon(IKON_LAP[l.id])),
+            h('b', { class: 'lap-judul', text: l.nama })
+          ),
+          h('div', { class: 'lap-summary-kanan' },
+            h('span', { class: 'lap-frek-tag', text: Object.keys(l.frek).map(f => FREK[f]).join(' · ') })
+          )
+        ),
+        h('div', { class: 'isi-det' },
+          h('div', { style: 'display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;' },
+            h('p', { class: 'kecil', style: 'color:var(--ink-2);margin:0;max-width:820px;line-height:1.5', text: l.uraian + ' Satuan: ' + satuanTeks(l) + '.' }),
+            h('button', { class: 'btn', type: 'button', onclick: csvLapisan(l) }, ikon('unduh'), 'CSV lengkap')
+          ),
           h('ul', { class: 'catatan' }, l.catatan.map(c => h('li', { text: c }))),
           l.definisiBps ? h('details', {}, h('summary', { text: 'Definisi resmi BPS' }), h('p', { class: 'kecil', style: 'color:var(--ink-2)', text: l.definisiBps })) : null,
           l.catatanBps.length ? h('details', {}, h('summary', { text: 'Catatan resmi BPS' }), h('ul', { class: 'catatan' }, l.catatanBps.map(c => h('li', { text: c })))) : null,
-          h('div', { class: 'bagian-jdl', text: 'Sumber & tautan unduh' }), h('ul', { class: 'sumber' }, l.sumber.map(tautan)))))));
+          h('div', { class: 'bagian-jdl', text: 'Sumber & tautan unduh' }),
+          h('ul', { class: 'sumber' }, l.sumber.map(tautan))
+        )
+      ))
+    ));
     const kat = h('div', { class: 'card' });
     Object.values(R).forEach(r => {
       const tb = h('div', { class: 'hidden', style: 'grid-column:1/-1' }), f0 = Object.keys(r.frek)[0];
