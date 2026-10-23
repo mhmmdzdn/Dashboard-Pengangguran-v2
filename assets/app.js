@@ -356,7 +356,36 @@
     const selPer = h('select', { 'aria-label': 'Periode nasional', onchange: ev => pilihPer(ev.target.value) }, perTpt.slice().reverse().map(p => h('option', { value: p, selected: p === per ? true : null, text: lblTahunan(p) })));
     const spark = h('div');
 
-    host.replaceChildren(h('div', { class: 'hero' },
+    // Bangun elemen floating sticky bar untuk mode Nasional saat di-scroll
+    const stickyBarNas = h('div', { class: 'sticky-wilayah-bar', 'aria-hidden': 'true' },
+      h('div', { class: 'dalam' },
+        h('div', { class: 'sticky-wilayah-kiri' },
+          h('div', { class: 'sticky-wilayah-remah' }, `Sakernas ${lblTahunan(per)} › Nasional`),
+          h('div', { class: 'sticky-wilayah-judul', text: 'Indonesia' })
+        ),
+        h('div', { class: 'sticky-wilayah-kanan' },
+          h('span', { class: 'sticky-wilayah-chip', text: 'Nasional' }),
+          tpt != null ? h('span', { class: 'sticky-wilayah-tpt', text: `TPT ${fmtL(L_, tpt)}` }) : null,
+          h('button', {
+            class: 'sticky-wilayah-ganti',
+            type: 'button',
+            title: 'Beralih ke Profil Wilayah (Provinsi / Kab-Kota)',
+            onclick: () => {
+              S.wil = '31';
+              renderProfil();
+              tulis();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setTimeout(() => {
+                const btnPilih = host.querySelector('.pilih-wil-btn');
+                if (btnPilih) btnPilih.click();
+              }, 320);
+            }
+          }, 'Pilih Wilayah ▾')
+        )
+      )
+    );
+
+    const heroNas = h('div', { class: 'hero' },
       h('div', { class: 'hero-lingkup-bar' }, segLingkup),
       h('div', { class: 'dalam hero-kisi' },
         h('div', {},
@@ -371,7 +400,15 @@
           h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }),
           h('div', { class: 'val', text: fmtL(L_, tpt) }),
           h('div', { class: 'per', text: 'Tren 2015–' + perTpt[perTpt.length - 1] }),
-          spark))));
+          spark)));
+
+    host.replaceChildren(stickyBarNas, heroNas);
+    if ('IntersectionObserver' in window) {
+      obsProfil = new IntersectionObserver(([entry]) => {
+        stickyBarNas.classList.toggle('tampil', !entry.isIntersecting);
+      }, { rootMargin: '-52px 0px 0px 0px', threshold: 0 });
+      obsProfil.observe(heroNas);
+    }
 
     spark.append(I.garisMini((deret('tpt', 'tahunan', '00') || []).filter(d => d[0] <= per), { tinggi: 46, lebar: 320 }));
 
