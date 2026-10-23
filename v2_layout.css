@@ -51,31 +51,69 @@ body {
 }
 
 .nav .logo {
-  gap: 10px;
+  gap: 11px;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px 3px 3px;
+  border-radius: 11px;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.nav .logo:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav .logo .tanda {
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
-  border-radius: 7px;
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(145deg, #0d9488 0%, #0f766e 55%, #064e3b 100%);
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(15, 118, 110, 0.3);
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
-.nav .logo .tanda .ikon {
-  width: 16px;
-  height: 16px;
+.nav .logo:hover .tanda {
+  transform: scale(1.04);
+  border-color: rgba(251, 191, 36, 0.65);
+}
+
+.nav .logo .tanda .ikon-logo {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.nav .logo .brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.15;
 }
 
 .nav .logo .brand b {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
   color: #ffffff;
+}
+
+.nav .logo .brand .brand-sub {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(167, 243, 208, 0.78);
+  margin-top: 1px;
+}
+
+@media (max-width: 900px) {
+  .nav .logo .brand .brand-sub {
+    display: none;
+  }
 }
 
 .nav .tabs {
