@@ -24,9 +24,34 @@
     penempatan: 'M4 12l4 4 8-8M20 6v12a2 2 0 0 1-2 2H6',
     naik: 'M3 17l6-6 4 4 8-8M15 7h6v6', turun: 'M3 7l6 6 4-4 8 8M15 17h6v-6',
     peta: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14', target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z',
+    tautan: 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',
     info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v6M12 7.5v.5', unduh: 'M12 3v12M7 10l5 5 5-5M4 21h16', panah: 'M5 12h14M13 6l6 6-6 6',
   };
   const ikon = (k, cls) => { const e = sv('svg', { class: 'ikon' + (cls ? ' ' + cls : ''), viewBox: '0 0 24 24', 'aria-hidden': 'true' }); e.append(sv('path', { d: IK[k] || IK.info })); return e; };
+
+  let toastTimer = null;
+  function tampilToast(pesan) {
+    let el = document.getElementById('v2-toast');
+    if (!el) {
+      el = h('div', { id: 'v2-toast', class: 'v2-toast', role: 'status', 'aria-live': 'polite' });
+      document.body.append(el);
+    }
+    el.textContent = pesan;
+    el.classList.add('tampil');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('tampil'), 2600);
+  }
+  function salinTautan(labelKonteks) {
+    tulis();
+    const url = location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        tampilToast(`Tautan ${labelKonteks || 'tampilan ini'} berhasil disalin!`);
+      }).catch(() => tampilToast('Tautan siap dibagikan dari bilah alamat browser'));
+    } else {
+      tampilToast('Tautan siap dibagikan dari bilah alamat browser');
+    }
+  }
   const IKON_LAP = { tpt: 'tpt', tpt_l: 'pria', tpt_p: 'wanita', neet: 'neet', setengah: 'jam', penganggur: 'orang', tpak: 'tpak' };
 
   // ---------- data dasar ----------
@@ -255,8 +280,8 @@
     const nas = data['00'], isi = [];
     const trenMini = (seriL, tinggi = 150) => { const g = h('div', { style: 'margin-top:6px' }); setTimeout(() => I.grafikGaris(g, { seri: seriL, tinggi, fmt: v => fmtL(l, v), patahan: (l.patahan || {})[S.frek], aktif: S.per, onKlik: p => { S.per = p; renderPeta(true); tulis(); }, asalLabel: 'tabel BPS provinsi', legenda: seriL.length > 1, area: seriL.length === 1 }), 0); return g; };
     const ekstrem = urut => h('div', { class: 'dua-kotak' },
-      h('div', {}, h('div', { class: 'lbl' }, ikon('naik'), ' Tertinggi'), h('div', { class: 'val', text: fmtL(l, data[urut[0]], true) }), h('div', { class: 'nm', title: namaW(urut[0]), text: namaW(urut[0]) })),
-      h('div', {}, h('div', { class: 'lbl' }, ikon('turun'), ' Terendah'), h('div', { class: 'val', text: fmtL(l, data[urut[urut.length - 1]], true) }), h('div', { class: 'nm', title: namaW(urut[urut.length - 1]), text: namaW(urut[urut.length - 1]) })));
+      h('div', { class: 'kotak-ekstrem klik', role: 'button', tabindex: '0', title: 'Klik untuk menyorot ' + namaW(urut[0]) + ' di peta', onclick: () => pilihWilayah(urut[0]) }, h('div', { class: 'lbl' }, ikon('naik'), ' Tertinggi'), h('div', { class: 'val', text: fmtL(l, data[urut[0]], true) }), h('div', { class: 'nm', title: namaW(urut[0]), text: namaW(urut[0]) })),
+      h('div', { class: 'kotak-ekstrem klik', role: 'button', tabindex: '0', title: 'Klik untuk menyorot ' + namaW(urut[urut.length - 1]) + ' di peta', onclick: () => pilihWilayah(urut[urut.length - 1]) }, h('div', { class: 'lbl' }, ikon('turun'), ' Terendah'), h('div', { class: 'val', text: fmtL(l, data[urut[urut.length - 1]], true) }), h('div', { class: 'nm', title: namaW(urut[urut.length - 1]), text: namaW(urut[urut.length - 1]) })));
     if (!S.sel) {
       const urut = lingkup ? semua.filter(k => lingkup.includes(k)) : semua;
       isi.push(h('div', { class: 'kecil', text: l.nama }), h('h2', { text: lingkup ? namaW(S.fokus) : 'Seluruh Indonesia' }), h('div', { class: 'sub', text: `${lv === 'kab' ? 'Kab/kota' : 'Provinsi'} · ${lblP(S.per, S.frek)}` }));
@@ -395,7 +420,8 @@
           h('div', { class: 'chip-baris' },
             h('label', { class: 'chip' }, 'Periode ', selPer),
             h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'),
-            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'))),
+            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'),
+            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', title: 'Salin tautan tampilan Nasional ini', onclick: () => salinTautan('Profil Nasional') }, ikon('tautan'), 'Bagikan'))),
         h('div', { class: 'hero-angka' },
           h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(per) }),
           h('div', { class: 'val', text: fmtL(L_, tpt) }),
@@ -898,7 +924,8 @@
           h('div', { class: 'chip-baris' },
             h('span', { class: 'chip', text: chipLevel }),
             h('span', { class: 'chip', text: chipWilayah }),
-            h('span', { class: 'chip', text: 'Kode BPS ' + k })),
+            h('span', { class: 'chip', text: 'Kode BPS ' + k }),
+            h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', title: 'Salin tautan langsung ke profil ' + namaW(k), onclick: () => salinTautan(namaW(k)) }, ikon('tautan'), 'Bagikan')),
           faktaParts.length ? h('p', { class: 'hero-fakta', text: faktaParts.join(' ') }) : null,
           alatProfil.length ? h('div', { class: 'hero-alat' }, ...alatProfil) : null),
         h('div', { class: 'lokasi', 'aria-hidden': 'true' }, lokasi)));
@@ -1679,6 +1706,10 @@
       </div>
 
       <div class="story-in">
+        <div class="insight-sticky-pills" role="navigation" aria-label="Lompat cepat bab wawasan">
+          ${chapters.map((c, idx) => `<a href="#${c.id}" data-jump="${c.id}" class="ins-pill${idx === 0 ? ' aktif' : ''}">Bab ${idx + 1}</a>`).join('')}
+          <a href="#s-kamus" data-jump="s-kamus" class="ins-pill">Kamus</a>
+        </div>
         <nav class="toc" aria-label="Daftar Isi Cerita">
           <div class="toc-title">Daftar 8 Bab Wawasan Data</div>
           <ul>
@@ -1717,6 +1748,19 @@
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
+
+    if ('IntersectionObserver' in window) {
+      const pills = host.querySelectorAll('.ins-pill');
+      const obsChap = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            const idAktif = en.target.id;
+            pills.forEach(p => p.classList.toggle('aktif', p.dataset.jump === idAktif));
+          }
+        });
+      }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+      host.querySelectorAll('article.chap').forEach(art => obsChap.observe(art));
+    }
 
     host.querySelectorAll('.maplink').forEach(btn => {
       btn.addEventListener('click', () => {

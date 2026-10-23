@@ -221,6 +221,15 @@
     const topBtn = document.getElementById('btn-back-top');
     const kbdBtn = document.getElementById('btn-kbd-help');
 
+    let progBar = document.getElementById('v2-scroll-progress');
+    if (!progBar) {
+      progBar = document.createElement('div');
+      progBar.id = 'v2-scroll-progress';
+      progBar.className = 'v2-scroll-progress';
+      progBar.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(progBar);
+    }
+
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -230,6 +239,14 @@
             topBtn.classList.remove('hidden');
           } else {
             topBtn.classList.add('hidden');
+          }
+          if (!isMap) {
+            const docH = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = docH > 80 ? Math.min(100, Math.max(0, (window.scrollY / docH) * 100)) : 0;
+            progBar.style.transform = `scaleX(${(pct / 100).toFixed(4)})`;
+            progBar.style.opacity = pct > 1 ? '1' : '0';
+          } else {
+            progBar.style.opacity = '0';
           }
           ticking = false;
         });

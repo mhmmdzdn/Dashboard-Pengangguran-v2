@@ -432,6 +432,7 @@
       let periode = [...new Set(daftar.flatMap(x => x.data.map(d => d[0])).concat(o.periodeTambahan || []))].sort();
       const ada = daftar.some(x => x.data.some(d => d[1] != null));
       if (!periode.length || !ada) { host.append(h('div', { class: 'kecil', text: 'Tidak ada angka resmi.' })); return; }
+      let legEl = null;
       if ((o.legenda !== false) && (daftar.length >= 2 || (o.pita && o.pita.length) || (o.patahan && o.patahan.length)) && !o.kecil) {
         const legPita = [];
         const seenLeg = new Set();
@@ -441,11 +442,12 @@
           seenLeg.add(lbl);
           legPita.push(h('span', {}, h('i', { class: 'pita' + (p.cls ? ' ' + p.cls : '') }), lbl));
         });
-        host.append(h('div', { class: 'leg' },
-          daftar.length >= 2 ? daftar.map(x => h('span', {}, h('i', { class: x.putus ? 'putus' : null, style: 'border-color:' + x.warna }), x.nama)) : null,
+        legEl = h('div', { class: 'leg' },
+          daftar.length >= 2 ? daftar.map((x, idx) => h('span', { class: 'leg-item', 'data-seri-idx': String(idx), tabindex: '0', role: 'button', title: 'Klik atau arahkan kursor untuk menyorot ' + x.nama }, h('i', { class: x.putus ? 'putus' : null, style: 'border-color:' + x.warna }), x.nama)) : null,
           ...legPita,
           (o.patahan || []).some(p => periode.includes(p.antara[0]) && periode.includes(p.antara[1])) ? h('span', {}, h('i', { class: 'putus', style: 'border-color:var(--context)' }), 'Patahan seri (tidak sepenuhnya sebanding)') : null,
-          daftar.some(x => x.asal && Object.keys(x.asal).length) ? h('span', {}, h('i', { class: 'kotak', style: 'border:1.6px solid var(--accent);border-radius:50%;background:var(--surface)' }), o.asalLabel || 'Sumber lain') : null));
+          daftar.some(x => x.asal && Object.keys(x.asal).length) ? h('span', {}, h('i', { class: 'kotak', style: 'border:1.6px solid var(--accent);border-radius:50%;background:var(--surface)' }), o.asalLabel || 'Sumber lain') : null);
+        host.append(legEl);
       }
       const hostW = host.clientWidth;
       const W = Math.max(200, hostW || 520), H = o.tinggi || 220;
@@ -524,21 +526,56 @@
           svg.append(s('path', { class: 'area-smooth', fill: `url(#${gradId})`, d: areaD }));
         }
 
-        if (d) svg.append(s('path', { class: 'ln', d, stroke: x.warna }));
-        if (dPutus) svg.append(s('path', { class: 'ln putus', d: dPutus, stroke: x.warna }));
+        const gSeri = s('g', { class: 'seri-grup', 'data-seri-idx': String(j) });
+        if (d) gSeri.append(s('path', { class: 'ln', d, stroke: x.warna }));
+        if (dPutus) gSeri.append(s('path', { class: 'ln putus', d: dPutus, stroke: x.warna }));
 
         // Titik-titik data (markers) dengan efek Highcharts
         validPts.forEach((a) => {
-          svg.append(s('circle', { class: 'dot-marker', cx: a[0], cy: a[1], r: isSempit ? 2.5 : 3.2, fill: '#ffffff', stroke: x.warna, 'stroke-width': isSempit ? 1.5 : 2 }));
+          gSeri.append(s('circle', { class: 'dot-marker', cx: a[0], cy: a[1], r: isSempit ? 2.5 : 3.2, fill: '#ffffff', stroke: x.warna, 'stroke-width': isSempit ? 1.5 : 2 }));
         });
 
         for (let i = titik.length - 1; i >= 0; i--) {
           if (!titik[i]) continue;
-          svg.append(s('circle', { class: 'dot-pulse', cx: titik[i][0], cy: titik[i][1], r: isSempit ? 3.5 : 4.5, fill: x.warna, stroke: '#ffffff', 'stroke-width': 2 }));
+          gSeri.append(s('circle', { class: 'dot-pulse', cx: titik[i][0], cy: titik[i][1], r: isSempit ? 3.5 : 4.5, fill: x.warna, stroke: '#ffffff', 'stroke-width': 2 }));
           if (x.utama && o.labelUjung !== false && !isSempit) ujung.push({ x: titik[i][0] + 7, y: titik[i][1] + 4, t: fmt(M.get(periode[i])) });
           break;
         }
+        svg.append(gSeri);
       });
+
+      // Interaktivitas Legenda Multi-Garis (Hover & Klik untuk menyorot 1 seri)
+      if (legEl && daftar.length >= 2) {
+        let lockedIdx = null;
+        const terapkanSorot = idxAktif => {
+          svg.querySelectorAll('.seri-grup').forEach(gEl => {
+            const idx = gEl.getAttribute('data-seri-idx');
+            gEl.classList.toggle('seri-redup', idxAktif != null && idx !== idxAktif);
+            gEl.classList.toggle('seri-sorot', idxAktif != null && idx === idxAktif);
+          });
+          legEl.querySelectorAll('.leg-item').forEach(sp => {
+            const idx = sp.getAttribute('data-seri-idx');
+            sp.classList.toggle('redup', idxAktif != null && idx !== idxAktif);
+            sp.classList.toggle('aktif', idxAktif != null && idx === idxAktif);
+          });
+        };
+        legEl.querySelectorAll('.leg-item').forEach(sp => {
+          const idx = sp.getAttribute('data-seri-idx');
+          sp.addEventListener('mouseenter', () => { if (lockedIdx == null) terapkanSorot(idx); });
+          sp.addEventListener('mouseleave', () => { if (lockedIdx == null) terapkanSorot(null); });
+          sp.addEventListener('click', () => {
+            lockedIdx = (lockedIdx === idx) ? null : idx;
+            terapkanSorot(lockedIdx);
+          });
+          sp.addEventListener('keydown', ev => {
+            if (ev.key === 'Enter' || ev.key === ' ') {
+              ev.preventDefault();
+              lockedIdx = (lockedIdx === idx) ? null : idx;
+              terapkanSorot(lockedIdx);
+            }
+          });
+        });
+      }
       ujung.sort((a, b) => a.y - b.y).forEach((u, i, arr) => { if (i && u.y - arr[i - 1].y < 13) u.y = arr[i - 1].y + 13; svg.append(s('text', { class: 'endlbl', x: u.x, y: u.y, text: u.t })); });
       // garis bantu & tooltip; klik memindah periode
       const cross = s('line', { class: 'cross', y1: m.t, y2: H - m.b, visibility: 'hidden' });
@@ -713,24 +750,56 @@
   function tabel(host, { kolom, baris, sel, maks, onPilih }) {
     host.replaceChildren();
     let urut = { i: -1, naik: true };
+    let kataKunci = '';
+
+    let toolbar = null, infoJml = null;
+    if (baris.length > 8) {
+      const inpCari = h('input', {
+        type: 'search',
+        class: 'tbl-cari-input',
+        placeholder: 'Cari wilayah atau kata kunci di tabel…',
+        'aria-label': 'Saring baris tabel'
+      });
+      infoJml = h('span', { class: 'tbl-cari-info' });
+      inpCari.addEventListener('input', () => {
+        kataKunci = inpCari.value.trim().toLowerCase();
+        gambar();
+      });
+      toolbar = h('div', { class: 'tbl-toolbar' }, inpCari, infoJml);
+    }
+
     const wrap = h('div', { class: 'tbl-wrap', style: maks ? 'max-height:' + maks + 'px' : null });
     const t = h('table', { class: 'tbl' }), thead = h('thead'), tbody = h('tbody');
     const gambar = () => {
-      const b = urut.i < 0 ? baris : baris.slice().sort((x, y) => {
+      const tersaring = !kataKunci
+        ? baris
+        : baris.filter(r => r.some(c => String(c.teks || '').toLowerCase().includes(kataKunci)));
+      const b = urut.i < 0 ? tersaring : tersaring.slice().sort((x, y) => {
         const a = x[urut.i].sort, c = y[urut.i].sort;
         if (a == null && c == null) return 0; if (a == null) return 1; if (c == null) return -1;
         return (a < c ? -1 : a > c ? 1 : 0) * (urut.naik ? 1 : -1);
       });
-      tbody.replaceChildren(...b.map(r => {
-        const klik = onPilih && r.kode ? () => onPilih(r.kode) : null;
-        const cls = [r.kode && r.kode === sel ? 'sel' : '', klik ? 'klik-baris' : ''].filter(Boolean).join(' ') || null;
-        return h('tr', { class: cls, onclick: klik, title: klik ? 'Klik untuk membuka wilayah ini' : null }, r.map((c, j) => h('td', { class: kolom[j].num ? 'num' : null, text: c.teks })));
-      }));
+      if (infoJml) {
+        infoJml.textContent = kataKunci
+          ? `Menampilkan ${b.length} dari ${baris.length} baris`
+          : `${baris.length} baris · klik judul kolom untuk mengurutkan`;
+      }
+      if (!b.length) {
+        tbody.replaceChildren(h('tr', {}, h('td', { colspan: String(kolom.length), class: 'tbl-kosong', text: 'Tidak ada baris yang cocok dengan pencarian.' })));
+      } else {
+        tbody.replaceChildren(...b.map(r => {
+          const klik = onPilih && r.kode ? () => onPilih(r.kode) : null;
+          const cls = [r.kode && r.kode === sel ? 'sel' : '', klik ? 'klik-baris' : ''].filter(Boolean).join(' ') || null;
+          return h('tr', { class: cls, onclick: klik, title: klik ? 'Klik untuk membuka wilayah ini' : null }, r.map((c, j) => h('td', { class: kolom[j].num ? 'num' : null, text: c.teks })));
+        }));
+      }
       thead.replaceChildren(h('tr', {}, kolom.map((k, j) => h('th', { class: k.num ? 'num' : null, scope: 'col', 'aria-sort': urut.i === j ? (urut.naik ? 'ascending' : 'descending') : null,
         onclick: () => { urut = { i: j, naik: urut.i === j ? !urut.naik : !k.num }; gambar(); } }, k.label + (urut.i === j ? (urut.naik ? ' ▲' : ' ▼') : '')))));
     };
     gambar();
-    t.append(thead, tbody); wrap.append(t); host.append(wrap);
+    t.append(thead, tbody); wrap.append(t);
+    if (toolbar) host.append(toolbar);
+    host.append(wrap);
   }
   function unduhCsv(namaFile, kolom, baris) {
     const esc = v => { const t = v == null ? '' : String(v); return /[",\n;]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
