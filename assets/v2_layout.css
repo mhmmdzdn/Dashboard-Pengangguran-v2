@@ -3480,3 +3480,66 @@ table.tbl thead th:hover {
     display: none;
   }
 }
+
+
+/* =====================================================================
+   PENYESUAIAN DUAL-TOGGLE MILESTONE (DINAMIKA MAKRO VS KEBIJAKAN PEMERINTAH)
+   ===================================================================== */
+
+.ms-single-box {
+  display: block;
+}
+
+.ms-gov-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ms-box-fokus {
+  background: rgba(217, 119, 6, 0.05);
+  border-left: 3.5px solid #d97706;
+}
+
+.ms-box-fokus .ms-box-hdr {
+  color: #b45309;
+}
+
+:root[data-theme="dark"] .ms-box-fokus .ms-box-hdr {
+  color: #fbbf24;
+}
+
+.ms-box-mekanisme {
+  background: rgba(37, 99, 235, 0.05);
+  border-left: 3.5px solid #2563eb;
+}
+
+.ms-box-mekanisme .ms-box-hdr {
+  color: #1d4ed8;
+}
+
+:root[data-theme="dark"] .ms-box-mekanisme .ms-box-hdr {
+  color: #60a5fa;
+}
+
+.ms-step-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.ms-step-list li b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .ms-gov-grid {
+    grid-template-columns: 1fr;
+  }
+}
