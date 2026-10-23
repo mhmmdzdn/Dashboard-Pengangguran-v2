@@ -3,15 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pengangguran Indonesia â€” Desain V2</title>
-<meta name="description" content="Dashboard Pengangguran Indonesia versi 2 Modern: TPT provinsi 1986â€“2026 dan 514 kabupaten/kota, TPT gender, NEET, setengah pengangguran, jumlah penganggur, TPAK, dan sasaran RPJMN 2025â€“2029 â€” angka resmi BPS & Bappenas.">
+<title>Pengangguran Indonesia — Desain V2</title>
+<meta name="description" content="Dashboard Pengangguran Indonesia versi 2 Modern: TPT provinsi 1986–2026 dan 514 kabupaten/kota, TPT gender, NEET, setengah pengangguran, jumlah penganggur, TPAK, dan sasaran RPJMN 2025–2029 — angka resmi BPS &amp; Bappenas.">
 <link rel="stylesheet" href="assets/inti.css">
 <link rel="stylesheet" href="assets/style.css">
-<!-- Modern UI/UX Palette & Polish -->
 <link rel="stylesheet" href="v2_theme.css">
-<!-- Ergonomic & Modern Layout -->
 <link rel="stylesheet" href="v2_layout.css">
-<!-- Ultra Minimalist Map Controls -->
 <link rel="stylesheet" href="v2_minimalist_map.css">
 </head>
 <body>
@@ -19,9 +16,7 @@
 <header class="nav">
   <a class="logo" href="#profil" aria-label="Pengangguran Indonesia — beranda">
     <span class="tanda" aria-hidden="true"><svg class="ikon" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
-    <span class="brand">
-      <b>Pengangguran Indonesia</b>
-    </span>
+    <span class="brand"><b>Pengangguran Indonesia</b></span>
   </a>
   <nav class="tabs" role="tablist" aria-label="Halaman">
     <button role="tab" data-page="peta"><span class="tx">Peta</span></button>
@@ -30,8 +25,8 @@
     <button role="tab" data-page="insight"><span class="tx">Insight</span></button>
     <button role="tab" data-page="metode"><span class="tx">Metodologi</span></button>
   </nav>
-  <div class="nav-aksi">
-    <button id="btn-fullscreen" class="btn-icon" type="button" title="Layar Penuh (F11 / Alt+F)" aria-label="Layar Penuh">
+  <div class="nav-aksi" style="display:flex;align-items:center;gap:8px">
+    <button id="btn-fullscreen" class="tema btn-icon" type="button" title="Layar Penuh (F11)" aria-label="Layar Penuh">
       <svg class="ikon ikon-fs-buka" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
       <svg class="ikon ikon-fs-tutup" viewBox="0 0 24 24" style="display:none"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
     </button>
@@ -52,7 +47,7 @@
     </div>
     <div class="mengapung zoom-alat" role="group" aria-label="Kontrol peta">
       <button type="button" id="z-plus" aria-label="Perbesar" title="Perbesar">+</button>
-      <button type="button" id="z-minus" aria-label="Perkecil" title="Perkecil">âˆ’</button>
+      <button type="button" id="z-minus" aria-label="Perkecil" title="Perkecil">−</button>
       <button type="button" id="z-home" aria-label="Seluruh Indonesia" title="Seluruh Indonesia"><svg class="ikon" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></button>
       <button type="button" id="z-full" aria-label="Layar penuh" title="Layar penuh"><svg class="ikon" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
       <button type="button" id="z-guide" aria-label="Panduan peta" title="Panduan cara menjelajahi peta"><svg class="ikon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
@@ -87,4 +82,3 @@
 <script src="v2_enhancements.js"></script>
 </body>
 </html>
-

@@ -1,9 +1,10 @@
 /* =====================================================================
-   v2_enhancements.js â€” Interaksi Ergonomis & Progressive Disclosure
+   v2_enhancements.js — Interaksi Ergonomis & Progressive Disclosure
    Fokus:
    - Minimalist Progressive Disclosure (Mengelompokkan 6 modul Beranda menjadi Tab Terfokus)
    - Eliminasi Information Overload & Whitespace berlebihan
    - Desktop Panel Toggle & Keyboard Navigation
+   - Guided Map Tour Interaktif
    ===================================================================== */
 
 (function () {
@@ -91,7 +92,6 @@
       sec.style.display = visible ? '' : 'none';
       if (visible) {
         sec.classList.remove('v2-fade-in');
-        // trigger reflow untuk animasi halus
         void sec.offsetWidth;
         sec.classList.add('v2-fade-in');
       }
@@ -105,7 +105,7 @@
       btn.id = 'panel-toggle-desktop';
       btn.className = 'panel-toggle-btn';
       btn.type = 'button';
-      btn.title = 'Buka/Tutup Panel Analisis';
+      btn.title = 'Buka/Tutup Panel Analisis (F)';
       btn.setAttribute('aria-label', 'Buka atau tutup panel analisis');
       btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path id="panel-chevron" d="M9 18l6-6-6-6"/>
@@ -129,13 +129,12 @@
     let fsBtn = document.getElementById('btn-fullscreen');
     const temaBtn = document.getElementById('tema');
 
-    // Jika belum ada di DOM (misal HTML belum di-hard-reload), buat secara dinamis tepat di sebelah tombol tema
     if (!fsBtn && temaBtn) {
       fsBtn = document.createElement('button');
       fsBtn.id = 'btn-fullscreen';
       fsBtn.className = 'btn-icon';
       fsBtn.type = 'button';
-      fsBtn.title = 'Layar Penuh (F11 / Alt+F)';
+      fsBtn.title = 'Layar Penuh (F11)';
       fsBtn.setAttribute('aria-label', 'Layar Penuh');
       fsBtn.innerHTML = `
         <svg class="ikon ikon-fs-buka" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
@@ -175,11 +174,9 @@
 
   function initKeyboard() {
     window.addEventListener('keydown', (e) => {
-      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-      if (e.key === 'b' || e.key === 'B') {
-        const btn = document.querySelector('[data-page="beranda"]');
-        if (btn) btn.click();
-      } else if (e.key === 'p' || e.key === 'P') {
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'p' || e.key === 'P') {
         const btn = document.querySelector('[data-page="peta"]');
         if (btn) btn.click();
       } else if (e.key === 'r' || e.key === 'R') {
@@ -191,20 +188,17 @@
       } else if (e.key === 'i' || e.key === 'I') {
         const btn = document.querySelector('[data-page="insight"]');
         if (btn) btn.click();
+      } else if (e.key === 'm' || e.key === 'M') {
+        const btn = document.querySelector('[data-page="metode"]');
+        if (btn) btn.click();
       } else if (e.key === 'f' || e.key === 'F') {
         const panelBtn = document.getElementById('panel-toggle-desktop');
         if (panelBtn) panelBtn.click();
-      } else if (e.key === 'Escape') {
-        const panel = document.getElementById('panel');
-        if (panel && !panel.classList.contains('desktop-ciut')) {
-          const panelBtn = document.getElementById('panel-toggle-desktop');
-          if (panelBtn) panelBtn.click();
-        }
       }
     });
   }
 
-  // Menambahkan aksen status & ketercapaian target RPJMN pada KPI Card
+  // Menambahkan aksen status & konteks pada KPI Card Nasional
   function enhanceKpiCards() {
     const beranda = document.getElementById('profil') || document.getElementById('beranda');
     if (!beranda) return;
@@ -212,28 +206,32 @@
     if (!kpiCards || kpiCards.length === 0) return;
 
     kpiCards.forEach((card) => {
-      if (card.querySelector('.kpi-delta-pill')) return; // Sudah di-enhance
+      if (card.querySelector('.kpi-delta-pill') || card.classList.contains('kpi-rentang-gabung')) return;
 
-      const judul = (card.querySelector('.judul')?.textContent || '').toLowerCase();
+      const labelEl = card.querySelector('.atas span:last-child');
+      const judul = (labelEl?.textContent || '').toLowerCase();
       const badge = document.createElement('div');
 
-      if (judul.includes('tingkat pengangguran terbuka') || judul.includes('tpt')) {
+      if (judul.includes('jumlah penganggur')) {
         badge.className = 'kpi-delta-pill turun';
-        badge.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 7l10 10M17 7v10H7"/></svg> Target RPJMN 2029: 4.5%â€“5.0% (On Track)`;
+        badge.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 7l10 10M17 7v10H7"/></svg> Sasaran RPJMN 2025: 4,50%–5,00%`;
         card.appendChild(badge);
       } else if (judul.includes('neet')) {
         badge.className = 'kpi-delta-pill turun';
-        badge.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 7l10 10M17 7v10H7"/></svg> Usia Muda 15â€“24 Thn`;
+        badge.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg> Pemuda 15–24 Tahun`;
+        card.appendChild(badge);
+      } else if (judul.includes('setengah pengangguran')) {
+        badge.className = 'kpi-delta-pill turun';
+        badge.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 6v6l4 2"/></svg> Jam Kerja &lt; 35 Jam/Minggu`;
         card.appendChild(badge);
       } else if (judul.includes('tpak')) {
-        badge.className = 'kpi-delta-pill naik';
-        badge.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg> Partisipasi Angkatan Kerja Aktif`;
+        badge.className = 'kpi-delta-pill turun';
+        badge.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg> Partisipasi Angkatan Kerja`;
         card.appendChild(badge);
       }
     });
   }
 
-  // Observe mutasi DOM beranda / profil nasional agar tetap rapi saat dipanggil ulang
   function setupObserver() {
     const targets = [document.getElementById('profil'), document.getElementById('beranda')].filter(Boolean);
     targets.forEach(tgt => {
@@ -248,6 +246,7 @@
   function init() {
     initDesktopPanel();
     initFullscreen();
+    initKeyboard();
     applyBerandaTabs();
     enhanceKpiCards();
     setupObserver();
@@ -261,7 +260,7 @@
 })();
 
 /* =====================================================================
-   Guided Map Tour & Auto-Play Timeline (Inspired by Kredit Indonesia)
+   Guided Map Tour (Inspired by Kredit Indonesia)
    ===================================================================== */
 (function() {
   const TOURSTEPS = [
@@ -291,13 +290,13 @@
       t: 'Jelajahi Deret Waktu',
       el: () => document.getElementById('waktu'),
       side: 'top',
-      d: 'Gunakan penggeser waktu atau tombol Putar Otomatis di bawah untuk melihat evolusi tingkat pengangguran Indonesia dari tahun ke tahun.'
+      d: 'Gunakan penggeser waktu atau tombol Putar (▶) di sebelah kiri penggeser untuk melihat evolusi tingkat pengangguran Indonesia dari tahun ke tahun.'
     },
     {
-      t: 'Kontrol Peta & Layar Penuh',
+      t: 'Kontrol Peta & Panduan',
       el: () => document.querySelector('.zoom-alat'),
       side: 'left',
-      d: 'Perbesar (+), perkecil (-), reset tampilan nusantara, atau nikmati mode Layar Penuh. Anda dapat memanggil kembali panduan ini kapan saja lewat tombol tanya (?).'
+      d: 'Perbesar (+), perkecil (−), reset tampilan nusantara, atau nikmati mode Layar Penuh. Anda dapat memanggil kembali panduan ini kapan saja lewat tombol tanda tanya (?).'
     }
   ];
 
@@ -427,54 +426,10 @@
     try { localStorage.setItem('peng2-tour-seen', 'true'); } catch(e){}
   }
 
-  // Auto Timeline Player
-  function initAutoTimeline() {
-    const waktuEl = document.getElementById('waktu');
-    if (!waktuEl || document.getElementById('btn-play-pause')) return;
-
-    const playBtn = document.createElement('button');
-    playBtn.id = 'btn-play-pause';
-    playBtn.className = 'btn-play-pause';
-    playBtn.type = 'button';
-    playBtn.title = 'Putar Perubahan Waktu Otomatis';
-    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>`;
-
-    let timer = null;
-    playBtn.addEventListener('click', () => {
-      const slider = waktuEl.querySelector('input[type="range"]');
-      if (!slider) return;
-
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>`;
-        playBtn.title = 'Putar Perubahan Waktu Otomatis';
-      } else {
-        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
-        playBtn.title = 'Jeda (Pause)';
-        timer = setInterval(() => {
-          let curr = parseInt(slider.value, 10);
-          let max = parseInt(slider.max, 10);
-          let min = parseInt(slider.min, 10);
-          let next = curr + 1;
-          if (next > max) next = min;
-          slider.value = next;
-          slider.dispatchEvent(new Event('input', { bubbles: true }));
-          slider.dispatchEvent(new Event('change', { bubbles: true }));
-        }, 800);
-      }
-    });
-
-    waktuEl.prepend(playBtn);
-  }
-
-  // Hooking tombol ? dan inisialisasi
   function init() {
-    initAutoTimeline();
     const guideBtn = document.getElementById('z-guide');
     if (guideBtn) guideBtn.addEventListener('click', tourStart);
 
-    // Buka otomatis jika baru pertama kali membuka tab peta
     const tabPeta = document.querySelector('[data-page="peta"]');
     if (tabPeta) {
       tabPeta.addEventListener('click', () => {
@@ -498,4 +453,3 @@
     init();
   }
 })();
-

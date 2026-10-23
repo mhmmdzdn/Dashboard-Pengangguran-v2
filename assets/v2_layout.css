@@ -623,6 +623,15 @@ table.tbl th:first-child {
   white-space: nowrap !important;
 }
 
+table.tbl tr.klik-baris {
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+table.tbl tr.klik-baris:hover td {
+  background-color: var(--accent-soft, rgba(15, 118, 110, 0.08));
+}
+
 .bars .trk {
   width: 100% !important;
   flex: 1 1 auto !important;
@@ -1038,6 +1047,24 @@ table.tbl th:first-child {
   padding: 2px 9px;
   border-radius: 6px;
   white-space: nowrap;
+}
+
+.sticky-wilayah-ganti {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 3px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.sticky-wilayah-ganti:hover {
+  background: #ffffff;
+  color: #06231e;
 }
 
 /* Segmen Lingkup Wilayah Profil (Nasional vs Wilayah Daerah) */
@@ -1510,12 +1537,12 @@ body.panel-terlipat .zoom-alat {
   color: #b91c1c;
 }
 
-[data-tema="gelap"] .kpi-delta-pill.turun {
+:root[data-theme="dark"] .kpi-delta-pill.turun {
   background: rgba(16, 185, 129, 0.22);
   color: #34d399;
 }
 
-[data-tema="gelap"] .kpi-delta-pill.naik {
+:root[data-theme="dark"] .kpi-delta-pill.naik {
   background: rgba(239, 68, 68, 0.22);
   color: #f87171;
 }
@@ -1613,7 +1640,7 @@ body.panel-terlipat .zoom-alat {
   z-index: 10000;
 }
 
-[data-tema="gelap"] .tour-card {
+:root[data-theme="dark"] .tour-card {
   background: linear-gradient(165deg, rgba(20, 32, 28, 0.95) 0%, rgba(15, 24, 21, 0.90) 100%);
   border-color: rgba(255, 255, 255, 0.14);
   color: #f1f5f9;
@@ -1631,7 +1658,7 @@ body.panel-terlipat .zoom-alat {
   margin: 0;
 }
 
-[data-tema="gelap"] .tour-n {
+:root[data-theme="dark"] .tour-n {
   color: #94a3b8;
 }
 
@@ -1649,7 +1676,7 @@ body.panel-terlipat .zoom-alat {
   transition: all 0.2s ease;
 }
 
-[data-tema="gelap"] .tour-dots i {
+:root[data-theme="dark"] .tour-dots i {
   background: #475569;
 }
 
@@ -1673,7 +1700,7 @@ body.panel-terlipat .zoom-alat {
   color: #334155;
 }
 
-[data-tema="gelap"] .tour-d {
+:root[data-theme="dark"] .tour-d {
   color: #cbd5e1;
 }
 
@@ -1716,7 +1743,7 @@ body.panel-terlipat .zoom-alat {
   background: rgba(15, 23, 42, 0.05);
 }
 
-[data-tema="gelap"] .tbtn:hover {
+:root[data-theme="dark"] .tbtn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -1746,14 +1773,14 @@ body.panel-terlipat .zoom-alat {
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
-  padding: 8px 16px !important;
+  padding: 6px 14px 6px 8px !important;
   border-radius: 999px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
-.btn-play-pause {
-  width: 34px !important;
-  height: 34px !important;
+.waktu .putar {
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 50% !important;
   background: var(--accent, #0f766e) !important;
   color: #ffffff !important;
@@ -1767,12 +1794,6 @@ body.panel-terlipat .zoom-alat {
   transition: transform 0.15s ease !important;
 }
 
-.btn-play-pause:hover {
+.waktu .putar:hover {
   transform: scale(1.08) !important;
-}
-
-.btn-play-pause svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
 }

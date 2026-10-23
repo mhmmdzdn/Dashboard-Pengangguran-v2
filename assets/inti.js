@@ -697,8 +697,8 @@
   }
 
   // ---------- tabel + CSV ----------
-  // kolom [{label, num}], baris [[{teks, sort, csv?}]] (baris.kode opsional untuk sorotan)
-  function tabel(host, { kolom, baris, sel, maks }) {
+  // kolom [{label, num}], baris [[{teks, sort, csv?}]] (baris.kode opsional untuk sorotan & onPilih)
+  function tabel(host, { kolom, baris, sel, maks, onPilih }) {
     host.replaceChildren();
     let urut = { i: -1, naik: true };
     const wrap = h('div', { class: 'tbl-wrap', style: maks ? 'max-height:' + maks + 'px' : null });
@@ -709,7 +709,11 @@
         if (a == null && c == null) return 0; if (a == null) return 1; if (c == null) return -1;
         return (a < c ? -1 : a > c ? 1 : 0) * (urut.naik ? 1 : -1);
       });
-      tbody.replaceChildren(...b.map(r => h('tr', { class: r.kode && r.kode === sel ? 'sel' : null }, r.map((c, j) => h('td', { class: kolom[j].num ? 'num' : null, text: c.teks })))));
+      tbody.replaceChildren(...b.map(r => {
+        const klik = onPilih && r.kode ? () => onPilih(r.kode) : null;
+        const cls = [r.kode && r.kode === sel ? 'sel' : '', klik ? 'klik-baris' : ''].filter(Boolean).join(' ') || null;
+        return h('tr', { class: cls, onclick: klik, title: klik ? 'Klik untuk membuka wilayah ini' : null }, r.map((c, j) => h('td', { class: kolom[j].num ? 'num' : null, text: c.teks })));
+      }));
       thead.replaceChildren(h('tr', {}, kolom.map((k, j) => h('th', { class: k.num ? 'num' : null, scope: 'col', 'aria-sort': urut.i === j ? (urut.naik ? 'ascending' : 'descending') : null,
         onclick: () => { urut = { i: j, naik: urut.i === j ? !urut.naik : !k.num }; gambar(); } }, k.label + (urut.i === j ? (urut.naik ? ' ▲' : ' ▼') : '')))));
     };

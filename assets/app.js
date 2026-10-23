@@ -316,7 +316,7 @@
       r.push({ teks: data[k] == null ? '—' : fmtAngka(data[k], l.desimal), sort: data[k] == null ? null : data[k] }, { teks: data[k] == null ? '' : a ? ASAL[a] : 'BPS pusat / sumber utama', sort: a || '' });
       r.kode = k; return r;
     });
-    I.tabel($('laci-badan'), { kolom: kol, baris, sel: S.sel, maks: 520 });
+    I.tabel($('laci-badan'), { kolom: kol, baris, sel: S.sel, maks: 520, onPilih: kk => { if (kk && kk !== '00') { $('laci').close(); pilihWilayah(kk); } } });
     $('laci-csv').onclick = () => { const sr = seri(S.lap, S.frek, lv); const kk = Object.keys(sr.nilai).sort(); I.unduhCsv(`${S.lap}_${lv}_${S.frek}.csv`, ['kode', 'wilayah', 'provinsi', ...sr.periode, 'periode_dari_tabel_bps_provinsi'], kk.map(k => [k, namaW(k), lvDari(k) === 'kab' ? namaW(KAB[k].prov) : '', ...sr.nilai[k], Object.keys(asalMap(S.lap, S.frek, k) || {}).join(' ')])); };
     $('laci').showModal();
   }
@@ -349,7 +349,7 @@
     const p2 = [];
     if (tptSeb != null) {
       const diff = tpt - tptSeb;
-      p2.push(`Periode sebelumnya ${fmtL(L_, tptSeb)} (${Math.abs(diff) >= 0.01 ? (diff > 0 ? '▲ +' : '▼ -') + fmtAngka(Math.abs(diff), 2) + '% YoY' : 'tetap'}).`);
+      p2.push(`Periode sebelumnya ${fmtL(L_, tptSeb)} (${Math.abs(diff) >= 0.01 ? (diff > 0 ? '▲ +' : '▼ -') + fmtAngka(Math.abs(diff), 2) + ' poin %-ase YoY' : 'tetap'}).`);
     }
     if (pg != null) p2.push(`Penganggur: ${fmtAngka(pg)} orang.`);
     if (urutK.length) p2.push(`Tingkat kab/kota: tertinggi ${namaW(urutK[0])} (${fmtL(L_, potK[urutK[0]])}), terendah ${namaW(urutK[urutK.length - 1])} (${fmtL(L_, potK[urutK[urutK.length - 1]])}).`);
@@ -760,10 +760,10 @@
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)}% YoY)`;
+            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)} poin %-ase YoY)`;
           }
         }
-        if (uTpt) s += ` — peringkat ${uTpt[0]} dari ${uTpt[1]} kab/kota.`;
+        if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} kab/kota di Provinsi ${namaW(pk)}.`;
         faktaParts.push(s);
 
         if (vProv != null || vNas != null) {
@@ -777,7 +777,7 @@
         if (dSeb) {
           const diff = vTpt - dSeb[1];
           if (Math.abs(diff) >= 0.01) {
-            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)}% YoY)`;
+            s += ` (${diff > 0 ? '▲ +' : '▼ -'}${fmtAngka(Math.abs(diff), 2)} poin %-ase YoY)`;
           }
         }
         if (uTpt) s += ` — peringkat ke-${uTpt[0]} dari ${uTpt[1]} provinsi.`;
@@ -801,7 +801,19 @@
         ),
         h('div', { class: 'sticky-wilayah-kanan' },
           h('span', { class: 'sticky-wilayah-chip', text: isKab ? KAB[k].jenis : 'Provinsi' }),
-          tTpt ? h('span', { class: 'sticky-wilayah-tpt', text: `TPT ${fmtAngka(tTpt[1], 2)}%` }) : null
+          tTpt ? h('span', { class: 'sticky-wilayah-tpt', text: `TPT ${fmtAngka(tTpt[1], 2)}%` }) : null,
+          h('button', {
+            class: 'sticky-wilayah-ganti',
+            type: 'button',
+            title: 'Ganti wilayah atau kembali ke pemilih di atas',
+            onclick: () => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setTimeout(() => {
+                const btnPilih = host.querySelector('.pilih-wil-btn');
+                if (btnPilih) btnPilih.click();
+              }, 320);
+            }
+          }, 'Ganti Wilayah ▾')
         )
       )
     );
@@ -1019,7 +1031,7 @@
       I.daftarBatang(batang, { baris: kabs.map(x => ({ kode: x.kode, nama: x.nama, v: nilai('tpt', 'tahunan', x.kode, th), sel: x.kode === k, tip: asalDi('tpt', 'tahunan', x.kode, th) ? 'Sumber: tabel BPS provinsi' : null })).sort((a, b) => (a.v == null) - (b.v == null) || b.v - a.v), fmt: v => fmtL(BY.tpt, v), ref: vP, onPilih: kk => { S.wil = kk; render(); tulis(); } });
       if (vP != null) batang.prepend(h('div', { class: 'legend-ref', style: 'grid-column:1/-1;margin-bottom:6px' }, h('i'), namaW(pk) + ' ' + fmtL(BY.tpt, vP)));
       I.tabel(tb, { kolom: [{ label: 'Kab/kota' }].concat(kol.map(id => ({ label: BY[id].singkat + (BY[id].satuan === '%' ? ' (%)' : ' (orang)'), num: true }))),
-        baris: kabs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), sel: isKab ? k : null, maks: 420 });
+        baris: kabs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), sel: isKab ? k : null, maks: 420, onPilih: kk => { S.wil = kk; render(); tulis(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
     });
   }
 
@@ -1051,7 +1063,7 @@
       I.daftarBatang(batang, { baris: provs.map(x => ({ kode: x.kode, nama: x.nama, v: nilai('tpt', 'tahunan', x.kode, th) })).sort((a, b) => (a.v == null) - (b.v == null) || b.v - a.v), fmt: v => fmtL(BY.tpt, v), ref: vN, onPilih: kk => { S.wil = kk; render(); tulis(); } });
       if (vN != null) batang.prepend(h('div', { class: 'legend-ref', style: 'grid-column:1/-1;margin-bottom:6px' }, h('i'), 'Indonesia ' + fmtL(BY.tpt, vN)));
       I.tabel(tb, { kolom: [{ label: 'Provinsi' }].concat(kol.map(id => ({ label: BY[id].singkat + (BY[id].satuan === '%' ? ' (%)' : ' (orang)'), num: true }))),
-        baris: provs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), maks: 420 });
+        baris: provs.map(x => { const r = [{ teks: x.nama, sort: x.nama }].concat(kol.map(id => { const v = nilai(id, 'tahunan', x.kode, th); return { teks: v == null ? '—' : fmtAngka(v, BY[id].desimal), sort: v }; })); r.kode = x.kode; return r; }), maks: 420, onPilih: kk => { S.wil = kk; render(); tulis(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
     });
   }
 
@@ -1120,7 +1132,7 @@
     const blok = (ik, judul, ...li) => h('div', { class: 'card blok-metode' }, h('h3', {}, ikon(ik), judul), h('ul', { class: 'catatan' }, li.map(t => h('li', { text: t }))));
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam' }, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Metodologi & data'),
       h('h1', {}, 'Seluruh angka adalah ', h('em', { text: 'angka resmi' }), ' BPS, Kemnaker, dan Bappenas — ditampilkan apa adanya.'),
-      h('p', { text: 'Dashboard tidak menghitung tingkat, selisih, pertumbuhan, pangsa, rata-rata, atau jumlah. Data yang tidak diterbitkan dibiarkan kosong (arsiran di peta).' }))));
+      h('p', { text: 'Seluruh indikator utama disajikan langsung dari publikasi resmi tanpa interpolasi. Perbandingan selisih poin persentase atau proporsi pada ringkasan naratif disediakan murni sebagai konteks bantu baca; data yang tidak diterbitkan dibiarkan kosong (arsiran di peta).' }))));
     host.append(h('div', { class: 'metode-kisi', style: 'margin-top:20px;position:relative;z-index:2' },
       blok('info', 'Prinsip', 'Hanya angka resmi; peringkat dan kelas warna peta hanya pengurutan/pengelompokan tampilan.', 'Kosong = tidak ada angka resmi; tidak diisi perkiraan atau interpolasi (garis grafik terputus).', 'Garis putus-putus menandai deret yang tidak sepenuhnya sebanding (patahan seri atau pergantian sumber).', 'Kelas warna peta tetap untuk semua periode.'),
       blok('jam', 'Frekuensi & periode', 'Tahunan = Sakernas Agustus periode 2015–2025 (metodologi konsisten Sakernas modern BPS).', 'Semesteran = Februari & Agustus sejak 2015.', 'Seluruh data telah diselaraskan pada rentang 10 tahun terakhir yang memiliki tingkat konfidensi dan kelengkapan tertinggi.'),
@@ -1152,7 +1164,7 @@
   // TAB INSIGHT — Storytelling Naratif ala Apple HIG / Clean Admin
   // =====================================================================
   const GLOSS_INSIGHT = {
-    tpt: { t: 'TPT (Tingkat Pengangguran Terbuka)', k: 1, d: 'Persentase jumlah penganggur terhadap jumlah seluruh angkatan kerja. Penganggur adalah mereka yang tidak punya pekerjaan dan sedang aktif mencari kerja, mempersiapkan usaha, atau sudah diterima kerja tetapi belum mulai.' },
+    tpt: { t: 'TPT (Tingkat Pengangguran Terbuka)', k: 1, d: 'Persentase jumlah penganggur terhadap jumlah seluruh angkatan kerja. Menurut konsep resmi BPS (Sakernas), penganggur terbuka mencakup penduduk usia kerja yang tidak bekerja dan: (1) sedang mencari pekerjaan, (2) sedang mempersiapkan usaha baru, (3) merasa tidak mungkin mendapat pekerjaan (hopeless), atau (4) sudah diterima bekerja/punya usaha tetapi belum mulai.' },
     angkatan: { t: 'Angkatan Kerja', k: 1, d: 'Penduduk usia kerja (15 tahun ke atas) yang aktif bekerja atau sedang menganggur mencari pekerjaan.' },
     tpak: { t: 'TPAK (Tingkat Partisipasi Angkatan Kerja)', k: 1, d: 'Persentase jumlah angkatan kerja terhadap seluruh penduduk usia kerja (15 tahun ke atas). Menunjukkan seberapa besar porsi penduduk produktif yang aktif dalam pasar tenaga kerja.' },
     neet: { t: 'NEET', k: 1, d: 'Not in Employment, Education, or Training — persentase pemuda usia 15–24 tahun yang sedang tidak bekerja, tidak menempuh pendidikan sekolah/kuliah, dan tidak sedang mengikuti pelatihan kerja.' },
@@ -1209,6 +1221,9 @@
     }
 
     const tptSr = seri('tpt', 'tahunan', 'prov');
+    const tptKabSr = seri('tpt', 'tahunan', 'kab');
+    const tptLSr = seri('tpt_l', 'tahunan', 'prov');
+    const tptPSr = seri('tpt_p', 'tahunan', 'prov');
     const pengSr = seri('penganggur', 'tahunan', 'prov');
     const neetSr = seri('neet', 'tahunan', 'prov');
     const setSr = seri('setengah', 'tahunan', 'prov');
@@ -1222,6 +1237,31 @@
     const natPeng = pengSr.nilai['00'][lastIdx];
     const natNeet = neetSr ? neetSr.nilai['00'][neetSr.nilai['00'].length - 1] : 19.44;
     const natSet = setSr ? setSr.nilai['00'][setSr.nilai['00'].length - 1] : 7.91;
+
+    // Kalkulasi dinamis Bab 6: Gender Gap Provinsi
+    const lIdx = tptLSr ? tptLSr.periode.indexOf(lastPer) : -1;
+    const pIdx = tptPSr ? tptPSr.periode.indexOf(lastPer) : -1;
+    const natTptL = (tptLSr && lIdx >= 0 && tptLSr.nilai['00']) ? tptLSr.nilai['00'][lIdx] : 4.85;
+    const natTptP = (tptPSr && pIdx >= 0 && tptPSr.nilai['00']) ? tptPSr.nilai['00'][pIdx] : 4.84;
+    const genderGapProvs = WIL.provinsi.map(pr => {
+      const vl = (tptLSr && lIdx >= 0 && tptLSr.nilai[pr.kode]) ? tptLSr.nilai[pr.kode][lIdx] : null;
+      const vp = (tptPSr && pIdx >= 0 && tptPSr.nilai[pr.kode]) ? tptPSr.nilai[pr.kode][pIdx] : null;
+      return (vl != null && vp != null) ? { kode: pr.kode, prov: pr.nama, p: vp, l: vl, diff: vp - vl } : null;
+    }).filter(Boolean).sort((a, b) => b.diff - a.diff);
+    const topGender = genderGapProvs.slice(0, 3);
+
+    // Kalkulasi dinamis Bab 8: Kab/Kota Ekstrem & Rata-rata Kota vs Kabupaten
+    const kabIdx = tptKabSr ? tptKabSr.periode.indexOf(lastPer) : -1;
+    const allKabs = WIL.kabkota.map(kb => {
+      const v = (tptKabSr && kabIdx >= 0 && tptKabSr.nilai[kb.kode]) ? tptKabSr.nilai[kb.kode][kabIdx] : null;
+      return v != null ? { kode: kb.kode, nama: kb.nama, prov: namaW(kb.prov), jenis: kb.jenis, val: v } : null;
+    }).filter(Boolean).sort((a, b) => b.val - a.val);
+    const listKota = allKabs.filter(x => x.jenis === 'Kota');
+    const listKab = allKabs.filter(x => x.jenis !== 'Kota');
+    const avgKota = listKota.length ? listKota.reduce((s, x) => s + x.val, 0) / listKota.length : 5.89;
+    const avgKab = listKab.length ? listKab.reduce((s, x) => s + x.val, 0) / listKab.length : 3.78;
+    const top3Kab = allKabs.slice(0, 3);
+    const bot2Kab = allKabs.slice(-2);
 
     // Kalkulasi Waffle Jawa vs Luar Jawa
     const jawaCodes = ['32', '33', '35', '31', '36', '34'];
@@ -1244,7 +1284,7 @@
         aria: 'Lihat tren TPT nasional di peta',
         text: `<p>Pada Sakernas ${lastPer}, ${termI('tpt')} nasional berada di level <b>${fmtAngka(natTpt, 2)}%</b>, dengan total <b>${fmtAngka(natPeng)} jiwa</b> penganggur terbuka. Angka ini adalah salah satu yang terendah dalam dua dekade terakhir.</p>` +
           `<p>Dalam catatan sejarah 1986–${lastPer}, TPT pernah melonjak tajam saat Krisis Moneter 1998 dan mencapai puncaknya pada 2005 di angka <b>11,24%</b>. Sempat kembali melonjak saat pandemi Covid-19 (2020) ke <b>7,07%</b> sebelum berangsur turun ke tren perbaikan saat ini.</p>` +
-          `<p class="note"><b>Catatan Resmi BPS.</b> Sejak 2001, BPS memperluas konsep pengangguran terbuka dengan memasukkan penduduk yang mempersiapkan usaha dan yang merasa putus asa mencari kerja (discouraged workers).</p>`,
+          `<p class="note"><b>Catatan Resmi BPS.</b> Sejak 2001, BPS menyempurnakan definisi pengangguran terbuka sehingga mencakup empat kelompok: penduduk yang aktif mencari kerja, sedang mempersiapkan usaha baru, merasa tidak mungkin mendapat pekerjaan (<i>hopeless</i>), serta yang sudah punya pekerjaan/usaha tetapi belum mulai bekerja.</p>`,
         fig: `<div class="fig-t">Tren TPT Nasional 1986–${lastPer} (%)</div><div class="chart" id="chart-ins-tren"></div><div class="fig-c">Garis menunjukkan laju TPT nasional. Titik menandai krisis 2005 (11,24%), pandemi 2020 (7,07%), dan kondisi terkini ${lastPer} (${fmtAngka(natTpt, 2)}%).</div>`
       },
       {
@@ -1333,18 +1373,16 @@
       {
         id: 'disparitas-gender',
         title: '6. Potret Gender: Kesetaraan Angka Nasional vs Kesenjangan Wilayah',
-        go: 'tpt_p|prov|tahunan|2025|11',
-        aria: 'Lihat TPT perempuan di Aceh',
-        text: `<p>Secara agregat nasional, TPT laki-laki (<b>4,85%</b>) dan perempuan (<b>4,84%</b>) terlihat sangat seimbang. Namun, angka nasional ini menutupi ketimpangan gender yang sangat kontras di tingkat daerah.</p>` +
-          `<p>Di provinsi seperti <b>Aceh</b> dan <b>Papua Barat Daya</b>, TPT perempuan jauh lebih tinggi daripada laki-laki dengan selisih lebih dari <b>2,5 hingga 3,0 persen poin</b> (Aceh: Perempuan 7,52% vs Laki-laki 4,48%).</p>` +
+        go: `tpt_p|prov|tahunan|${lastPer}|${topGender[0] ? topGender[0].kode : '11'}`,
+        aria: 'Lihat TPT perempuan di peta',
+        text: `<p>Secara agregat nasional, TPT laki-laki (<b>${fmtAngka(natTptL, 2)}%</b>) dan perempuan (<b>${fmtAngka(natTptP, 2)}%</b>) terlihat sangat seimbang. Namun, angka nasional ini menutupi ketimpangan gender yang sangat kontras di tingkat daerah.</p>` +
+          (topGender.length >= 2 ? `<p>Di provinsi seperti <b>${topGender[0].prov}</b> dan <b>${topGender[1].prov}</b>, TPT perempuan jauh lebih tinggi daripada laki-laki dengan selisih lebih dari <b>${fmtAngka(topGender[1].diff, 2)} hingga ${fmtAngka(topGender[0].diff, 2)} poin persentase</b> (${topGender[0].prov}: Perempuan ${fmtAngka(topGender[0].p, 2)}% vs Laki-laki ${fmtAngka(topGender[0].l, 2)}%).</p>` : '') +
           `<p>Sementara itu, dari sisi keaktifan pasar kerja, ${termI('tpak')} perempuan nasional masih berada di kisaran <b>55%</b>, jauh di bawah TPAK laki-laki yang mencapai lebih dari <b>84%</b>. Sebagian besar perempuan bukan angkatan kerja tercatat sedang mengurus rumah tangga.</p>`,
         fig: `<div class="fig-t">Provinsi dengan Selisih TPT Perempuan Tertinggi di Atas Laki-laki (${lastPer})</div>` +
           `<div class="hb">` +
           [
-            { prov: 'Aceh', p: 7.52, l: 4.48, gap: '+3,04%' },
-            { prov: 'Papua Barat Daya', p: 8.44, l: 5.87, gap: '+2,57%' },
-            { prov: 'Sulawesi Utara', p: 7.31, l: 5.23, gap: '+2,08%' },
-            { prov: 'Rata-rata Nasional', p: 4.84, l: 4.85, gap: '-0,01%' }
+            ...topGender.map(g => ({ prov: g.prov, p: g.p, l: g.l, gap: (g.diff >= 0 ? '+' : '') + fmtAngka(g.diff, 2) + ' pp' })),
+            { prov: 'Rata-rata Nasional', p: natTptP, l: natTptL, gap: ((natTptP - natTptL) >= 0 ? '+' : '') + fmtAngka(natTptP - natTptL, 2) + ' pp' }
           ].map(item => `
             <div class="hb-r">
               <div class="hb-h"><b>${item.prov}</b><span>Perempuan ${fmtAngka(item.p, 2)}% vs Laki-laki ${fmtAngka(item.l, 2)}% (${item.gap})</span></div>
@@ -1384,22 +1422,22 @@
       },
       {
         id: 'kabkota-ekstrem',
-        title: '8. Disparitas Tajam 514 Daerah: Kota Pusat Jasa vs Lumbung Agraris',
-        go: 'tpt|kab|tahunan|2025|8171',
-        aria: 'Lihat Kota Ambon di peta kab/kota',
-        text: `<p>Melihat tingkat agregat provinsi sering kali menyembunyikan kontras ekstrem antar-kabupaten/kota. Dari 514 daerah di Indonesia, TPT tertinggi tercatat di <b>Kota Ambon (11,37%)</b> dan <b>Kota Sorong (10,35%)</b>.</p>` +
-          `<p>Secara umum, rata-rata TPT di <b>98 wilayah Kota (5,89%)</b> jauh lebih tinggi dibandingkan rata-rata <b>416 Kabupaten (3,78%)</b>. Kota-kota besar menjadi magnet migrasi angkatan kerja terdidik, namun daya serap sektor formal terbatas sehingga menciptakan antrean pencari kerja yang panjang.</p>` +
-          `<p>Sebaliknya, kabupaten dengan TPT terendah berada di wilayah pegunungan dan agraris seperti <b>Kab. Puncak (0,14%)</b> dan <b>Kab. Lanny Jaya (0,50%)</b>, di mana hampir seluruh penduduk aktif bekerja di pertanian subsisten mandiri.</p>`,
+        title: `8. Disparitas Tajam ${allKabs.length} Daerah: Kota Pusat Jasa vs Lumbung Agraris`,
+        go: `tpt|kab|tahunan|${lastPer}|${top3Kab[0] ? top3Kab[0].kode : '8171'}`,
+        aria: 'Lihat daerah tertinggi di peta kab/kota',
+        text: `<p>Melihat tingkat agregat provinsi sering kali menyembunyikan kontras ekstrem antar-kabupaten/kota. Dari ${allKabs.length} daerah di Indonesia, TPT tertinggi tercatat di <b>${top3Kab[0] ? `${top3Kab[0].nama} (${fmtAngka(top3Kab[0].val, 2)}%)` : 'Kota Ambon (11,37%)'}</b> dan <b>${top3Kab[1] ? `${top3Kab[1].nama} (${fmtAngka(top3Kab[1].val, 2)}%)` : 'Kota Sorong (10,35%)'}</b>.</p>` +
+          `<p>Secara umum, rata-rata TPT di <b>${listKota.length} wilayah Kota (${fmtAngka(avgKota, 2)}%)</b> jauh lebih tinggi dibandingkan rata-rata <b>${listKab.length} Kabupaten (${fmtAngka(avgKab, 2)}%)</b>. Kota-kota besar menjadi magnet migrasi angkatan kerja terdidik, namun daya serap sektor formal terbatas sehingga menciptakan antrean pencari kerja yang panjang.</p>` +
+          `<p>Sebaliknya, kabupaten dengan TPT terendah berada di wilayah pegunungan dan agraris seperti <b>${bot2Kab[1] ? `${bot2Kab[1].nama} (${fmtAngka(bot2Kab[1].val, 2)}%)` : 'Kab. Puncak (0,14%)'}</b> dan <b>${bot2Kab[0] ? `${bot2Kab[0].nama} (${fmtAngka(bot2Kab[0].val, 2)}%)` : 'Kab. Lanny Jaya (0,50%)'}</b>, di mana hampir seluruh penduduk aktif bekerja di pertanian subsisten mandiri.</p>`,
         fig: `<div class="fig-t">Rentang Ekstrem TPT Kabupaten/Kota di Indonesia (${lastPer})</div>` +
           `<div class="hb">` +
           [
-            { nama: 'Kota Ambon (Maluku)', val: 11.37, ket: 'Tertinggi #1 di Indonesia', color: '#dc2626' },
-            { nama: 'Kota Sorong (Papua B. Daya)', val: 10.35, ket: 'Tertinggi #2 di Indonesia', color: '#ea580c' },
-            { nama: 'Kota Padang (Sumbar)', val: 9.70, ket: 'Tertinggi #3 di Indonesia', color: '#f97316' },
-            { nama: 'Rata-rata 98 Kota', val: 5.89, ket: 'Agregat Daerah Kota', color: '#2563eb' },
-            { nama: 'Rata-rata 416 Kabupaten', val: 3.78, ket: 'Agregat Daerah Kabupaten', color: '#059669' },
-            { nama: 'Kab. Lanny Jaya (Papua Peg.)', val: 0.50, ket: 'Salah satu terendah', color: '#10b981' },
-            { nama: 'Kab. Puncak (Papua Tengah)', val: 0.14, ket: 'Terendah di Indonesia', color: '#10b981' }
+            ...(top3Kab[0] ? [{ nama: `${top3Kab[0].nama} (${top3Kab[0].prov})`, val: top3Kab[0].val, ket: 'Tertinggi #1 di Indonesia', color: '#dc2626' }] : []),
+            ...(top3Kab[1] ? [{ nama: `${top3Kab[1].nama} (${top3Kab[1].prov})`, val: top3Kab[1].val, ket: 'Tertinggi #2 di Indonesia', color: '#ea580c' }] : []),
+            ...(top3Kab[2] ? [{ nama: `${top3Kab[2].nama} (${top3Kab[2].prov})`, val: top3Kab[2].val, ket: 'Tertinggi #3 di Indonesia', color: '#f97316' }] : []),
+            { nama: `Rata-rata ${listKota.length} Kota`, val: avgKota, ket: 'Agregat Daerah Kota', color: '#2563eb' },
+            { nama: `Rata-rata ${listKab.length} Kabupaten`, val: avgKab, ket: 'Agregat Daerah Kabupaten', color: '#059669' },
+            ...(bot2Kab[0] ? [{ nama: `${bot2Kab[0].nama} (${bot2Kab[0].prov})`, val: bot2Kab[0].val, ket: 'Salah satu terendah', color: '#10b981' }] : []),
+            ...(bot2Kab[1] ? [{ nama: `${bot2Kab[1].nama} (${bot2Kab[1].prov})`, val: bot2Kab[1].val, ket: 'Terendah di Indonesia', color: '#10b981' }] : [])
           ].map(item => `
             <div class="hb-r">
               <div class="hb-h"><b>${item.nama}</b><span>${item.ket}</span></div>
@@ -1544,8 +1582,8 @@
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
   document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); S.wil = '00'; gantiHalaman('profil'); });
   $('kaki').replaceChildren(
-    h('div', { text: `Versi 2 · data dibangun ${D.dibuat} oleh Data/_skrip/bangun_dashboard_pengangguran.js --versi 2. Angka resmi BPS, Kemnaker, dan Bappenas apa adanya — tanpa hitungan mandiri; data kosong dibiarkan kosong.` }),
-    h('div', { text: 'Peringkat dan kelas warna peta hanya pengurutan tampilan. Lihat Metodologi untuk sumber, tautan unduh, dan catatan per lapisan.' }));
+    h('div', { text: `Versi 2 · data dibangun ${D.dibuat} oleh Data/_skrip/bangun_dashboard_pengangguran.js --versi 2. Angka indikator utama resmi BPS, Kemnaker, dan Bappenas disajikan apa adanya tanpa interpolasi; data kosong dibiarkan kosong.` }),
+    h('div', { text: 'Peringkat, kelas warna peta, serta ringkasan selisih/proporsi naratif disajikan sebagai konteks bantu baca. Lihat Metodologi untuk sumber, tautan unduh, dan catatan per lapisan.' }));
   let tRes = null, lebarAkhir = innerWidth;
   window.addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(() => { if (S.page !== 'peta' && Math.abs(innerWidth - lebarAkhir) > 15) { lebarAkhir = innerWidth; render(); } }, 100); });
   render();
