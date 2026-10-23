@@ -15,82 +15,11 @@
   function applyBerandaTabs() {
     const beranda = document.getElementById('profil') || document.getElementById('beranda');
     if (!beranda) return;
+    const oldNav = document.getElementById('beranda-focus-nav');
+    if (oldNav) oldNav.remove();
     const sections = beranda.querySelectorAll('section.bagian');
-    if (sections.length < 4) {
-      const oldNav = document.getElementById('beranda-focus-nav');
-      if (oldNav) oldNav.remove();
-      return;
-    }
-
-    // Cek apakah tab switcher sudah ada
-    let nav = document.getElementById('beranda-focus-nav');
-    if (!nav) {
-      nav = document.createElement('nav');
-      nav.id = 'beranda-focus-nav';
-      nav.className = 'beranda-focus-nav';
-      nav.setAttribute('role', 'tablist');
-      nav.setAttribute('aria-label', 'Modul Analisis Beranda');
-
-      const tabs = [
-        { id: 'tren', label: '1. Tren & Peta Wilayah', desc: 'Seri 2015–2025 & Peta Provinsi' },
-        { id: 'demografi', label: '2. Karakteristik & Struktur', desc: 'Pendidikan, Umur, Gender' },
-        { id: 'kegiatan', label: '3. Dinamika Pasar Kerja', desc: 'Setengah Pengangguran & Kegiatan' },
-        { id: 'semua', label: 'Tampilkan Lengkap', desc: 'Seluruh 5 Modul' }
-      ];
-
-      nav.innerHTML = tabs.map(t => `
-        <button type="button" role="tab" class="focus-pill ${t.id === activeBerandaTab ? 'active' : ''}" data-target="${t.id}" title="${t.desc}">
-          <span class="pill-title">${t.label}</span>
-          <span class="pill-desc">${t.desc}</span>
-        </button>
-      `).join('');
-
-      // Pasang di antara KPI grid dan Section pertama
-      const kpiKisi = beranda.querySelector('.kpi-kisi');
-      if (kpiKisi && kpiKisi.nextSibling) {
-        beranda.insertBefore(nav, kpiKisi.nextSibling);
-      } else if (sections[0]) {
-        beranda.insertBefore(nav, sections[0]);
-      }
-
-      nav.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-target]');
-        if (!btn) return;
-        activeBerandaTab = btn.getAttribute('data-target');
-        nav.querySelectorAll('.focus-pill').forEach(b => {
-          b.classList.toggle('active', b.getAttribute('data-target') === activeBerandaTab);
-        });
-        updateSectionVisibility(sections);
-      });
-    }
-
-    updateSectionVisibility(sections);
-  }
-
-  function updateSectionVisibility(sections) {
-    // Mapping 5 section:
-    // 0: Tren & Peta
-    // 1: Siapa yang menganggur
-    // 2: Struktur penganggur
-    // 3: Setengah pengangguran
-    // 4: Kegiatan penduduk
-    sections.forEach((sec, idx) => {
-      let visible = false;
-      if (activeBerandaTab === 'semua') {
-        visible = true;
-      } else if (activeBerandaTab === 'tren') {
-        visible = (idx === 0);
-      } else if (activeBerandaTab === 'demografi') {
-        visible = (idx === 1 || idx === 2);
-      } else if (activeBerandaTab === 'kegiatan') {
-        visible = (idx === 3 || idx === 4);
-      }
-      sec.style.display = visible ? '' : 'none';
-      if (visible) {
-        sec.classList.remove('v2-fade-in');
-        void sec.offsetWidth;
-        sec.classList.add('v2-fade-in');
-      }
+    sections.forEach(sec => {
+      sec.style.display = '';
     });
   }
 
