@@ -2755,8 +2755,15 @@
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
   document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); S.wil = '00'; gantiHalaman('profil'); });
   $('kaki').replaceChildren(
-    h('div', { text: `Versi 2 · data dibangun ${D.dibuat} oleh Data/_skrip/bangun_dashboard_pengangguran.js --versi 2. Angka indikator utama resmi BPS, Kemnaker, dan Bappenas disajikan apa adanya tanpa interpolasi; data kosong dibiarkan kosong.` }),
-    h('div', { text: 'Peringkat, kelas warna peta, serta ringkasan selisih/proporsi naratif disajikan sebagai konteks bantu baca. Lihat Metodologi untuk sumber, tautan unduh, dan catatan per lapisan.' }));
+    h('div', {
+      style: 'font-weight:700;font-size:13.5px;color:var(--ink);line-height:1.5',
+      text: 'Disusun oleh Pusat Sistem, Data, dan Informasi Perencanaan Pembangunan'
+    }),
+    h('div', {
+      style: 'font-weight:600;font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:2px',
+      text: 'Kementerian Perencanaan Pembangunan Nasional/Badan Perencanaan Pembangunan Nasional'
+    })
+  );
   let tRes = null, lebarAkhir = innerWidth;
   window.addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(() => { if (S.page !== 'peta' && Math.abs(innerWidth - lebarAkhir) > 15) { lebarAkhir = innerWidth; render(); } }, 100); });
   render();
