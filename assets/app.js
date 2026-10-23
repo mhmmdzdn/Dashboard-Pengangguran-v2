@@ -442,7 +442,7 @@
       const g = h('div'), seg = h('div', { class: 'seg' }), pmEl = h('div', { class: 'peta-host' }), legEl = h('div', { class: 'legenda-mini' }), ekstrem = h('div', { class: 'daftar-ekstrem' });
       I.segmen(seg, Object.keys(FREK).map(f => [f, FREK[f]]), S.dfrek, f => { S.dfrek = f; renderProfil(); tulis(); }, 'Frekuensi');
       host.append(h('section', { class: 'bagian' }, bagian(1, 'Tren dan sebaran', 'TPT Indonesia sejak 2015 dengan rentang sasaran RPJMN, serta peta TPT provinsi pada periode terpilih.'),
-        h('div', { class: 'kisi kisi-2' },
+        h('div', { class: 'kisi kisi-2 kisi-tren-sebaran' },
           kartuAksi('Tren TPT Indonesia', S.dfrek === 'tahunan' ? '2015–2025 · pita = rentang sasaran RPJMN 2025–2029 · klik titik untuk memilih periode' : FREK[S.dfrek], seg, g, catatanR({ catatan: [BY.tpt.catatan[0]] })),
           kartuAksi('TPT provinsi', lblTahunan(per) + ' · klik untuk membuka profil', h('button', { class: 'btn', type: 'button', onclick: () => { S.lap = 'tpt'; S.lv = 'prov'; S.frek = 'tahunan'; S.per = per; gantiHalaman('peta'); } }, 'Peta penuh ', ikon('panah')),
             h('div', { class: 'peta-mini' }, pmEl), legEl, ekstrem))));
@@ -451,7 +451,7 @@
         let d = deret('tpt', S.dfrek, '00') || [];
         if (S.dfrek === 'tahunan') d = d.filter(x => x[0] >= '2015');
         const pita = S.dfrek === 'tahunan' && sn ? [{ dari: '2025', sampai: '2025', lo: sn.target2025[0], hi: sn.target2025[1], label: 'Sasaran 2025', legenda: 'Rentang sasaran RPJMN' }, { dari: '2029', sampai: '2029', lo: sn.target2029[0], hi: sn.target2029[1], label: 'Sasaran 2029', legenda: 'Rentang sasaran RPJMN' }] : [];
-        I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: d, utama: true }], tinggi: 480, fmt: v => fmtL(L_, v), patahan: (BY.tpt.patahan || {})[S.dfrek], pita, area: true,
+        I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: d, utama: true }], tinggi: 350, fmt: v => fmtL(L_, v), patahan: (BY.tpt.patahan || {})[S.dfrek], pita, area: true,
           periodeTambahan: S.dfrek === 'tahunan' ? ['2026', '2027', '2028', '2029'] : [], aktif: S.dfrek === 'tahunan' ? per : null, onKlik: S.dfrek === 'tahunan' ? pilihPer : null, label: 'Tren TPT Indonesia' });
         const K = kelasL(L_, 'prov');
         petaMini(pmEl, { warna: k => K.warna(pot[k]), onPilih: k => { if (k) { S.wil = k; renderProfil(); tulis(); } },

@@ -468,6 +468,65 @@ body {
   flex: 1;
 }
 
+/* Proporsi Profesional Section 1: Tren TPT Indonesia & Peta TPT Provinsi */
+.kisi-tren-sebaran > .card {
+  justify-content: flex-start !important;
+  padding: 18px 20px !important;
+}
+
+.kisi-tren-sebaran > .card > .card-head {
+  align-items: center !important;
+  margin-bottom: 12px !important;
+}
+
+.kisi-tren-sebaran > .card > .catatan {
+  margin-top: auto !important;
+  padding-top: 10px;
+  border-top: 1px dashed var(--grid);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.kisi-tren-sebaran .peta-mini {
+  height: 240px !important;
+  flex: 0 0 240px !important;
+  margin-top: 0 !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+}
+
+.kisi-tren-sebaran .legenda-mini {
+  margin-top: 12px !important;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--grid);
+}
+
+.kisi-tren-sebaran .daftar-ekstrem {
+  margin-top: 12px !important;
+  gap: 16px !important;
+}
+
+.kisi-tren-sebaran .daftar-ekstrem h4 {
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  color: var(--muted) !important;
+  margin-bottom: 6px !important;
+}
+
+.kisi-tren-sebaran .daftar-ekstrem li {
+  padding: 4.5px 4px !important;
+  border-radius: 4px;
+  font-size: 12px !important;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.kisi-tren-sebaran .daftar-ekstrem li:hover {
+  background-color: var(--accent-soft);
+  color: var(--accent);
+}
+
 /* Batang horizontal elastis memenuhi whitespace */
 .bars {
   display: grid !important;
