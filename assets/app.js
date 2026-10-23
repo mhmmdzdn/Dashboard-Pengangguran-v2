@@ -1269,10 +1269,7 @@
         ]));
         trk.addEventListener('pointerleave', I.sembunyiTip);
         b.append(
-          h('div', { class: 'nm', title: `${p.nama} — Target Prov 2025: ${rg(tProv25)} | 2029: ${rg(tProv29)}`, onclick: () => { S.wil = p.kode; gantiHalaman('profil'); } },
-            h('span', { class: 'nm-prov', text: p.nama }),
-            tProv25 ? h('small', { class: 'sub-target-prov', text: `2025: ${rg(tProv25)} · 2029: ${rg(tProv29)}` }) : null
-          ),
+          h('div', { class: 'nm', title: p.nama, text: p.nama, onclick: () => { S.wil = p.kode; gantiHalaman('profil'); } }),
           trk,
           h('div', { class: 'v', text: fmt(v) })
         );

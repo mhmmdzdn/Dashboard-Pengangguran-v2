@@ -1965,29 +1965,8 @@ body.panel-terlipat .zoom-alat {
 }
 
 /* 5. Penyempurnaan Bullet Chart Sasaran RPJMN (Target Provinsi & Target Wilayah) */
-.bullet {
-  grid-template-columns: minmax(150px, max-content) minmax(0, 1fr) 56px !important;
-  gap: 8px 12px !important;
-}
-.bullet .nm {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-.bullet .nm .nm-prov {
-  font-weight: 700;
-  color: var(--ink);
-}
-.bullet .nm:hover .nm-prov {
-  color: var(--accent);
-}
-.bullet .nm .sub-target-prov {
-  font-size: 10.5px;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
 .bullet .trk {
-  height: 24px !important;
+  height: 22px !important;
   border-radius: 7px !important;
   overflow: visible;
 }
