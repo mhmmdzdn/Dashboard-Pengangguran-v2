@@ -52,7 +52,19 @@
       tampilToast('Tautan siap dibagikan dari bilah alamat browser');
     }
   }
-  const IKON_LAP = { tpt: 'tpt', tpt_l: 'pria', tpt_p: 'wanita', neet: 'neet', setengah: 'jam', penganggur: 'orang', tpak: 'tpak' };
+  const IKON_LAP = { tpt: 'tpt', tpt_l: 'pria', tpt_p: 'wanita', neet: 'neet', setengah: 'jam', penganggur: 'orang', tpak: 'tpak', pencaker: 'pencaker', loker: 'loker', penempatan: 'penempatan' };
+  const TEMA_LAP = {
+    tpt:        { utama: '#0f766e', lembut: 'rgba(15, 118, 110, 0.14)', seq: ['#d1f2eb', '#a3e4d7', '#76d7c4', '#48c9b0', '#1abc9c', '#0f766e', '#064e3b'] },
+    tpt_l:      { utama: '#2563eb', lembut: 'rgba(37, 99, 235, 0.14)',  seq: ['#dbeafe', '#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb', '#1e3a8a'] },
+    tpt_p:      { utama: '#db2777', lembut: 'rgba(219, 39, 119, 0.14)', seq: ['#fce7f3', '#fbcfe8', '#f9a8d4', '#f472b6', '#ec4899', '#db2777', '#831843'] },
+    neet:       { utama: '#7c3aed', lembut: 'rgba(124, 58, 237, 0.14)', seq: ['#ede9fe', '#ddd6fe', '#c4b5fd', '#a78bfa', '#8b5cf6', '#7c3aed', '#4c1d95'] },
+    setengah:   { utama: '#d97706', lembut: 'rgba(217, 119, 6, 0.15)',  seq: ['#fef3c7', '#fde68a', '#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#78350f'] },
+    penganggur: { utama: '#dc2626', lembut: 'rgba(220, 38, 38, 0.14)',  seq: ['#fee2e2', '#fecaca', '#fca5a5', '#f87171', '#ef4444', '#dc2626', '#7f1d1d'] },
+    tpak:       { utama: '#059669', lembut: 'rgba(5, 150, 105, 0.14)',  seq: ['#dcfce7', '#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#16a34a', '#14532d'] },
+    pencaker:   { utama: '#0284c7', lembut: 'rgba(2, 132, 199, 0.14)',  seq: ['#e0f2fe', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7', '#0c4a6e'] },
+    loker:      { utama: '#4f46e5', lembut: 'rgba(79, 70, 229, 0.14)',  seq: ['#e0e7ff', '#c7d2fe', '#a5b4fc', '#818cf8', '#6366f1', '#4f46e5', '#312e81'] },
+    penempatan: { utama: '#0d9488', lembut: 'rgba(13, 148, 136, 0.14)', seq: ['#ccfbf1', '#99f6e4', '#5eead4', '#2dd4bf', '#14b8a6', '#0d9488', '#134e4a'] }
+  };
 
   // ---------- data dasar ----------
   const LAP = D.lapisan, BY = Object.fromEntries(LAP.map(l => [l.id, l]));
@@ -115,7 +127,11 @@
   const fmtLeg = l => v => (l.satuan === '%' ? fmtAngka(v, v % 1 ? 1 : 0) : nfKompak.format(v));
   const fmtR = (r, d) => v => (v == null ? '—' : r.satuan === '%' ? fmtAngka(v, d != null ? d : r.desimal) + '%' : fmtAngka(v, d != null ? d : r.desimal));
   const kelasCache = {};
-  const kelasL = (l, lv) => { const br = Array.isArray(l.kelas) ? l.kelas : l.kelas[lv]; return (kelasCache[l.id + lv] = kelasCache[l.id + lv] || I.kelasTetap(br)); };
+  const kelasL = (l, lv) => {
+    const br = Array.isArray(l.kelas) ? l.kelas : l.kelas[lv];
+    const palet = TEMA_LAP[l.id] ? TEMA_LAP[l.id].seq : null;
+    return (kelasCache[l.id + lv] = kelasCache[l.id + lv] || I.kelasTetap(br, palet));
+  };
   const satuanTeks = l => (l.satuan === '%' ? 'persen' : l.satuan);
 
   // ---------- komponen tampilan ----------
@@ -239,11 +255,27 @@
     const nKosong = kode.filter(k => data[k] == null).length, nAsal = lv === 'kab' ? kode.filter(k => asalDi(S.lap, S.frek, k, S.per)).length : 0;
     I.legendaKelas($('legenda'), { kelas: K, fmt: fmtLeg(l), judul: `${l.singkat} (${satuanTeks(l)}) · ${lblP(S.per, S.frek)}`, nilaiAktif: S.sel ? data[S.sel] : null, adaKosong: nKosong > 0,
       ket: [nKosong ? `${nKosong} dari ${kode.length} ${lv === 'kab' ? 'kab/kota' : 'provinsi'} tanpa angka resmi.` : '', nAsal ? `${nAsal} kab/kota dari tabel BPS provinsi.` : '', 'Kelas warna tetap untuk semua periode.'].filter(Boolean).join(' ') });
-    // rel lapisan berikon, dua kelompok
+    // rel lapisan berikon, dua kelompok dengan warna identitas masing-masing
+    const tmAktif = TEMA_LAP[S.lap] || TEMA_LAP.tpt;
+    const pagePetaEl = $('page-peta');
+    if (pagePetaEl) {
+      pagePetaEl.style.setProperty('--lap-color', tmAktif.utama);
+      pagePetaEl.style.setProperty('--lap-soft', tmAktif.lembut);
+    }
     const tombol = x => {
       const th = frekTersedia(x.id, 'prov').flatMap(f => seri(x.id, f, 'prov').periode).map(p => p.slice(0, 4)).sort();
-      return h('button', { type: 'button', role: 'radio', 'aria-checked': x.id === S.lap ? 'true' : 'false', title: x.nama, onclick: () => { S.lap = x.id; renderPeta(); tulis(); } },
-        h('span', { class: 'ik' }, ikon(IKON_LAP[x.id])), h('span', { class: 'tx' }, h('span', { text: x.singkat }), h('small', { text: `${th[0]}–${th[th.length - 1]}${punyaLv(x.id, 'kab') ? ' · kab/kota' : ''}` })));
+      const tm = TEMA_LAP[x.id] || TEMA_LAP.tpt;
+      return h('button', {
+        type: 'button',
+        role: 'radio',
+        'aria-checked': x.id === S.lap ? 'true' : 'false',
+        'data-lap': x.id,
+        style: `--lap-c:${tm.utama};--lap-bg:${tm.lembut}`,
+        title: x.nama,
+        onclick: () => { S.lap = x.id; renderPeta(); tulis(); }
+      },
+        h('span', { class: 'ik' }, ikon(IKON_LAP[x.id] || 'info')),
+        h('span', { class: 'tx' }, h('span', { text: x.singkat }), h('small', { text: `${th[0]}–${th[th.length - 1]}${punyaLv(x.id, 'kab') ? ' · kab/kota' : ''}` })));
     };
     $('lapisan').replaceChildren(h('div', { class: 'grp-lap', text: 'Pengangguran' }), ...LAP.filter(x => !x.konteks).map(tombol), h('div', { class: 'grp-lap', text: 'Konteks pasar kerja' }), ...LAP.filter(x => x.konteks).map(tombol));
     I.segmen($('seg-level'), [['prov', 'Provinsi'], ['kab', 'Kab/kota', punyaLv(S.lap, 'kab')]], lv, v => { S.lv = v; if (v === 'kab' && PROV[S.sel]) { S.fokus = S.sel; S.sel = ''; } renderPeta(); tulis(); }, 'Tingkat wilayah');
@@ -294,7 +326,8 @@
       if (S.lap.startsWith('tpt') && !lingkup) { const pg = nilai('penganggur', S.frek, '00', S.per); if (pg != null) dl.append(h('dt', { text: 'Jumlah penganggur Indonesia' }), h('dd', { text: fmtAngka(pg) + ' orang' })); }
       isi.push(dl);
       const dRef = deret(S.lap, S.frek, lingkup ? S.fokus : '00');
-      if (dRef) isi.push(h('div', { class: 'bagian-jdl', text: 'Tren ' + (lingkup ? namaW(S.fokus) : 'Indonesia') + ' · klik untuk memilih periode' }), trenMini([{ nama: lingkup ? namaW(S.fokus) : 'Indonesia', warna: 'var(--accent)', data: dRef, utama: true }]));
+      const wLap = (TEMA_LAP[S.lap] || TEMA_LAP.tpt).utama;
+      if (dRef) isi.push(h('div', { class: 'bagian-jdl', text: 'Tren ' + (lingkup ? namaW(S.fokus) : 'Indonesia') + ' · klik untuk memilih periode' }), trenMini([{ nama: lingkup ? namaW(S.fokus) : 'Indonesia', warna: wLap, data: dRef, utama: true }]));
       if (urut.length) isi.push(h('div', { class: 'bagian-jdl', text: `Peringkat ${lv === 'kab' ? 'kab/kota' : 'provinsi'} · tertinggi = 1` }), peringkat(urut, data, l, null));
     } else {
       const k = S.sel, lvK = lvDari(k), v = data[k], iAll = semua.indexOf(k);
@@ -317,7 +350,8 @@
       if (v == null) isi.push(h('div', { class: 'catatan-kecil', text: 'Tidak ada angka resmi pada periode ini.' }));
       const lain = LAP.filter(x => x.id !== S.lap).map(x => [x, nilaiPadanan(x.id, k)]).filter(([, r]) => r);
       if (lain.length) { const dl2 = h('dl', { class: 'statlist' }); lain.forEach(([x, [p, vv]]) => dl2.append(h('dt', {}, x.singkat), h('dd', {}, fmtL(x, vv, x.jenis === 'jumlah'), ' ', h('small', { text: lblPer(p) })))); isi.push(h('div', { class: 'bagian-jdl', text: 'Lapisan lain' }), dl2); }
-      const ser = [{ nama: namaW(k), warna: 'var(--accent)', data: deret(S.lap, S.frek, k) || [], utama: true, asal: asalMap(S.lap, S.frek, k) }];
+      const wLap = (TEMA_LAP[S.lap] || TEMA_LAP.tpt).utama;
+      const ser = [{ nama: namaW(k), warna: wLap, data: deret(S.lap, S.frek, k) || [], utama: true, asal: asalMap(S.lap, S.frek, k) }];
       if (lvK === 'kab' && deret(S.lap, S.frek, KAB[k].prov)) ser.push({ nama: namaW(KAB[k].prov), warna: 'var(--cat-2)', data: deret(S.lap, S.frek, KAB[k].prov) });
       if (l.jenis !== 'jumlah' && deret(S.lap, S.frek, '00')) ser.push({ nama: 'Indonesia', warna: 'var(--context)', data: deret(S.lap, S.frek, '00') });
       isi.push(h('div', { class: 'bagian-jdl', text: 'Tren' }), trenMini(ser, 170));

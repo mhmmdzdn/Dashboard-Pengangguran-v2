@@ -77,15 +77,16 @@
   const tipSub = t => h('div', { class: 't-sub', text: t });
 
   // ---------- kelas warna tetap ----------
-  // br = batas naik (n-1 angka) → n kelas; warna var(--seq-1..7) disebar merata
-  function kelasTetap(br) {
+  // br = batas naik (n-1 angka) → n kelas; warna var(--seq-1..7) atau palet 7 langkah disebar merata
+  function kelasTetap(br, palet) {
     const n = br.length + 1;
     const langkah = i => (n === 1 ? 4 : 1 + Math.round(i * 6 / (n - 1)));
     const idx = v => { let i = 0; while (i < br.length && v >= br[i]) i++; return i; };
+    const ambilW = s => (palet && palet[s - 1]) ? palet[s - 1] : `var(--seq-${s})`;
     return {
       br, n, idx,
-      warna: v => (v == null ? null : `var(--seq-${langkah(idx(v))})`),
-      warnaIdx: i => `var(--seq-${langkah(i)})`,
+      warna: v => (v == null ? null : ambilW(langkah(idx(v)))),
+      warnaIdx: i => ambilW(langkah(i)),
     };
   }
   function legendaKelas(host, { kelas, fmt, judul, nilaiAktif, adaKosong, ket }) {

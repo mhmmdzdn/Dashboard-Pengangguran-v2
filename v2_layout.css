@@ -2571,4 +2571,50 @@ table.tbl thead th:hover {
   transform: translate(-50%, 0);
 }
 
+/* =====================================================================
+   9. Warna Identitas Berbeda untuk Setiap Lapisan Peta (Multi-Palette Choropleth)
+   ===================================================================== */
+.rel .lap button {
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  border: 1px solid transparent;
+}
+.rel .lap button .ik {
+  background: var(--lap-bg, var(--surface-2)) !important;
+  color: var(--lap-c, var(--ink-2)) !important;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.rel .lap button:hover {
+  background: var(--lap-bg, var(--surface-2)) !important;
+}
+.rel .lap button:hover .ik {
+  transform: scale(1.06);
+}
+.rel .lap button[aria-checked="true"] {
+  background: var(--lap-bg, var(--accent-soft)) !important;
+  border-color: var(--lap-c, var(--accent)) !important;
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+.rel .lap button[aria-checked="true"] .ik {
+  background: var(--lap-c, var(--accent)) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+#page-peta .peringkat li .batang {
+  background: var(--lap-soft, var(--accent-soft)) !important;
+}
+#page-peta .peringkat li.sel {
+  border-color: var(--lap-color, var(--accent)) !important;
+}
+#page-peta .sorot-kartu {
+  border-left: 3.5px solid var(--lap-color, var(--accent)) !important;
+}
+#page-peta .waktu .putar {
+  background: var(--lap-color, var(--accent)) !important;
+}
+#page-peta .waktu input[type="range"] {
+  accent-color: var(--lap-color, var(--accent)) !important;
+}
+
+
 
