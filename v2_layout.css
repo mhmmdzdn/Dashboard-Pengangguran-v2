@@ -1822,10 +1822,24 @@ body.panel-terlipat .zoom-alat {
   transform: translateY(-1px) !important;
 }
 
+.nav .btn-icon.aktif {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 10px rgba(15, 118, 110, 0.6) !important;
+}
+
+.nav .btn-icon.aktif .ikon {
+  stroke: #ffffff !important;
+}
+
 .nav .btn-icon .ikon {
   width: 18px !important;
   height: 18px !important;
   stroke: #ffffff !important;
+  fill: none !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
 }
 
 .mengapung {

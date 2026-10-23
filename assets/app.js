@@ -2756,7 +2756,11 @@
   function gantiHalaman(pg) { if (waktu) waktu.berhenti(); S.page = pg; render(); window.scrollTo({ top: 0 }); }
   function render() {
     I.sembunyiTip();
-    document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.page === S.page ? 'true' : 'false'));
+    document.querySelectorAll('.tabs button, .btn-nav-page').forEach(b => {
+      const aktif = b.dataset.page === S.page;
+      b.setAttribute('aria-selected', aktif ? 'true' : 'false');
+      b.classList.toggle('aktif', aktif);
+    });
     document.querySelectorAll('.page').forEach(p => p.classList.toggle('aktif', p.id === 'page-' + S.page));
     document.body.classList.toggle('mode-peta', S.page === 'peta');
     if (S.page === 'peta') { if (!peta) { initPeta(); renderPeta(); if (S.sel || S.fokus) zoomWilayah(S.sel || S.fokus); } else renderPeta(); }
@@ -2769,7 +2773,7 @@
   }
   I.bacaHash(S, HALAMAN);
   I.pasangTema($('tema'), 'peng2-tema');
-  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
+  document.querySelectorAll('.tabs button, .btn-nav-page').forEach(b => b.addEventListener('click', () => gantiHalaman(b.dataset.page)));
   document.querySelector('.nav .logo').addEventListener('click', ev => { ev.preventDefault(); S.wil = '00'; gantiHalaman('profil'); });
   $('kaki').replaceChildren(
     h('img', {
