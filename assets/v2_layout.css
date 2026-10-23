@@ -2243,15 +2243,90 @@ body.panel-terlipat .zoom-alat {
 #page-insight .term:hover {
   color: var(--accent) !important;
 }
-#page-insight .kamus div {
-  background: var(--surface) !important;
+
+/* Tampilan List Rapi untuk Kamus Singkat Istilah */
+.kamus-list-view {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  margin-top: 14px !important;
   border: 1px solid var(--border) !important;
-  border-radius: 10px !important;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  border-radius: 12px !important;
+  background: var(--surface) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  list-style: none !important;
 }
-#page-insight .kamus div:hover {
-  border-color: var(--border-2) !important;
-  transform: translateY(-1px);
+
+.kamus-list-view .kamus-item {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  padding: 14px 18px !important;
+  border-bottom: 1px solid var(--border) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.kamus-list-view .kamus-item:last-child {
+  border-bottom: none !important;
+}
+
+.kamus-list-view .kamus-item:hover {
+  background: var(--surface-2) !important;
+  transform: none !important;
+}
+
+.kamus-num {
+  font-family: var(--font-d);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-soft, rgba(15, 118, 110, 0.1));
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  margin-top: 1px;
+}
+
+.kamus-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.kamus-term {
+  font-family: var(--font-d);
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  margin: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kamus-def {
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+  color: var(--ink-2) !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .kamus-list-view .kamus-item {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 12px 14px !important;
+  }
+  .kamus-num {
+    display: none;
+  }
 }
 
 /* 5. Penyempurnaan Bullet Chart Sasaran RPJMN (Baris Wilayah + Baris Provinsi) */

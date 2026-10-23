@@ -2555,7 +2555,15 @@
 
     const kamusList = Object.values(GLOSS_INSIGHT)
       .sort((a, b) => a.t.localeCompare(b.t, 'id'))
-      .map(g => `<div><dt>${g.t}</dt><dd>${g.d}</dd></div>`)
+      .map((g, idx) => `
+        <li class="kamus-item">
+          <div class="kamus-num">${String(idx + 1).padStart(2, '0')}</div>
+          <div class="kamus-body">
+            <dt class="kamus-term">${g.t}</dt>
+            <dd class="kamus-def">${g.d}</dd>
+          </div>
+        </li>
+      `)
       .join('');
 
     host.innerHTML = `
@@ -2605,7 +2613,8 @@
 
         <article class="chap" id="s-kamus">
           <h2>Kamus Singkat Istilah Ketenagakerjaan</h2>
-          <dl class="kamus">${kamusList}</dl>
+          <p class="sub" style="margin-top:-8px;margin-bottom:16px;color:var(--muted);font-size:13.5px">Daftar glosarium resmi konsep BPS, indikator survei Sakernas, dan instrumen kebijakan RPJMN.</p>
+          <dl class="kamus kamus-list-view">${kamusList}</dl>
         </article>
       </div>
     `;
