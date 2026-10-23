@@ -1040,7 +1040,7 @@
         if (deret('tpt', S.pfrek, '00')) {
           let dNat = deret('tpt', S.pfrek, '00') || [];
           if (S.pfrek === 'tahunan') dNat = dNat.filter(x => x[0] >= '2015');
-          ser.push({ nama: 'Indonesia', warna: 'var(--context)', data: dNat });
+          ser.push({ nama: 'Indonesia', warna: 'var(--cat-3)', data: dNat });
         }
         const pitaProfil = [];
         if (S.pfrek === 'tahunan') {
@@ -1059,14 +1059,14 @@
         }
         I.grafikGaris(g, {
           seri: potongAwal(ser),
-          tinggi: 300,
+          tinggi: 340,
           fmt: v => fmtL(BY.tpt, v),
           patahan: (BY.tpt.patahan || {})[S.pfrek],
           pita: pitaProfil,
           periodeTambahan: S.pfrek === 'tahunan' ? ['2026', '2027', '2028', '2029'] : [],
           asalLabel: 'tabel BPS provinsi'
         });
-        I.grafikGaris(gLP, { seri: [{ nama: 'Laki-laki', warna: 'var(--cat-1)', data: deret('tpt_l', 'tahunan', k) || [], utama: true }, { nama: 'Perempuan', warna: 'var(--cat-2)', data: deret('tpt_p', 'tahunan', k) || [], utama: true }], tinggi: 300, fmt: v => fmtL(BY.tpt, v) });
+        I.grafikGaris(gLP, { seri: [{ nama: 'Laki-laki', warna: 'var(--cat-1)', data: deret('tpt_l', 'tahunan', k) || [], utama: true }, { nama: 'Perempuan', warna: 'var(--cat-2)', data: deret('tpt_p', 'tahunan', k) || [], utama: true }], tinggi: 340, fmt: v => fmtL(BY.tpt, v) });
       });
     }
     // 02 indikator pendukung
@@ -1079,7 +1079,7 @@
         grid.append(kartu(l.singkat, l.jenis === 'jumlah' ? 'orang · tahunan' : 'tahunan · vs ' + (isKab ? namaW(pk) : 'Indonesia'), g));
         tunda.push(() => {
           const ser = [{ nama: namaW(k), warna: 'var(--accent)', data: deret(id, 'tahunan', k) || [], utama: true }], pemb = isKab ? pk : '00';
-          if (l.jenis !== 'jumlah' && deret(id, 'tahunan', pemb)) ser.push({ nama: namaW(pemb), warna: isKab ? 'var(--cat-2)' : 'var(--context)', data: deret(id, 'tahunan', pemb) });
+          if (l.jenis !== 'jumlah' && deret(id, 'tahunan', pemb)) ser.push({ nama: namaW(pemb), warna: isKab ? 'var(--cat-2)' : 'var(--cat-3)', data: deret(id, 'tahunan', pemb) });
           I.grafikGaris(g, { seri: potongAwal(ser), tinggi: 210, fmt: v => fmtL(l, v), nol: l.jenis === 'jumlah', area: ser.length === 1 });
         });
       });

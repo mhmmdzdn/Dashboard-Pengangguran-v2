@@ -2973,3 +2973,59 @@ table.tbl thead th:hover {
 :root[data-theme="dark"] .legend-ref i {
   border-left-color: #ffffff !important;
 }
+
+
+/* =====================================================================
+   PENYESUAIAN LEBAR LEGENDA MAP & TINGGI KARTU GRAFIK GARIS
+   ===================================================================== */
+
+/* 1. Gambar 3: Panjang/lebar legenda samakan dengan lebar container/map */
+.peta-kolom {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.peta-kolom .legenda-mini,
+.kisi-kabkota .legenda-mini,
+.kisi-tren-sebaran .legenda-mini {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.peta-kolom .legenda-mini .skala,
+.kisi-kabkota .legenda-mini .skala,
+.kisi-tren-sebaran .legenda-mini .skala {
+  width: 100% !important;
+  display: flex !important;
+}
+
+.peta-kolom .legenda-mini .skala span,
+.kisi-kabkota .legenda-mini .skala span,
+.kisi-tren-sebaran .legenda-mini .skala span {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+.peta-kolom .legenda-mini .skala i,
+.kisi-kabkota .legenda-mini .skala i,
+.kisi-tren-sebaran .legenda-mini .skala i {
+  width: 100% !important;
+}
+
+/* 2. Gambar 4: Chart height sama dengan border (hilangkan whitespace bawah) */
+.kisi-2 > .card {
+  height: 100% !important;
+}
+
+.kisi-2 > .card > div:has(> svg.chart) {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+}
+
+.kisi-2 > .card > div:has(> svg.chart) > svg.chart {
+  margin-top: auto !important;
+}

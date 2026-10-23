@@ -29,7 +29,7 @@
   --accent-soft: #e6f4f2;
   --accent-2: #c2410c;
   --accent-2-soft: #ffedd5;
-  --context: #6b857a;
+  --context: #2563eb;
 
   /* Data Choropleth Peta (7 Langkah Sekuensial Emerald) */
   --stroke-map: #ffffff;
@@ -122,7 +122,7 @@
     --accent-soft: rgba(45, 212, 191, 0.16);
     --accent-2: #fb923c;
     --accent-2-soft: rgba(251, 146, 60, 0.16);
-    --context: #6e8a81;
+    --context: #60a5fa;
 
     --stroke-map: #071311;
     --sea: #050e0c;
@@ -184,7 +184,7 @@
   --accent-soft: rgba(45, 212, 191, 0.16);
   --accent-2: #fb923c;
   --accent-2-soft: rgba(251, 146, 60, 0.16);
-  --context: #6e8a81;
+  --context: #60a5fa;
 
   --stroke-map: #071311;
   --sea: #050e0c;
