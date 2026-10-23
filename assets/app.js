@@ -2629,6 +2629,7 @@
     });
 
     if ('IntersectionObserver' in window) {
+      const pillsWrap = host.querySelector('.insight-sticky-pills');
       const pills = host.querySelectorAll('.ins-pill');
       const obsChap = new IntersectionObserver(entries => {
         entries.forEach(en => {
@@ -2639,6 +2640,15 @@
         });
       }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
       host.querySelectorAll('article.chap').forEach(art => obsChap.observe(art));
+
+      // Tampilkan floating pills hanya saat scroll telah masuk ke section konten putih (hero terlewati)
+      const heroEl = host.querySelector('.hero');
+      if (heroEl && pillsWrap) {
+        const obsHero = new IntersectionObserver(([entry]) => {
+          pillsWrap.classList.toggle('tampil', !entry.isIntersecting);
+        }, { rootMargin: '-60px 0px 0px 0px', threshold: 0 });
+        obsHero.observe(heroEl);
+      }
     }
 
     host.querySelectorAll('.maplink').forEach(btn => {
