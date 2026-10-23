@@ -452,7 +452,6 @@
           h('h1', {}, 'Tingkat pengangguran terbuka Indonesia ', h('em', { text: fmtL(L_, tpt) }), urutP.length ? [`; tertinggi di ${namaW(urutP[0])} (${fmtL(L_, pot[urutP[0]])}), terendah di ${namaW(urutP[urutP.length - 1])} (${fmtL(L_, pot[urutP[urutP.length - 1]])}).`] : '.'),
           h('p', { text: p2.join(' ') }),
           h('div', { class: 'chip-baris' },
-            h('label', { class: 'chip' }, 'Periode ', selPer),
             h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('peta') }, ikon('peta'), 'Jelajahi peta'),
             h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', onclick: () => gantiHalaman('sasaran') }, ikon('target'), 'Sasaran RPJMN'),
             h('button', { class: 'chip', type: 'button', style: 'cursor:pointer', title: 'Salin tautan tampilan Nasional ini', onclick: () => salinTautan('Profil Nasional') }, ikon('tautan'), 'Bagikan'))),
