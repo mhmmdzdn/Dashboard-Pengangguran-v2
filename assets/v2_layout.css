@@ -2657,7 +2657,7 @@ table.tbl thead th:hover {
 }
 
 /* =====================================================================
-   9. Warna Identitas Berbeda untuk Setiap Lapisan Peta (Multi-Palette Choropleth)
+   9. Warna Identitas Berbeda untuk Setiap Lapisan Peta (Multi-Palette Choropleth & Panel)
    ===================================================================== */
 .rel .lap button {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -2685,15 +2685,71 @@ table.tbl thead th:hover {
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
 }
+
+/* Penyelarasan Warna Identitas Lapisan pada Panel Analisis */
+#panel {
+  border-top: 3px solid var(--lap-color, var(--accent)) !important;
+}
+
+#page-peta .sorot-kartu {
+  background: linear-gradient(135deg, var(--lap-soft, var(--accent-soft)), transparent 85%), var(--surface) !important;
+  border-left: 4px solid var(--lap-color, var(--accent)) !important;
+}
+
+#page-peta .sorot-kartu .val {
+  color: var(--lap-color, var(--accent-ink)) !important;
+}
+
+#page-peta .sorot-kartu .lbl {
+  color: var(--ink-2) !important;
+}
+
+#page-peta .dua-kotak .kotak-ekstrem.klik:hover,
+#page-peta .dua-kotak .kotak-ekstrem.klik:focus-visible {
+  border-color: var(--lap-color, var(--accent)) !important;
+  background: var(--lap-soft, var(--accent-soft)) !important;
+}
+
+#page-peta .dua-kotak .kotak-ekstrem .lbl {
+  color: var(--lap-color, var(--accent)) !important;
+}
+
 #page-peta .peringkat li .batang {
   background: var(--lap-soft, var(--accent-soft)) !important;
 }
+
 #page-peta .peringkat li.sel {
+  background: var(--lap-soft, var(--accent-soft)) !important;
   border-color: var(--lap-color, var(--accent)) !important;
 }
-#page-peta .sorot-kartu {
-  border-left: 3.5px solid var(--lap-color, var(--accent)) !important;
+
+#page-peta .peringkat li.sel .no {
+  background: var(--lap-color, var(--accent)) !important;
+  color: #ffffff !important;
 }
+
+#page-peta .panel .btn.utama {
+  background: var(--lap-color, var(--accent)) !important;
+  border-color: var(--lap-color, var(--accent)) !important;
+  color: #ffffff !important;
+}
+
+#page-peta .panel .lencana.biru {
+  background: var(--lap-soft, var(--accent-soft)) !important;
+  color: var(--lap-color, var(--accent-ink)) !important;
+}
+
+#page-peta .panel .bagian-jdl {
+  color: var(--lap-color, var(--muted)) !important;
+  border-bottom: 1.5px solid var(--lap-soft, rgba(0, 0, 0, 0.06));
+  padding-bottom: 2px;
+}
+
+#page-peta .panel .cari input:focus {
+  border-color: var(--lap-color, var(--accent)) !important;
+  box-shadow: 0 0 0 2px var(--lap-soft, rgba(15, 118, 110, 0.2)) !important;
+}
+
 #page-peta .waktu .putar {
   background: var(--lap-color, var(--accent)) !important;
 }
