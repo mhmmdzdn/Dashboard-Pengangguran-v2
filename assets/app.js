@@ -2084,9 +2084,6 @@
                 <div class="ms-card-head-row">
                   <div class="ms-card-title-wrap">
                     <h3>${m.judul}</h3>
-                    <div class="ms-tags">
-                      ${m.tags.map(t => `<span class="ms-tag"># ${t}</span>`).join('')}
-                    </div>
                   </div>
                   <div class="ms-illus" aria-hidden="true">
                     ${m.img ? `
