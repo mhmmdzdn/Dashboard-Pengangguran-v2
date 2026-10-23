@@ -1230,42 +1230,57 @@
       }
     }, ikon('unduh'), 'Unduh CSV Target Provinsi & Wilayah');
 
-    host.append(h('section', { class: 'bagian' }, bagian(2, 'Provinsi, sasaran provinsi, dan sasaran wilayah', `TPT provinsi ${lblTahunan(pT)} (titik) disandingkan langsung dengan rentang Target Provinsi (2025 & 2029) dan Target Koridor Wilayah (2025 & 2029). Skala 0–${maks}% sama untuk semua kartu.`),
+    host.append(h('section', { class: 'bagian' }, bagian(2, 'Sasaran wilayah dan provinsi', `Baris teratas pada setiap kartu menampilkan rentang Target Wilayah (2025 & 2029) tanpa titik TPT, diikuti baris tiap provinsi dengan TPT ${lblTahunan(pT)} (titik) dan rentang Target Provinsi masing-masing (2025 & 2029). Skala 0–${maks}% sama untuk semua kartu.`),
       h('div', { class: 'bullet-leg' },
         h('span', {}, h('i', { class: 'lt' }), 'TPT Provinsi (' + lblTahunan(pT) + ')'),
-        h('span', {}, h('i', { class: 'l25' }), 'Target Provinsi 2025'),
-        h('span', {}, h('i', { class: 'l29' }), 'Target Provinsi 2029'),
-        h('span', {}, h('i', { class: 'lw25' }), 'Target Wilayah 2025'),
-        h('span', {}, h('i', { class: 'lw29' }), 'Target Wilayah 2029')
+        h('span', {}, h('i', { class: 'l25' }), 'Target 2025 (Wilayah / Provinsi)'),
+        h('span', {}, h('i', { class: 'l29' }), 'Target 2029 (Wilayah / Provinsi)')
       ),
       grid,
       h('section', { class: 'bagian' }, bagian(3, 'Tabel rincian sasaran TPT 38 provinsi & 7 wilayah', 'Perbandingan lengkap realisasi TPT terkini dengan rentang sasaran RPJMN 2025 dan 2029 tingkat provinsi maupun wilayah. Klik baris untuk membuka profil provinsi.'),
         kartuAksi('Matriks Sasaran RPJMN 2025–2029 per Provinsi & Wilayah', 'Angka resmi Bappenas (RPJMN 2025–2029) & BPS (' + lblTahunan(pT) + ')', tombolCsvSasaran, tbSasaran)),
       h('div', { class: 'card jarak' }, h('ul', { class: 'catatan', style: 'margin:0' },
-        h('li', { text: 'Setiap baris grafik menampilkan pita Target Provinsi (2025 & 2029) sekaligus penanda Target Wilayah koridor pembangunannya (2025 & 2029).' }),
-        h('li', { text: 'Arahkan kursor atau sentuh grafik batang provinsi untuk melihat rincian angka Target Provinsi dan Target Wilayah secara berdampingan.' }),
+        h('li', { text: 'Baris pertama pada tiap kartu adalah bar chart Target Koridor Wilayah (2025 & 2029) tanpa titik TPT, sedangkan baris-baris di bawahnya menampilkan TPT dan Target masing-masing Provinsi.' }),
+        h('li', { text: 'Arahkan kursor atau sentuh grafik batang untuk melihat rincian angka rentang sasaran 2025 dan 2029.' }),
         h('li', {}, 'Sumber sasaran: ', h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', text: D.sumberRpjmn.label }), ' (Lampiran Target Capaian Provinsi & Wilayah RPJMN 2025–2029). Sumber TPT: BPS.')))));
 
     const barisTabelSas = [];
     URUT_WIL.forEach(w => {
       const x = wil.find(z => z.wilayah === w); if (!x) return;
       const b = h('div', { class: 'bullet' });
+
+      // 1. Baris khusus Wilayah (Target 2025 & 2029 tanpa titik TPT saat ini)
+      const trkWil = h('div', { class: 'trk trk-wil' },
+        x.target2029 ? h('div', { class: 'pita29', style: `left:${pos(x.target2029[0])}%;width:${Math.max(0.8, pos(x.target2029[1]) - pos(x.target2029[0]))}%` }) : null,
+        x.target2025 ? h('div', { class: 'pita25', style: `left:${pos(x.target2025[0])}%;width:${Math.max(0.8, pos(x.target2025[1]) - pos(x.target2025[0]))}%` }) : null
+      );
+      trkWil.addEventListener('pointermove', ev => I.tampilTip(ev, [
+        I.tipNama('Target Wilayah ' + w),
+        x.target2025 ? I.tipBaris(rg(x.target2025), 'Target Wilayah 2025', '#0f766e', true) : null,
+        x.target2029 ? I.tipBaris(rg(x.target2029), 'Target Wilayah 2029', '#ea580c', true) : null
+      ]));
+      trkWil.addEventListener('pointerleave', I.sembunyiTip);
+      b.append(
+        h('div', { class: 'nm nm-wil', title: 'Target Wilayah ' + w, text: 'Wilayah ' + w }),
+        trkWil,
+        h('div', { class: 'v v-wil', text: '—', title: 'Tidak ada angka TPT agregat wilayah resmi BPS' })
+      );
+      b.append(h('div', { class: 'bullet-pemisah' }));
+
+      // 2. Baris masing-masing Provinsi (murni Target Provinsi 2025 & 2029 + titik TPT Provinsi)
       WIL.provinsi.filter(p => p.wilayah === w).map(p => [p, nilai('tpt', 'tahunan', p.kode, pT)]).sort((a, c) => (c[1] || 0) - (a[1] || 0)).forEach(([p, v]) => {
         const sp = provSas[p.kode];
         const tProv25 = sp && sp.target2025 ? sp.target2025 : null;
         const tProv29 = sp && sp.target2029 ? sp.target2029 : null;
         const trk = h('div', { class: 'trk' },
-          x.target2029 ? h('div', { class: 'wil-pita29', style: `left:${pos(x.target2029[0])}%;width:${Math.max(0.6, pos(x.target2029[1]) - pos(x.target2029[0]))}%` }) : null,
-          x.target2025 ? h('div', { class: 'wil-pita25', style: `left:${pos(x.target2025[0])}%;width:${Math.max(0.6, pos(x.target2025[1]) - pos(x.target2025[0]))}%` }) : null,
           tProv29 ? h('div', { class: 'pita29', style: `left:${pos(tProv29[0])}%;width:${Math.max(0.8, pos(tProv29[1]) - pos(tProv29[0]))}%` }) : null,
           tProv25 ? h('div', { class: 'pita25', style: `left:${pos(tProv25[0])}%;width:${Math.max(0.8, pos(tProv25[1]) - pos(tProv25[0]))}%` }) : null,
           v != null ? h('div', { class: 'titik', style: `left:${pos(v)}%` }) : null);
         trk.addEventListener('pointermove', ev => I.tampilTip(ev, [
-          I.tipNama(`${p.nama} (Wilayah ${w})`),
+          I.tipNama(p.nama),
           I.tipBaris(fmt(v), 'TPT ' + lblTahunan(pT)),
           tProv25 ? I.tipBaris(rg(tProv25), 'Target Provinsi 2025', '#0f766e', true) : null,
-          tProv29 ? I.tipBaris(rg(tProv29), 'Target Provinsi 2029', '#ea580c', true) : null,
-          I.tipSub(`Target Wilayah ${w} 2025: ${rg(x.target2025)} · 2029: ${rg(x.target2029)}`)
+          tProv29 ? I.tipBaris(rg(tProv29), 'Target Provinsi 2029', '#ea580c', true) : null
         ]));
         trk.addEventListener('pointerleave', I.sembunyiTip);
         b.append(
