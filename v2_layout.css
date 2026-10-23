@@ -1919,10 +1919,40 @@ body.panel-terlipat .zoom-alat {
 .waktu {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  padding: 6px 14px 6px 8px !important;
+  gap: 12px !important;
+  padding: 6px 18px 6px 8px !important;
   border-radius: 999px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  width: min(720px, calc(100vw - 640px)) !important;
+  min-width: 380px !important;
+  box-sizing: border-box !important;
+}
+
+.waktu .baris.baris-range {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  min-width: 140px !important;
+}
+
+.waktu .baris.baris-range input[type="range"] {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  cursor: pointer !important;
+}
+
+.waktu .baris.baris-lbl {
+  flex: 0 0 auto !important;
+}
+
+.waktu .lbl {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+.waktu .cepat {
+  display: none !important;
 }
 
 .waktu .putar {

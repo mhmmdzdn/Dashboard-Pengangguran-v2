@@ -319,14 +319,12 @@
   // =====================================================================
   // host berisi kontrol; opsi.onUbah(periode); setPeriode(list, aktif)
   function GarisWaktu(host, { onUbah, lbl = lblPer }) {
-    let daftar = [], aktif = null, timer = null, cepat = 1;
+    let daftar = [], aktif = null, timer = null;
     const tombol = h('button', { class: 'putar', type: 'button', 'aria-label': 'Putar deret waktu', text: '▶' });
     const label = h('output', { class: 'lbl', 'aria-live': 'polite' });
     const rg = h('input', { type: 'range', min: 0, max: 0, step: 1, 'aria-label': 'Periode' });
-    const cepatEl = h('div', { class: 'cepat', role: 'group', 'aria-label': 'Kecepatan' });
     const tanda = h('div', { class: 'tanda', 'aria-hidden': 'true' });
-    [1, 2, 4].forEach(c => cepatEl.append(h('button', { type: 'button', 'aria-pressed': c === 1 ? 'true' : 'false', text: c + '×', onclick: ev => { cepat = c; [...cepatEl.children].forEach(b => b.setAttribute('aria-pressed', b === ev.currentTarget ? 'true' : 'false')); if (timer) { berhenti(); mulai(); } } })));
-    host.replaceChildren(tombol, h('div', { class: 'baris' }, rg), h('div', { class: 'baris' }, label, cepatEl), tanda);
+    host.replaceChildren(tombol, h('div', { class: 'baris baris-range' }, rg), h('div', { class: 'baris baris-lbl' }, label), tanda);
     rg.addEventListener('input', () => { aktif = daftar[+rg.value]; perbarui(); onUbah(aktif); });
     tombol.addEventListener('click', () => (timer ? berhenti() : mulai()));
     function mulai() {
@@ -337,7 +335,7 @@
         const i = daftar.indexOf(aktif);
         if (i < 0 || i >= daftar.length - 1) { berhenti(); return; }
         aktif = daftar[i + 1]; perbarui(); onUbah(aktif);
-      }, 1100 / cepat);
+      }, 1000);
     }
     function berhenti() { clearInterval(timer); timer = null; tombol.textContent = '▶'; tombol.setAttribute('aria-label', 'Putar deret waktu'); }
     function perbarui() {

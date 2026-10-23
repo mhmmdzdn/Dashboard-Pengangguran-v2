@@ -120,33 +120,33 @@
 /* 5. Timeline Slider (Waktu): Ramping & Mengambang Lembut di Tengah */
 .waktu {
   bottom: 16px;
-  height: 40px;
-  padding: 2px 14px 2px 6px;
+  height: 42px;
+  padding: 3px 18px 3px 8px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  gap: 8px 10px;
+  gap: 12px;
 }
 
 .waktu .putar {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   font-size: 11px;
 }
 
 .waktu .lbl {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .waktu .tanda {
   display: none; /* Hilangkan angka penanda tahun yang ramai */
 }
 
-.waktu .cepat button {
-  font-size: 10px;
-  padding: 1px 4px;
+.waktu .cepat {
+  display: none !important;
 }
 
 /* 6. Zoom Controls: Minimalis & Berjarak Bersih */
