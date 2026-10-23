@@ -2485,28 +2485,28 @@
       },
       {
         id: 'koridor-rpjmn',
-        title: '7. Evaluasi Sasaran RPJMN 2025: Siapa Melampaui, Siapa Masih Tertinggal?',
+        title: '7. Evaluasi Sasaran RPJMN 2025: Capaian Nasional vs Tantangan Kewilayahan',
         go: 'tpt|prov|tahunan|2025|',
         aria: 'Buka peta TPT per wilayah',
-        text: `<p>Dokumen <a href="${D.sumberRpjmn.url}" target="_blank" rel="noopener"><b>RPJMN 2025–2029 (Perpres No. 12 Tahun 2025)</b></a> menetapkan koridor sasaran TPT untuk 7 wilayah pembangunan serta 38 provinsi Indonesia. Target nasional tahun 2025 dipatok pada rentang <b>4,50% – 5,00%</b>, dan realisasi Sakernas 2025 sebesar <b>4,85%</b> resmi berada di dalam rentang target tersebut.</p>` +
+        text: `<p>Dokumen <a href="${D.sumberRpjmn.url}" target="_blank" rel="noopener"><b>RPJMN 2025–2029 (Perpres No. 12 Tahun 2025)</b></a> menetapkan koridor sasaran TPT untuk 7 wilayah pembangunan serta 38 provinsi Indonesia. Target nasional tahun 2025 dipatok pada rentang <b>4,50% – 5,00%</b>, dan realisasi Sakernas 2025 sebesar <b>4,85%</b> resmi berhasil berada di dalam koridor aman target tersebut.</p>` +
           `<p>Namun di tingkat wilayah, capaian bervariasi tajam:</p>` +
           `<ul style="margin:8px 0 12px 18px;font-size:0.95rem;line-height:1.6;color:var(--ink-2)">` +
-          `  <li><b>Wilayah Berhasil di Bawah Target:</b> Bali (1,49%), Nusa Tenggara Barat, Jawa Tengah (4,66%), Jawa Timur (3,88%), dan Kalimantan Selatan (4,16%) sukses menekan pengangguran jauh di batas aman target wilayahnya.</li>` +
-          `  <li><b>Wilayah yang Melampaui Batas Maksimal:</b> Jawa Barat (6,77% vs target koridor Jawa maks 5,62%), Banten (6,69%), DKI Jakarta (6,05%), Maluku (6,27% vs target maks 5,18%), dan Papua (6,96% vs target maks 3,59%).</li>` +
+          `  <li><b>Wilayah Berhasil Memenuhi Target:</b> Bali (1,49%), Nusa Tenggara Barat, Jawa Tengah (4,66%), Jawa Timur (3,88%), dan Kalimantan Selatan (4,16%) sukses menjaga angka pengangguran tetap rendah di bawah batas aman koridor wilayahnya.</li>` +
+          `  <li><b>Wilayah Belum Capai Target (Di Atas Batas Maksimal):</b> Jawa Barat (6,77% vs batas maks koridor Jawa 5,62%), Banten (6,69%), DKI Jakarta (6,05%), Maluku (6,27% vs batas maks 5,18%), dan Papua (6,96% vs batas maks 3,59%). Tingginya angka TPT ini menandakan pengangguran masih melebihi plafon toleransi RPJMN.</li>` +
           `</ul>` +
           `<p>Tantangan terbesar pencapaian sasaran akhir 2029 (target nasional 4,00% – 4,71%) berada pada revitalisasi penyerapan tenaga kerja di koridor industri barat dan percepatan inklusi ekonomi Indonesia Timur.</p>`,
         fig: `<div class="fig-t">Status Realisasi TPT Provinsi 2025 terhadap Batas Koridor RPJMN 2025</div>` +
           `<div class="hb">` +
           [
-            { prov: 'Jawa Barat (Koridor Jawa maks 5,62%)', val: 6.77, status: 'Melampaui Target', color: '#ea580c' },
-            { prov: 'Banten (Koridor Jawa maks 5,62%)', val: 6.69, status: 'Melampaui Target', color: '#ea580c' },
-            { prov: 'Kepulauan Riau (Koridor Sumatera maks 4,73%)', val: 6.45, status: 'Melampaui Target', color: '#ea580c' },
-            { prov: 'Nasional (Target 4,50% – 5,00%)', val: 4.85, status: 'Memenuhi Target', color: '#10b981' },
-            { prov: 'Jawa Timur (Koridor Jawa maks 5,62%)', val: 3.88, status: 'Memenuhi Target', color: '#10b981' },
-            { prov: 'Bali (Koridor Bali-Nusra maks 2,72%)', val: 1.49, status: 'Memenuhi Target', color: '#10b981' }
+            { prov: 'Jawa Barat (Koridor Jawa maks 5,62%)', val: 6.77, status: 'Belum Capai Target', color: '#dc2626' },
+            { prov: 'Banten (Koridor Jawa maks 5,62%)', val: 6.69, status: 'Belum Capai Target', color: '#dc2626' },
+            { prov: 'Kepulauan Riau (Koridor Sumatera maks 4,73%)', val: 6.45, status: 'Belum Capai Target', color: '#dc2626' },
+            { prov: 'Nasional (Target 4,50% – 5,00%)', val: 4.85, status: 'Memenuhi Target', color: '#059669' },
+            { prov: 'Jawa Timur (Koridor Jawa maks 5,62%)', val: 3.88, status: 'Memenuhi Target', color: '#059669' },
+            { prov: 'Bali (Koridor Bali-Nusra maks 2,72%)', val: 1.49, status: 'Memenuhi Target', color: '#059669' }
           ].map(item => `
             <div class="hb-r">
-              <div class="hb-h"><b>${item.prov}</b><span>${item.status}</span></div>
+              <div class="hb-h"><b>${item.prov}</b><span style="color:${item.color};font-weight:700">${item.status}</span></div>
               <div class="hb-t"><div class="hb-bg"><span class="hb-b" style="--k:${(item.val / 7.5).toFixed(3)};--wc:${item.color}"></span></div><span class="hb-v">${fmtAngka(item.val, 2)}%</span></div>
             </div>
           `).join('') +
