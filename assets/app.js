@@ -158,11 +158,11 @@
   // ---------- status ----------
   const S = { page: 'profil', lap: 'tpt', lv: 'prov', frek: 'tahunan', per: '', sel: '', fokus: '',
     dper: '', dfrek: 'tahunan', drinc: 'pendidikan', dmode: 'garis', dsp: 'pendidikan', dspmode: 'garis', dpend: 'tahunan', dumur: '',
-    wil: '00', pfrek: 'tahunan', pkar: 'pendidikan', pkper: '', ptahun: '' };
+    wil: '00', pfrek: 'tahunan', pkar: 'pendidikan', pkper: '', ptahun: '', infomode: 'insight' };
   const KUNCI = {
     profil: ['wil', 'pfrek', 'pkar', 'pkper', 'ptahun', 'dper', 'dfrek', 'drinc', 'dmode', 'dsp', 'dspmode', 'dpend', 'dumur'],
     peta: ['lap', 'lv', 'frek', 'per', 'sel', 'fokus'],
-    sasaran: [], insight: [], metode: []
+    sasaran: [], insight: ['infomode'], metode: []
   };
   const HALAMAN = Object.keys(KUNCI);
   const tulis = () => I.tulisHash(S, KUNCI[S.page]);
@@ -1452,11 +1452,67 @@
     const host = $('insight');
     if (!host) return;
 
+    if (S.infomode === 'milestone') {
+      renderMilestone(host);
+      return;
+    }
+
     if (insightDibuat) {
+      // Re-attach segmen jika host telah diubah oleh Milestone
+      const bar = host.querySelector('.hero-lingkup-bar');
+      if (bar && !bar.querySelector('.seg-lingkup-profil')) {
+        const segInfo = h('div', { class: 'seg seg-lingkup-profil' });
+        I.segmen(segInfo, [['insight', 'Insight'], ['milestone', 'Milestone']], S.infomode, modeBaru => {
+          S.infomode = modeBaru;
+          render();
+        }, 'Pilihan Informasi');
+        bar.replaceChildren(segInfo);
+      }
       insightCharts.forEach(fn => fn());
       return;
     }
 
+    renderInsightContent(host);
+  }
+
+  function renderMilestone(host) {
+    insightDibuat = false;
+    const segInfo = h('div', { class: 'seg seg-lingkup-profil' });
+    I.segmen(segInfo, [['insight', 'Insight'], ['milestone', 'Milestone']], S.infomode, modeBaru => {
+      S.infomode = modeBaru;
+      render();
+    }, 'Pilihan Informasi');
+
+    host.innerHTML = `
+      <div class="hero">
+        <div class="hero-lingkup-bar"></div>
+        <div class="dalam hero-kisi">
+          <div>
+            <div class="alis"><span class="titik"></span>Milestone &amp; Capaian Strategis</div>
+            <h1>Milestone Transformasi &amp; Agenda Ketenagakerjaan Nasional.</h1>
+            <p>Ruang pelacakan tahapan capaian, rekam jejak kebijakan, dan linimasa indikator ketenagakerjaan Indonesia.</p>
+          </div>
+          <div class="hero-angka">
+            <div class="lbl">Status Linimasa</div>
+            <div class="val">Segera</div>
+            <div class="per">Modul pencatatan milestone dalam persiapan</div>
+          </div>
+        </div>
+      </div>
+      <div class="story-in" style="min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 48px 16px;">
+        <div style="width: 64px; height: 64px; border-radius: 16px; background: var(--accent-soft, rgba(15, 118, 110, 0.12)); color: var(--accent); display: grid; place-items: center; margin-bottom: 16px;">
+          <svg class="ikon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Halaman Milestone</h2>
+        <p style="max-width: 500px; color: var(--muted); font-size: 14px; line-height: 1.5;">Halaman milestone ketenagakerjaan dan target capaian program saat ini masih kosong dan disiapkan untuk penambahan data mendatang.</p>
+      </div>
+    `;
+
+    const bar = host.querySelector('.hero-lingkup-bar');
+    if (bar) bar.append(segInfo);
+  }
+
+  function renderInsightContent(host) {
     const tptSr = seri('tpt', 'tahunan', 'prov');
     const tptKabSr = seri('tpt', 'tahunan', 'kab');
     const tptLSr = seri('tpt_l', 'tahunan', 'prov');
@@ -1692,6 +1748,7 @@
 
     host.innerHTML = `
       <div class="hero">
+        <div class="hero-lingkup-bar"></div>
         <div class="dalam hero-kisi">
           <div>
             <div class="alis"><span class="titik"></span>Cerita &amp; Wawasan Data · Sakernas ${lastPer}</div>
@@ -1831,6 +1888,14 @@
         label: `Grafik garis tren TPT nasional 2015 sampai 2025`
       });
     };
+
+    const segInfo = h('div', { class: 'seg seg-lingkup-profil' });
+    I.segmen(segInfo, [['insight', 'Insight'], ['milestone', 'Milestone']], S.infomode, modeBaru => {
+      S.infomode = modeBaru;
+      render();
+    }, 'Pilihan Informasi');
+    const bar = host.querySelector('.hero-lingkup-bar');
+    if (bar) bar.append(segInfo);
 
     insightCharts = [drawChartTren];
     drawChartTren();
