@@ -623,8 +623,8 @@
       host.append(h('section', { class: 'bagian' }, bagian(5, 'Penduduk 15+ menurut kegiatan', 'Indonesia, 2015–2025 (Sakernas Agustus) · tiap panel berskala sendiri · angka resmi BPS.'),
         h('div', { class: 'kisi kisi-5-7' }, kartu('Tingkat (persen)', 'TPAK, TPT, tingkat kesempatan kerja', g2), kartu('Jumlah (orang)', 'Penduduk 15+, angkatan kerja, bekerja, penganggur, bukan angkatan kerja', g1)), h('div', { class: 'jarak' }, sumberR(r))));
       tunda.push(() => {
-        I.kecilBanyak(g1, { periode: f.periode, seri: jml, fmt: v => (v == null ? '—' : nfKompak.format(v)), aktif: per, patahan: (BY.tpt.patahan || {}).tahunan, tinggi: 80, bersama: false });
-        I.kecilBanyak(g2, { periode: f.periode, seri: tkt.map(x => ({ ...x, nama: x.nama.replace(/\s*\(%\)/, '') })), fmt: v => (v == null ? '—' : fmtAngka(v, 2) + '%'), aktif: per, patahan: (BY.tpt.patahan || {}).tahunan, tinggi: 80, bersama: false });
+        I.kecilBanyak(g1, { periode: f.periode, seri: jml, fmt: v => (v == null ? '—' : nfKompak.format(v)), aktif: per, tinggi: 80, bersama: false });
+        I.kecilBanyak(g2, { periode: f.periode, seri: tkt.map(x => ({ ...x, nama: x.nama.replace(/\s*\(%\)/, '') })), fmt: v => (v == null ? '—' : fmtAngka(v, 2) + '%'), aktif: per, tinggi: 80, bersama: false });
       });
     }
   }
