@@ -16,6 +16,10 @@ body {
   color: var(--ink);
 }
 
+body:not(.mode-peta) {
+  padding-top: 52px;
+}
+
 .isi {
   max-width: 1200px;
   margin: 0 auto;
@@ -40,9 +44,14 @@ body {
   background: rgba(45, 212, 191, 0.25);
 }
 
-/* Navigasi Header Ramping & Bersih */
+/* Navigasi Header Ramping & Bersih (Fixed di Atas Viewport) */
 .nav {
-  height: 52px;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 52px !important;
+  z-index: 60 !important;
   background: var(--nav);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -1050,7 +1059,7 @@ table.tbl tr.klik-baris:hover td {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  z-index: 45;
+  z-index: 50;
   display: flex;
   align-items: center;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
@@ -2493,15 +2502,15 @@ table.tbl thead th:hover {
 /* 8.4 Reading Progress Bar & Sticky Chapter Pills di Tab Insight */
 .v2-scroll-progress {
   position: fixed;
-  top: 52px;
+  top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #10b981 0%, #0f766e 50%, #fbbf24 100%);
+  height: 2.5px;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 55%, #fbbf24 100%);
   transform-origin: 0 50%;
   transform: scaleX(0);
   opacity: 0;
-  z-index: 48;
+  z-index: 75;
   pointer-events: none;
   transition: opacity 0.2s ease;
 }

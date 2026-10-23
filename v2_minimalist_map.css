@@ -10,7 +10,7 @@
 /* 1. Shell Peta: Lebih Luas & Tenang */
 #page-peta.aktif {
   position: fixed;
-  inset: 58px 0 0 0;
+  inset: 52px 0 0 0;
   background: var(--sea);
 }
 
@@ -347,17 +347,17 @@ body.panel-terlipat .zoom-alat {
   color: var(--accent-ink) !important;
 }
 
-/* Pastikan Hero tidak memotong dropdown yang melayang ke bawah dan stacking context paling depan */
+/* Pastikan Hero tidak memotong dropdown yang melayang ke bawah */
 .hero {
   position: relative;
-  z-index: 50 !important;
+  z-index: 30 !important;
   overflow: visible !important;
 }
 
 .hero .dalam,
 .hero-profil {
   position: relative;
-  z-index: 55 !important;
+  z-index: 35 !important;
   overflow: visible !important;
 }
 
