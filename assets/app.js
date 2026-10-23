@@ -1237,7 +1237,7 @@
     const vT = nilai('tpt', 'tahunan', '00', pT);
     host.replaceChildren(h('div', { class: 'hero' }, h('div', { class: 'dalam hero-kisi' },
       h('div', {}, h('div', { class: 'alis' }, h('span', { class: 'titik' }), 'Bappenas · RPJMN 2025–2029'), h('h1', {}, 'Sasaran TPT nasional ', h('em', { text: rg(sn.target2025) }), ' pada 2025 dan ', h('em', { text: rg(sn.target2029) }), ' pada 2029.'),
-        h('p', { text: `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran — tanpa menghitung jarak atau selisih.` })),
+        h('p', {}, `Baseline 2024: ${fmtAngka(sn.baseline2024, 2)}%. Halaman ini menampilkan angka TPT resmi berdampingan dengan rentang sasaran sesuai `, h('a', { href: D.sumberRpjmn.url, target: '_blank', rel: 'noopener', style: 'color:#5eead4;font-weight:700;text-decoration:underline', text: 'Perpres No. 12 Tahun 2025 (RPJMN 2025–2029)' }), ' — tanpa menghitung jarak atau selisih.')),
       h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) })))));
     host.append(h('div', { class: 'kpi-kisi auto' },
       kpi({ ik: 'info', label: 'Baseline 2024', val: fmtAngka(sn.baseline2024, 2) + '%', per: 'RPJMN (Bappenas)' }),
@@ -1407,7 +1407,12 @@
       blok('info', 'Prinsip', 'Hanya angka resmi; peringkat dan kelas warna peta hanya pengurutan/pengelompokan tampilan.', 'Kosong = tidak ada angka resmi; tidak diisi perkiraan atau interpolasi (garis grafik terputus).', 'Garis putus-putus menandai deret yang tidak sepenuhnya sebanding (patahan seri atau pergantian sumber).', 'Kelas warna peta tetap untuk semua periode.'),
       blok('jam', 'Frekuensi & periode', 'Tahunan = Sakernas Agustus periode 2015–2025 (metodologi konsisten Sakernas modern BPS).', 'Semesteran = Februari & Agustus sejak 2015.', 'Seluruh data telah diselaraskan pada rentang 10 tahun terakhir yang memiliki tingkat konfidensi dan kelengkapan tertinggi.'),
       blok('peta', 'TPT kab/kota', '2017–2025: tabel BPS pusat (514 kab/kota).', 'Sebelum 2017: tabel BPS provinsi untuk 16–18 provinsi; nama dipadankan ke kode BPS, kode lama Papua dipetakan ke kode setelah pemekaran.', 'Bila keduanya memuat tahun yang sama, dipakai tabel BPS pusat (tidak dirata-rata); ±460 titik tumpang tindih dicatat di data/_log_bangun.txt.'),
-      blok('peta', 'Peta', 'Batas provinsi: CC BY 4.0 (denyherianto/indonesia-geojson-topojson-maps-with-38-provinces). Batas kab/kota: ardian28/GeoJson-Indonesia-38-Provinsi. Disederhanakan untuk tampilan.', `${WIL.tanpaPoligon.length} kota kecil tanpa poligon di peta sumber (${WIL.tanpaPoligon.join(', ')}); angkanya tetap ada di tabel, peringkat, dan profil.`)));
+      blok('peta', 'Peta', 'Batas provinsi: CC BY 4.0 (denyherianto/indonesia-geojson-topojson-maps-with-38-provinces). Batas kab/kota: ardian28/GeoJson-Indonesia-38-Provinsi. Disederhanakan untuk tampilan.', `${WIL.tanpaPoligon.length} kota kecil tanpa poligon di peta sumber (${WIL.tanpaPoligon.join(', ')}); angkanya tetap ada di tabel, peringkat, dan profil.`),
+      blok('target', 'Sasaran RPJMN 2025–2029', 'Target TPT Nasional, 7 Koridor Wilayah, dan 38 Provinsi mengacu pada Peraturan Presiden Nomor 12 Tahun 2025 tentang RPJMN Tahun 2025–2029.', 'Tautan dokumen resmi: https://peraturan.bpk.go.id/Details/314638/perpres-no-12-tahun-2025')));
+    const rpjmnCard = host.querySelector('.metode-kisi .blok-metode:last-child li:last-child');
+    if (rpjmnCard) {
+      rpjmnCard.innerHTML = `Dokumen regulasi resmi: <a href="${D.sumberRpjmn.url}" target="_blank" rel="noopener">${D.sumberRpjmn.label}</a>.`;
+    }
     host.append(h('section', { class: 'bagian' }, bagian(1, 'Lapisan peta', 'Definisi, catatan, sumber dengan tautan, dan unduhan CSV lengkap per lapisan.'),
       ...LAP.map(l => h('details', { class: 'lapisan-det' }, h('summary', {}, h('span', { style: 'display:flex;align-items:center;gap:10px' }, h('span', { class: 'lencana biru' }, ikon(IKON_LAP[l.id])), h('b', { text: l.nama })), h('span', { class: 'kecil', text: Object.keys(l.frek).map(f => FREK[f]).join(' · ') })),
         h('div', { class: 'isi-det' }, h('div', { style: 'display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap' }, h('p', { class: 'kecil', style: 'color:var(--ink-2);margin:0;max-width:820px', text: l.uraian + ' Satuan: ' + satuanTeks(l) + '.' }), h('button', { class: 'btn', type: 'button', onclick: csvLapisan(l) }, ikon('unduh'), 'CSV lengkap')),
@@ -1666,7 +1671,7 @@
         title: '7. Evaluasi Sasaran RPJMN 2025: Siapa Melampaui, Siapa Masih Tertinggal?',
         go: 'tpt|prov|tahunan|2025|',
         aria: 'Buka peta TPT per wilayah',
-        text: `<p>Dokumen RPJMN 2025–2029 menetapkan koridor sasaran TPT untuk 7 wilayah pembangunan Indonesia. Target nasional tahun 2025 dipatok pada rentang <b>4,50% – 5,00%</b>, dan realisasi Sakernas 2025 sebesar <b>4,85%</b> resmi berada di dalam rentang target tersebut.</p>` +
+        text: `<p>Dokumen <a href="${D.sumberRpjmn.url}" target="_blank" rel="noopener"><b>RPJMN 2025–2029 (Perpres No. 12 Tahun 2025)</b></a> menetapkan koridor sasaran TPT untuk 7 wilayah pembangunan serta 38 provinsi Indonesia. Target nasional tahun 2025 dipatok pada rentang <b>4,50% – 5,00%</b>, dan realisasi Sakernas 2025 sebesar <b>4,85%</b> resmi berada di dalam rentang target tersebut.</p>` +
           `<p>Namun di tingkat wilayah, capaian bervariasi tajam:</p>` +
           `<ul style="margin:8px 0 12px 18px;font-size:0.95rem;line-height:1.6;color:var(--ink-2)">` +
           `  <li><b>Wilayah Berhasil di Bawah Target:</b> Bali (1,49%), Nusa Tenggara Barat, Jawa Tengah (4,66%), Jawa Timur (3,88%), dan Kalimantan Selatan (4,16%) sukses menekan pengangguran jauh di batas aman target wilayahnya.</li>` +
