@@ -1241,9 +1241,9 @@
       h('div', { class: 'hero-angka' }, h('div', { class: 'lbl', text: 'TPT Indonesia · ' + lblTahunan(pT) }), h('div', { class: 'val', text: fmt(vT) })))));
     host.append(h('div', { class: 'kpi-kisi auto kpi-sasaran-kisi' },
       kpi({ ik: 'info', label: 'Baseline 2024', val: fmtAngka(sn.baseline2024, 2) + '%', per: 'RPJMN (Bappenas)' }),
+      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'Realisasi resmi BPS' }),
       kpi({ ik: 'target', label: 'Sasaran 2025', val: rg(sn.target2025), per: 'Rentang Perpres No. 12/2025' }),
-      kpi({ ik: 'target', oranye: true, label: 'Sasaran 2029', val: rg(sn.target2029), per: 'Rentang Perpres No. 12/2025' }),
-      kpi({ ik: 'tpt', label: 'TPT ' + lblTahunan(pT), val: fmt(vT), per: 'Realisasi resmi BPS' })));
+      kpi({ ik: 'target', oranye: true, label: 'Sasaran 2029', val: rg(sn.target2029), per: 'Rentang Perpres No. 12/2025' })));
     const g = h('div');
     host.append(h('section', { class: 'bagian' }, bagian(1, 'TPT Indonesia dan rentang sasaran', 'Tahunan (Agustus) 2015–2025 · pita = rentang sasaran RPJMN 2025 dan 2029.'), h('div', { class: 'card' }, g)));
     const tunda = [() => I.grafikGaris(g, { seri: [{ nama: 'Indonesia', warna: 'var(--accent)', data: (deret('tpt', 'tahunan', '00') || []).filter(d => d[0] >= '2015'), utama: true }], tinggi: 300, fmt, area: true,
